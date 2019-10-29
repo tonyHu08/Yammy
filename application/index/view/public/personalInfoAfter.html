@@ -1,0 +1,21 @@
+<div style="width: 100%;height: 30%;background: rgba(200,200,200,0.3);border-radius: 10px;"
+     align="center">
+    <img class="img-circle" src="{:session('headimg')}" width="60px" height="60px"
+         style="margin: 5%;border: white 1px solid;">
+    <div style="height: 10%;">
+        {:session('username')}，你好！
+    </div>
+    <div style="margin-top: 7%;height: 25%;">
+        <div style="float: left;margin-left: 15%;width: 35%;">
+            {eq name="$shopvali" value="0"}
+            <button class="btn btn-primary" onclick="window.location.href='{:url(\'index/Seller/sellerCenter\')}'">开店</button>
+            {/eq}
+            {eq name="$shopvali" value="1"}
+            <button class="btn btn-primary" onclick="window.location.href='{:url(\'index/Seller/sellerCenter\')}'">管理店铺</button>
+            {/eq}
+        </div>
+        <div style="float: right;margin-right: 15%;width: 35%;">
+            <button class="btn btn-danger" onclick="window.location.href='{:url(\'index/Index/exitLogin\')}'">退出登录</button>
+        </div>
+    </div>
+</div>

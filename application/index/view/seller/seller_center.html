@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>卖家中心</title>
+    <link rel="stylesheet" href="__STATIC__/css/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <script src="__STATIC__/js/jquery-3.3.1.min.js"></script>
+    <script src="__STATIC__/css/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript"
+            src="__STATIC__/js/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript"
+            src="__STATIC__/js/ueditor/ueditor.all.js"></script>
+    <script>
+        var id = 0;
+        var ha = {};
+    </script>
+
+    <script>
+        $(function () {
+            $("#myCarousel").carousel('cycle');
+            $('[data-toggle="popover"]').popover({
+                delay: {hide: 1000},
+                html: true,
+                trigger: "hover"
+            })
+        })
+
+        function deliverGoods(dealid) {
+            document.getElementById(dealid).innerHTML = '交易状态：已发货';
+            document.getElementById('but' + dealid).innerHTML = '已发货';
+            $.get("{:url('index/Seller/deliverGoods')}", {
+                dealid: dealid
+            }, function (data) {
+            }, 'json')
+        }
+
+        function cancelGoods(dealid) {
+            document.getElementById(dealid).innerHTML = '交易状态：交易已取消';
+            document.getElementById('but' + dealid).innerHTML = '交易已取消';
+            $.get("{:url('index/Seller/cancelGoods')}", {
+                dealid: dealid
+            }, function (data) {
+            }, 'json')
+        }
+
+        function goodsReturn(dealid) {
+            document.getElementById(dealid).innerHTML = '交易状态：已退款';
+            document.getElementById('but' + dealid).innerHTML = '已退款';
+            $.get("{:url('index/Seller/goodsReturn')}", {
+                dealid: dealid
+            }, function (data) {
+            }, 'json')
+        }
+    </script>
+    <style>
+        a:link, a:visited {
+            text-decoration: none; /*超链接无下划线*/
+        }
+
+        .hoverbg:hover {
+            background-color: #282828;
+            -webkit-transition: all 0.5s;
+            -moz-transition: all 0.5s;
+            -o-transition: all 0.5s;
+        }
+
+        .hoverbg:hover * {
+            color: whitesmoke;
+            font-size: 15px;
+            -webkit-transition: all 0.5s;
+            -moz-transition: all 0.5s;
+            -o-transition: all 0.5s;
+        }
+
+        .leftDiv {
+            height: 20px;
+        }
+
+        .hovertd {
+            border-top: gray 1px solid;
+        }
+
+        .hovertd a {
+            color: gray;
+        }
+
+        .hovertd * {
+            color: #a1a1a1;
+        }
+
+        .hovertd:hover > :first-child > .leftDiv {
+            height: 15px;
+            padding: 0 10px 0 0;
+            -webkit-transition: all 0.4s;
+            -moz-transition: all 0.4s;
+            -o-transition: all 0.4s;
+        }
+
+        .hovertd:hover * {
+            font-size: 13px;
+            color: #949687;
+            -webkit-transition: all 0.4s;
+            -moz-transition: all 0.4s;
+            -o-transition: all 0.4s;
+        }
+
+        .hovertd:hover a {
+            font-size: 16px;
+            color: whitesmoke;
+            -webkit-transition: all 0.4s;
+            -moz-transition: all 0.4s;
+            -o-transition: all 0.4s;
+        }
+
+        .hovertd a:hover {
+            font-size: 16px;
+            -webkit-transition: all 0.4s;
+            -moz-transition: all 0.4s;
+            -o-transition: all 0.4s;
+        }
+
+        .hovertd:hover {
+            background-color: #282828;
+            -webkit-transition: all 0.2s;
+            -moz-transition: all 0.2s;
+            -o-transition: all 0.2s;
+        }
+
+        .tablehead {
+            width: 140px;
+            height: 60px;
+            font-size: 18px;
+        }
+
+        .tablebody {
+            font-size: 19px;
+        }
+
+        body {
+            min-width: 100%;
+            min-height: 100%;
+            position: absolute;
+            z-index: 0;
+        }
+
+        .bodytop {
+            background-color: #fafafa;
+            width: 100%;
+            height: 645px;
+        }
+
+        .bodyMiddle {
+            height: 700px;
+            width: 100%;
+            background-color: #f1f1f1;
+        }
+
+        img {
+            -webkit-transition: all 0.6s;
+            -moz-transition: all 0.6s;
+            -o-transition: all 0.6s;
+        }
+
+        img:hover {
+            transform: scale(1.1);
+            -webkit-transition: all 0.6s;
+            -moz-transition: all 0.6s;
+            -o-transition: all 0.6s;
+        }
+
+        #head {
+            width: 100%;
+            height: 35px;
+            position: fixed;
+            top: 0px;
+            z-index: 10;
+        }
+
+        #main {
+            width: 100%;
+            height: auto;
+            padding-top: 35px;
+            padding-bottom: 75px;
+            z-index: 2;
+        }
+
+        #footer {
+            background-color: #282828;
+            width: 100%;
+            height: 75px;
+            position: fixed;
+            bottom: 0px;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+<div id="head">
+    {include file="public/head"}
+</div>
+<div id="main">
+    <div style="width: 100%;height: 70px;background-color: #282828;line-height: 50px;vertical-align: middle;">
+        <div style="height: 50px;font-family: Gill Sans;height: 40px;padding-top: 10px;padding-left: 10%;">
+            <div style="width: 10%;float: left;">
+                <a class="navbar-brand" href="{:url('index/Index/indexShow')}" style="color: cornsilk;font-size: 30px;">Yammy!</a>
+            </div>
+            <div style="width: 4%;float: left;margin-left: 1%;" align="center">
+                <font class="navbar-brand" style="color: cornsilk;font-size: 30px;">|</font>
+            </div>
+            <div style="width: 15%;float: left;">
+                <font class="navbar-brand" style="color: cornsilk;font-size: 23px;">卖家中心</font>
+            </div>
+        </div>
+    </div>
+    <div style="width: 100%;height: auto;">
+        {eq name="$shop" value="setUpShop"}
+        {include file="seller_center/sellerCenterLeftBefore"}
+        {include file="seller_center/sellerCenterMainSetUp"}
+        {/eq}
+        {eq name="$shop" value="setShop"}
+        {include file="seller_center/sellerCenterLeftAfter"}
+        {include file="seller_center/sellerCenterMainReset"}
+        {/eq}
+        {eq name="$shop" value="issue"}
+        {include file="seller_center/sellerCenterLeftAfter"}
+        {include file="seller_center/sellerCenterMainIssue"}
+        {/eq}
+        {eq name="$shop" value="index"}
+        {include file="seller_center/sellerCenterLeftAfter"}
+        {include file="seller_center/sellerCenterMainIndex"}
+        {/eq}
+        {eq name="$shop" value="manage"}
+        {include file="seller_center/sellerCenterLeftAfter"}
+        {include file="seller_center/sellerCenterMainGoodsManage"}
+        {/eq}
+        {eq name="$shop" value="mod"}
+        {include file="seller_center/sellerCenterLeftAfter"}
+        {include file="seller_center/sellerCenterMainMod"}
+        {/eq}
+        {eq name="$shop" value="deal"}
+        {include file="seller_center/sellerCenterLeftAfter"}
+        {include file="seller_center/sellerCenterMainDeal"}
+        {/eq}
+        {eq name="$shop" value="deliver"}
+        {include file="seller_center/sellerCenterLeftAfter"}
+        {include file="seller_center/sellerCenterMainDeliver"}
+        {/eq}
+        {eq name="$shop" value="return"}
+        {include file="seller_center/sellerCenterLeftAfter"}
+        {include file="seller_center/sellerCenterMainGoodsReturn"}
+        {/eq}
+    </div>
+</div>
+{include file="modal/modal_tip"}
+</body>
+</html>

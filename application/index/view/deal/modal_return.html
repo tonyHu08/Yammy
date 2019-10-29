@@ -1,0 +1,27 @@
+<div class="modal fade" id="modalReturn" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="padding-top: 7%;">
+    <div class="modal-dialog" style="width: 25%;height: 50%;">
+        <div class="modal-content">
+            <div class="modal-header" align="center">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">退货申请</h4>
+            </div>
+            <form method="post" action="{:url('index/Deal/goodsReturn')}">
+                <div class="modal-body" align="center" style="height: 170px;background-color: #303030">
+                    <div style="padding-top: 6%;">
+                        <div class="input-group" style="width: 100%;color: whitesmoke;font-size: 20px;">
+                            <select class="form-control" name="reason">
+                                <option>卖家未按约定时间发货</option>
+                                <option>拍错了</option>
+                                <option>不想要了</option>
+                                <option>其它</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div style="padding-top: 11%;">
+                        <button class="btn btn-default btn-block" type="submit" name="dealid" id="submit">退货</button>
+                    </div>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>

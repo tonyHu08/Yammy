@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>商品-{$goodsinfo.goodsname}</title>
+    <link rel="stylesheet" href="__STATIC__/css/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <script src="__STATIC__/js/jquery-3.3.1.min.js"></script>
+    <script src="__STATIC__/css/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript"
+            src="__STATIC__/js/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript"
+            src="__STATIC__/js/ueditor/ueditor.all.js"></script>
+    <script>
+
+        var goodsclassifyid = '{$goodsClassifyId}';
+        var count = 1;
+        $(function () {
+            $("#myCarousel").carousel('cycle');
+            $('[data-toggle="popover"]').popover({
+                delay: {hide: 1000},
+                html: true,
+                trigger: "hover"
+            })
+        })
+
+        function shoppingcart(goodsid) {
+            var count = document.getElementById('count').value;
+            $.get("{:url('index/Goods/insertShoppingcart')}", {
+                goodsid: goodsid,
+                count: count,
+                goodsclassifyid: goodsclassifyid
+            }, function (data) {
+                if (data == 0) {
+                }
+            }, 'json')
+        }
+
+        function add() {
+            count = document.getElementById('count').value;
+            if (count < 10) {
+                count++;
+                document.getElementById('count').value = count;
+            }
+
+        }
+
+        function sub() {
+            count = document.getElementById('count').value;
+            if (count > 1) {
+                count--;
+                document.getElementById('count').value = count;
+            }
+        }
+
+        function classifyPrice(price, id, goodsimg) {
+            goodsclassifyid = id;
+            document.getElementById('price').innerHTML = price;
+            if (goodsimg.length > 1) {
+                document.getElementById('img').innerHTML = '<img src="' + goodsimg + '" width="350px" height="350px">';
+            }
+        }
+
+        function buy() {
+            window.location.href = '__ROOT__/index/Deal/dealConfirm/goodsid/{$goodsinfo.goodsid}/classifyid/' + goodsclassifyid + '/goodscount/' + count + '.html';
+        }
+    </script>
+    {css href="/static/css/public.css"}
+    <style>
+        .goods_details {
+            height: 500px;
+            width: 1150px;
+            /*border: black 1px solid;*/
+            margin-top: 20px;
+            background-color: white;
+        }
+
+        .goods_details_headline {
+            color: black;
+            font-size: 20px;
+            height: 50px;
+            width: 100%;
+        }
+
+        .evaluation {
+            margin-left: 20px;
+            height: 40px;
+            line-height: 40px;
+        }
+    </style>
+</head>
+<body style="background-color: #f3f3f3">
+<div id="head">
+    {include file="public/head"}
+</div>
+<div id="main" align="center">
+    <div id="nav" align="left" style="height: 200px;">
+        {include file="public/nav"}
+        <ol class="breadcrumb" style="background-color: #f3f3f3;margin-left: 10%;">
+            <li><a href="{:url('index/Index/index')}" style="color: #1b1b1b">首页</a></li>
+            <li class="dropdown"><a href="#" style="color: #1b1b1b" class="dropdown-toggle"
+                                    data-toggle="dropdown">商品分类</a>
+                <ul class="dropdown-menu" style="width: 240px;">
+                    {include file="public/classify"}
+                </ul>
+            </li>
+            <li><a href="__ROOT__/index/Goods/goodsClassify/classify/{$goodsinfo.classify}.html"
+                   style="color: #000000;">{$goodsinfo.classify}</a>
+            </li>
+            <li class="active">{$goodsinfo.goodsname}</li>
+        </ol>
+    </div>
+    {include file="goods/goods_info"}
+    {include file="evaluate/evaluation_list"}
+</div>
+
+{include file="modal/modal_login"}
+{include file="modal/modal_tip"}
+</body>
+</html>

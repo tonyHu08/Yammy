@@ -1,0 +1,28 @@
+<div class="goods_details panel panel-default">
+    <div class="goods_details_headline panel panel-heading" align="left">
+        商品评论
+    </div>
+    <div style="overflow-y: auto;width: 85%;height: 400px;">
+        {volist name="evaluation_list" id="list" key="k"}
+        <div class="panel panel-default">
+            <div class="panel-heading" align="left">
+                {for start="0" end='$list.rate'}
+                <span class="glyphicon glyphicon-star star" id=5></span>
+                {/for}
+            </div>
+            <div class="panel-body" style="height: 80px;border: white 1px solid" align="left">
+                <div class="evaluation_person_info" style="float: left;">
+                    <img class="img-circle" src="{:session('headimg')}" width="60px" height="60px"
+                         style="border: white 1px solid;">
+                </div>
+                <div class="evaluation" style="float: left;">
+                    {$list.evaluation}
+                </div>
+            </div>
+            <div class="panel-footer" align="right">
+                <h4 class="panel-title">{:date('Y-m-d H:i',$list.evaluate_time)} by {$list.username}</h4>
+            </div>
+        </div>
+        {/volist}
+    </div>
+</div>

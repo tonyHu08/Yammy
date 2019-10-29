@@ -1,0 +1,134 @@
+<div style="width: 70%;height: 50px;" class="panel panel-default">
+    <div class="panel-body">
+        <table style="font-size: 14px;width: 100%;" border="0px">
+            <tr>
+                <td width="5%" align="center">
+                    <input type="checkbox" name="allcheckbox" id="allcheckbox" onclick="checkall()">
+                </td>
+                <td>
+                    全选
+                </td>
+                <td width="35%">
+                    商品信息
+                </td>
+                <td width="15%">
+                    单价
+                </td>
+                <td width="20%">
+                    数量
+                </td>
+                <td width="10%">
+                    小记
+                </td>
+                <td width="5%">
+                    操作
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div style="width: 70%;height: auto;" class="panel panel-default">
+    <div class="panel-body" style="padding-top: 0px">
+        {eq name="null" value="$goods"}
+        <br><p>
+            购物车为空
+        </p>
+        {else/}
+        <table style="font-size: 15px;width: 100%;">
+            {volist name="goods" id="list"}
+            {eq name="$list.goodsclassify" value="已下架"}
+            <tr style="border-bottom: gray 1px dashed;background-color: #f6f6f6;">
+                <td width="5%" height="120px" align="center">
+                    <input type=checkbox name="checkbox" disabled>
+                </td>
+                <td width="15%" align="center">
+                    <div style="width: 100px;height: 100px;background-color: #f9f9f9;border: 1px #e5e5e5 solid;">
+                        <img src="{$list.goodsimg}" height="100px" width="100px"/>
+                    </div>
+                </td>
+                <td width="30%">
+                        {$list.goodsname}
+                    <br>
+                    <font style="font-size: 13px;color: gray;">商品分类：{$list.goodsclassify}</font>
+                </td>
+                <td width="15%">
+                    ¥{$list.price}
+                </td>
+                <td width="20%">
+                    <div class="col-lg-6" style="padding: 0;">
+                        <div class="input-group" style="width: 110px">
+                                <span class="input-group-btn">
+                                     <button class="btn btn-default" type="button"
+                                             onclick="sub('{$list.shoppingcartid}','{$list.price}')" disabled>-</button>
+                                </span>
+                            <input type="number" class="form-control" value="{$list.count}" name="count"
+                                   style="text-align: center;background-color: white;"
+                                   disabled>
+                            <span class="input-group-btn">
+                                     <button class="btn btn-default" type="button" name="add"
+                                             onclick="add('{$list.shoppingcartid}','{$list.price}')" disabled>+</button>
+                                </span>
+                        </div><!-- /input-group -->
+                    </div><!-- /.col-lg-6 -->
+                </td>
+                <td width="10%" style="color: crimson;">
+                    ¥{$list.price*$list.count}
+                </td>
+                <td width="5%">
+                    <a href="../goods/deleteShoppingCart/shoppingcartid/{$list.shoppingcartid}.html"
+                       style="color: black;font-size: 14px;">删除</a>
+                </td>
+            </tr>
+            {else/}
+            <tr style="border-bottom: gray 1px dashed;">
+                <td width="5%" height="120px" align="center">
+                    <input type=checkbox value="{$list.price*$list.count}" name="checkbox"
+                           id="{$list.shoppingcartid}" onchange="queryCheckedValue()">
+                </td>
+                <td width="15%" align="center">
+                    <div style="width: 100px;height: 100px;background-color: #f9f9f9;border: 1px #e5e5e5 solid;">
+                        <a href="../Goods/goods/goodsid/{$list.goodsid}.html">
+                            <img src="{$list.goodsimg}" height="100px" width="100px"/>
+                        </a>
+                    </div>
+                </td>
+                <td width="30%">
+                    <a href="../Goods/goods/goodsid/{$list.goodsid}.html" style="color: black;">
+                        {$list.goodsname}
+                    </a><br>
+                    <font style="font-size: 13px;color: gray;">商品分类：{$list.goodsclassify}</font>
+                </td>
+                <td width="15%">
+                    ¥{$list.price}
+                </td>
+                <td width="20%">
+                    <div class="col-lg-6" style="padding: 0;">
+                        <div class="input-group" style="width: 110px">
+                                <span class="input-group-btn">
+                                     <button class="btn btn-default" type="button" name="sub" id="sub"
+                                             onclick="sub('{$list.shoppingcartid}','{$list.price}')">-</button>
+                                </span>
+                            <input type="number" class="form-control" value="{$list.count}" name="count"
+                                   id="count{$list.shoppingcartid}" style="text-align: center;background-color: white;"
+                                   disabled>
+                            <span class="input-group-btn">
+                                     <button class="btn btn-default" type="button" name="add" id="add"
+                                             onclick="add('{$list.shoppingcartid}','{$list.price}')">+</button>
+                                </span>
+                        </div><!-- /input-group -->
+                    </div><!-- /.col-lg-6 -->
+                </td>
+                <td width="10%" style="color: crimson;" id="price{$list.shoppingcartid}">
+                    ¥{$list.price*$list.count}
+                </td>
+                <td width="5%">
+                    <a href="../ShoppingCart/deleteShoppingCart/shoppingcartid/{$list.shoppingcartid}.html"
+                       style="color: black;font-size: 14px;">删除</a>
+                </td>
+            </tr>
+            {/eq}
+            {/volist}
+        </table>
+        {/eq}
+    </div>
+</div>

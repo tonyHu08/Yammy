@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>我的订单</title>
+    <link rel="stylesheet" href="__STATIC__/css/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="__STATIC__/css/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <script src="__STATIC__/js/jquery-3.3.1.min.js"></script>
+    <script src="__STATIC__/css/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript"
+            src="__STATIC__/js/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript"
+            src="__STATIC__/js/ueditor/ueditor.all.js"></script>
+
+    <script>
+        $(function () {
+            if ("{$operation}" != "null") {
+                switch ("{$operation}") {
+                    case "delete":
+                        document.getElementById("tip").innerHTML = "订单已删除";
+                        break;
+                    case "return":
+                        document.getElementById("tip").innerHTML = "退货申请成功";
+                        break;
+                    case "takeOver":
+                        document.getElementById("tip").innerHTML = "确认收货成功";
+                        break;
+                    case "evaluateSuccess":
+                        document.getElementById("tip").innerHTML = "评价成功";
+                        break;
+                }
+                $('#tips').modal('show');
+                //延时函数让浮窗消失
+                setTimeout(dismiss, 1200);
+
+            }
+        })
+
+        //浮窗消失
+        function dismiss() {
+            $('#tips').modal('hide');
+            setTimeout(changeTip, 1000);
+        }
+
+        //更换浮窗内容
+        function changeTip() {
+            document.getElementById("tip").innerHTML = "提醒发货成功"
+        }
+
+        //星级评价
+        $(document).ready(function () {
+            var star = document.getElementsByClassName("star");
+            $(".star").click(function () {
+                var star_num = $(this).attr("id");
+                i = 1;
+                for (i; i <= star_num; i++) {
+                    ob = document.getElementById(i);
+                    ob.className = "glyphicon glyphicon-star star";
+                }
+                for (i; i <= 5; i++) {
+                    ob = document.getElementById(i);
+                    ob.className = "glyphicon glyphicon-star-empty star";
+                }
+                document.getElementById("rate").value = star_num;
+                document.getElementById("submit_btn").disabled = false;
+            })
+        });
+    </script>
+    {css href="/static/css/public.css"}
+    <style>
+        .star {
+            color: whitesmoke;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body style="background-color: #f3f3f3">
+
+<div id="head">
+    {include file="public/head"}
+</div>
+<div id="main" align="center">
+    <div id="nav" align="left" style="height: 200px;">
+        {include file="public/nav"}
+    </div>
+    {volist name="deal" id="deal"}
+    <div class="panel panel-default" style="width: 800px;margin-bottom: 40px;">
+        <div class="panel-heading" align="left" style="height:40px;">
+            <div style="width: 30%;float: left;">
+                下单时间：{:date('Y-m-d H:i:s',$deal.dealtime)}
+            </div>
+            <div style="width: 15%;float: left;">
+                订单编号：{$deal.dealid}
+            </div>
+            <div style="width: 30%;float: left;" id="{$deal.dealid}">
+                交易状态：{$deal.dealstate}
+            </div>
+            <div style="float: right;width: 130px;" align="center">
+                <a href="" style="color: #000;" data-toggle="modal" data-target="#modalVerlify"
+                   onclick="dealid='{$deal.dealid}'">删除订单</a>
+            </div>
+        </div>
+        <div class="panel-body">
+            <table align="center">
+                <tr>
+                    <td style="width: 200px;">
+                        <div style="height: 100px;width: 100px;float: left;background-color: #f9f9f9;border: 1px #e5e5e5 solid;margin-left: 30px;">
+                            <a href="__ROOT__/index/Goods/goods/goodsid/{$deal.goodsid}.html">
+                                <img src='{$deal.goodsimg}' height="100px" width="100px"/>
+                            </a>
+                        </div>
+                    </td>
+                    <td style="width: 200px;">
+                        <a href="__ROOT__/index/Goods/goods/goodsid/{$deal.goodsid}.html" style="color: #000;">
+                            {$deal.goodsname}*{$deal.count}
+                        </a>
+                        <p style="font-size: 13px;color: gray;">商品分类：{$deal.goodsclassify}</p>
+                    </td>
+                    <td style="width: 250px;" align="center">
+                        店铺：
+                        <a href="__ROOT__/index/Goods/goodsSeller/shop/{$deal.shopname}.html" style="font-size: 14px;color: black;">
+                            {$deal.shopname}
+                        </a>
+                    </td>
+                    <td style="width: 200px;" align="center">
+                        交易价格：<font style="color: crimson">¥{$deal.dealprice}</font>
+                    </td>
+                    <td style="width: 150px;" align="center">
+                        {switch name="$deal.dealstate"}
+                        {case value="已退款"}
+                        <button class="btn btn-danger" data-toggle="modal" data-target=""
+                                onclick="">投诉
+                        </button>
+                        {/case}
+                        {case value="已收货"}
+                        <button class="btn btn-danger" data-toggle="modal" data-target="#modalReturn"
+                                onclick="document.getElementById('submit').value='{$deal.dealid}';"
+                                style="width: 80px;">退货
+                        </button>
+                        <button class="btn btn-success" data-toggle="modal" data-target="#modalEvaluate"
+                                onclick="dealid='{$deal.dealid}'" style="width: 80px;margin: 5px;">评价
+                        </button>
+                        {/case}
+                        {case value="申请退货"}
+                        <button class="btn btn-danger" data-toggle="modal" data-target="#modalReturn"
+                                onclick="document.getElementById('submit').value='{$deal.dealid}';"
+                                style="width: 80px;" disabled>退货
+                        </button>
+                        <button class="btn btn-success" data-toggle="modal" data-target="#modalEvaluate"
+                                onclick="dealid='{$deal.dealid}'" style="width: 80px;margin: 5px;">评价
+                        </button>
+                        {/case}
+                        {case value="已下单"}
+                        <button class="btn btn-danger" data-toggle="modal" data-target="#modalReturn"
+                                onclick="document.getElementById('submit').value='{$deal.dealid}';"
+                                style="width: 80px;">退款
+                        </button>
+                        <button class="btn btn-success" data-toggle="modal" data-target="#tips"
+                                style="width: 80px;margin: 5px;">提醒发货
+                        </button>
+                        {/case}
+                        {default /}
+                        <button class="btn btn-danger" data-toggle="modal" data-target="#modalReturn"
+                                onclick="document.getElementById('submit').value='{$deal.dealid}';"
+                                style="width: 80px;">退货
+                        </button>
+                        <button class="btn btn-success" data-toggle="modal" data-target="#modalTakeOver"
+                                onclick="dealid='{$deal.dealid}'" style="width: 80px;margin: 5px;">确认收货
+                        </button>
+                        {/switch}
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    {/volist}
+    {$page}
+</div>
+
+{include file="deal/modal_verlify"}
+{include file="deal/modal_return"}
+{include file="deal/modal_take_over"}
+{include file="modal/modal_tip"}
+{include file="evaluate/modal_evaluate"}
+
+</body>
+</html>

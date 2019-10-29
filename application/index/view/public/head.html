@@ -1,0 +1,59 @@
+<div style="background-color: #e0e0e0;vertical-align: middle;height: 35px;width: 100%;line-height: 35px;box-shadow: 1px 1px 10px #323232;">
+    <small>
+        {eq name="null" value="$Think.session.username"}
+        <div style="float: left;padding-left: 10%;vertical-align: middle;height: 35px;line-height: 35px;white-space: nowrap;">
+
+            <a href="#myModal" data-toggle="modal" data-target="#myModal" style="color: lightcoral;">
+                请登录！
+            </a>
+            <a href="{:url('index/Register/register')}" style="color: #939393;">
+                免费注册
+            </a>
+        </div>
+        {else/}
+        <div style="float: left;padding-left: 11%;vertical-align: middle;height: 35px;width:30%;line-height: 35px;white-space: nowrap;">
+            <a href="{:url('Deal/deal')}" style="color: lightcoral;">
+                {:session('username')}
+            </a>
+            <font style="color: #939393;padding-left: 10%">
+                hi！又见面啦！
+            </font>
+            <font style="color: #939393;padding-left: 4%">
+                |
+            </font>
+            <a href="{:url('index/Login/exitLogin')}"
+               style="color: #939393;padding-left: 4%;">
+                <span class="glyphicon glyphicon-log-out"></span>&nbsp;
+                退出
+            </a>
+        </div>
+        {/eq}
+
+        <div style="float: right;height:25px;width:35%;padding-right: 8%;white-space: nowrap;">
+            <div style="float: left;margin-right: 8%;">
+                <a href="{:url('Deal/deal')}" style="color: #939393;">
+                    我的订单
+                </a>
+            </div>
+            <div style="float: left;margin-right: 5%;">
+                <a href="{:url('ShoppingCart/shoppingCart')}" style="color: #939393;">
+                    购物车<span class="glyphicon glyphicon-shopping-cart"></span>
+                </a>
+            </div>
+            <div style="float: left;margin-right: 5%;">
+                <font color="#939393">|</font>
+            </div>
+            <div style="float: left;margin-right: 5%;">
+                <a href="{:url('Seller/sellerCenter')}" style="color: #939393;">
+                    卖家中心
+                </a>
+            </div>
+            <div style="float: left;margin-right: 5%;">
+                <font color="#939393">|</font>
+            </div>
+            <a href="" style="color: #939393;">
+                未读通知：<span class="badge">0</span>
+            </a>
+        </div>
+    </small>
+</div>

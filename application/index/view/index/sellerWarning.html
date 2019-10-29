@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>申请成为卖家</title>
+    <link rel="stylesheet" href="__STATIC__/css/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <script src="__STATIC__/js/jquery-3.3.1.min.js"></script>
+    <script src="__STATIC__/css/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript"
+            src="__STATIC__/js/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript"
+            src="__STATIC__/js/ueditor/ueditor.all.js"></script>
+    {css href="/static/css/public.css"}
+</head>
+<body background="__STATIC__/img/bg10.jpg" style="background-size: cover;">
+<div id="head">
+    {include file="public/head"}
+</div>
+<div id="main">
+    <div style="width: 100%;height: 100px;background-color: rgba(0,0,0,0.4);line-height: 100px;vertical-align: middle;">
+        <div style="height: 50%;font-family: Gill Sans;height: 40px;padding-top: 20px;padding-left: 10%;">
+            <div style="width: 10%;float: left;">
+                <a class="navbar-brand" href="{:url('index/Index/indexShow')}" style="color: cornsilk;font-size: 35px;">Yammy!</a>
+            </div>
+            <div style="width: 5%;float: left;margin-left: 3%;" align="center">
+                <font class="navbar-brand" href="#" style="color: cornsilk;font-size: 35px;">|</font>
+            </div>
+            <div style="width: 20%;float: left;">
+                <font class="navbar-brand" href="#" style="color: cornsilk;font-size: 27px;">卖家申请</font>
+            </div>
+        </div>
+        <div class="container" style="padding-top: 8%;width: 50%">
+            <div class="jumbotron">
+                <h2>您还不是卖家！</h2>
+                <div style="font-family: 'Heiti SC';font-size: 17px">想要成为卖家？点击按钮进行申请！</div>
+                <div style="margin-top: 0px;height: 100px;width: 100%;">
+                    <button class="btn btn-primary btn-lg" role="button" onclick="window.location.href='{:url(\'index/Seller/applySeller\')}'">
+                        申请成为卖家！
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

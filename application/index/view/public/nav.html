@@ -1,0 +1,37 @@
+<nav class="navbar navbar-inverse" role="navigation">
+    <div class="form-group" style="width: 100%;padding-top: 2.5%;padding-bottom: 2%;min-width: 1000px;">
+        <div style="width: 20%;padding-left: 13%;font-family: Gill Sans">
+            <a class="navbar-brand" href="{:url('index/index')}" style="color: cornsilk;"><big><big><big>Yammy!</big></big></big></a>
+        </div>
+        <form  role="search" action="{:url('index/goods/goodsSearch')}" method="post">
+            <div class="input-group input-group-lg" style="width: 45%;float: left;padding-left: 6%;">
+                <input type="text" class="form-control" placeholder="Search" name="word">
+            </div>
+            <div style="float: left;width: 5%;padding-left: 1%;">
+                <button type="submit" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-search"></span>
+                </button>
+            </div>
+        </form>
+    </div>
+    <div style="padding-left: 28.5%;">
+        <ul class="nav navbar-nav">
+            <li><a href="#">特卖专场</a></li>
+            <li><a href="{:url('Goods/goodsClassify?classify=生鲜')}">生鲜特价</a></li>
+            <li><a href="__ROOT__/index/goods/goodsclassify/classify/数码.html">电子专卖</a></li>
+            <li><a href="__ROOT__/index/goods/goodsclassify/classify/数码.html">智能生活</a></li>
+            <li><a href="#">中国智造</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    618·YAM节 <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="{:url('Goods/goodsClassify?classify=男装')}">👨专场</a></li>
+                    <li><a href="{:url('Goods/goodsClassify?classify=女装')}">👩专场</a></li>
+                    <li><a href="{:url('Goods/goodsClassify?classify=童装玩具')}">🧒专场</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">活动规则</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</nav>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>订单确认</title>
+    <link rel="stylesheet" href="__STATIC__/css/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <script src="__STATIC__/js/jquery-3.3.1.min.js"></script>
+    <script src="__STATIC__/css/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript"
+            src="__STATIC__/js/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript"
+            src="__STATIC__/js/ueditor/ueditor.all.js"></script>
+    <script>
+        function buy() {
+            '{foreach $goods as $goodsinfo}'
+                $.post("/index/goods/insertGoodsDeal/goodsid/{$goodsinfo.goodsid}/classifyid/{$goodsinfo.goodsclassifyid}/count/{$goodsinfo.count}/price/{$goodsinfo.price*$goodsinfo.count}/classify/{$goodsinfo.goodsclassify}/shoppingcartid/{$goodsinfo.shoppingcartid}.html", '',
+                    function (data) {
+                    }, 'json');
+            '{/foreach}'
+            document.getElementById("buy").href = "{:url('Deal/successDeal')}";
+        }
+    </script>
+    {css href="/static/css/public.css"}
+</head>
+<body style="background-color: #f3f3f3">
+<div id="head">
+    {include file="public/head"}
+</div>
+<div id="main" align="center">
+    <div id="nav" align="left" style="height: 200px;">
+        {include file="public/nav"}
+    </div>
+    <div style="width: 70%;height: 50px;" class="panel panel-default">
+        <div class="panel-body">
+            <table style="font-size: 14px;width: 100%;" border="0px">
+                <tr>
+                    <td width="45%">
+                        商品信息
+                    </td>
+                    <td width="15%">
+                        单价
+                    </td>
+                    <td width="15%">
+                        数量
+                    </td>
+                    <td width="15%">
+                        小记
+                    </td>
+                    <td width="15%">
+                        实付
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div style="width: 70%;height: auto;" class="panel panel-default">
+        <div class="panel-body" style="padding-bottom: 0px">
+            {volist name="goods" id="goods"}
+            <table style="font-size: 15px;width: 100%;">
+                <tr style="border-bottom: gray 1px solid;height: 150px;">
+                    <td width="15%" align="center">
+                        <div style="width: 100px;height: 100px;background-color: #f9f9f9;border: 1px #e5e5e5 solid;">
+                            <img src="{$goods.goodsimg}" height="100px" width="100px"/>
+                        </div>
+                    </td>
+                    <td width="30%">
+                        {$goods.goodsname}
+                        <br>
+                        <font style="font-size: 13px;color: gray;">
+                            商品分类：{$goods.goodsclassify}
+                        </font>
+                    </td>
+                    <td width="15%">
+                        ¥{$goods.price}
+                    </td>
+                    <td width="15%">
+                        {$goods.count}
+                    </td>
+                    <td width="15%">
+                        ¥{$goods.price*$goods.count}
+
+                    </td>
+                    <td width="15%" style="color: crimson;">
+                        ¥{$goods.price*$goods.count}
+
+                    </td>
+                </tr>
+            </table>
+            {/volist}
+            <table width="100%" style="padding: 0">
+                <tr>
+                    <td width="80%" height="80px" align="right">
+                        应付总额：
+                    </td>
+                    <td width="10%" id="sumprice" style="height:100%;font-size: 28px;color: crimson;">
+                        ¥{$sumprice}
+                    </td>
+                    <td width="10%">
+                        <a  onclick="buy()" href="" id="buy">
+                            <div style="width: 100%;height: 50px;background-color: #bd4946;font-size: 22px;color: white;box-shadow: 1px 1px 2px #777777;line-height: 50px;vertical-align: middle;"
+                                 align="center">
+                                买单
+                            </div>
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

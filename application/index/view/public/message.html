@@ -1,0 +1,12 @@
+<div id="result" style="overflow-y: auto;height: 332px;width: 95%;margin-top: 10px" align="left">
+    {volist name="message" id="list" key="k"}
+    <div class="panel panel-default">
+        <div class="panel-body" style="height: auto;min-height:80px;">
+            {$list.leaveword}
+        </div>
+        <div class="panel-footer" align="right">
+            <h3 class="panel-title">{$list.username}</h3>
+        </div>
+    </div>
+    {/volist}
+</div>

@@ -1,0 +1,27 @@
+<div class="modal fade" id="modalTakeOver" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+     style="padding-top: 7%;">
+    <div class="modal-dialog" style="width: 40%;">
+        <div class="modal-content">
+            <div class="modal-header" align="center">
+                <h4 class="modal-title" id="myModalLabel">确认收货</h4>
+            </div>
+            <div class="modal-body" align="center" style="height: 270px;background-color: #303030">
+                <div style="color:#fff8dc;font-size: 20px;margin-top: 5%;">
+                    确认商品没有质量问题后确认收货，确认收货？
+                </div>
+                <div style="padding-top: 10%;width: 60%;">
+                    <a class="btn btn-default btn-block"
+                       onclick="conf()">确认</a>
+                </div>
+                <div style="padding-top: 6%;width: 60%;">
+                    <button class="btn btn-default btn-block" data-dismiss="modal" aria-hidden="true">取消</button>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<script>
+    function conf() {
+        window.location.href = "__ROOT__/index/Deal/goodsTakeOver/dealid/" + dealid +".html";
+    }
+</script>

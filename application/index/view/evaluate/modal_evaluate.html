@@ -1,0 +1,52 @@
+<div class="modal fade" id="modalEvaluate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+     style="padding-top: 7%;">
+    <div class="modal-dialog" style="width: 40%;">
+        <div class="modal-content">
+            <div class="modal-header" align="center">
+                <h4 class="modal-title" id="myModalLabel">商品评价</h4>
+            </div>
+            <div class="modal-body" align="center" style="height: 470px;background-color: #303030">
+                <form role="form" method="post" action="{:url('index/Evaluate/evaluate')}" id="evaluate_form">
+                    <div style="color:#fff8dc;font-size: 20px;margin-top: 5%;">
+
+                        <div class="form-group">
+                            <textarea class="form-control" rows="13" name="evaluation"></textarea>
+                        </div>
+                    </div>
+                    <div style="padding-top: 30px;width: 60%;color: whitesmoke;" align="left">
+                        满意评分：
+                        <a>
+                            <span class="glyphicon glyphicon-star-empty star" id=1></span>
+                        </a>
+                        <a>
+                            <span class="glyphicon glyphicon-star-empty star" id=2></span>
+                        </a>
+                        <a>
+                            <span class="glyphicon glyphicon-star-empty star" id=3></span>
+                        </a>
+                        <a>
+                            <span class="glyphicon glyphicon-star-empty star" id=4></span>
+                        </a>
+                        <a>
+                            <span class="glyphicon glyphicon-star-empty star" id=5></span>
+                        </a>
+                    </div>
+                    <div style="padding-top: 30px;width: 60%;">
+                        <input type="number" name="rate" id="rate" style="display: none;">
+                        <button class="btn btn-default btn-block" onclick="eva()" name="dealid"
+                                id="submit_btn" disabled>评价
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<script>
+    function eva() {
+        document.getElementById("submit_btn").value = dealid;
+        var form = document.getElementById('evaluate_form');
+
+        form.submit();
+    }
+</script>

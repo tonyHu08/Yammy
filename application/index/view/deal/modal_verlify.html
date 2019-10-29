@@ -1,0 +1,27 @@
+<div class="modal fade" id="modalVerlify" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+     style="padding-top: 7%;">
+    <div class="modal-dialog" style="width: 40%;">
+        <div class="modal-content">
+            <div class="modal-header" align="center">
+                <h4 class="modal-title" id="myModalLabel">订单删除</h4>
+            </div>
+            <div class="modal-body" align="center" style="height: 270px;background-color: #303030">
+                <div style="color:#fff8dc;font-size: 20px;margin-top: 5%;">
+                    订单删除后将不会再在你的订单页中显示，确认删除？
+                </div>
+                <div style="padding-top: 10%;width: 60%;">
+                    <a class="btn btn-default btn-block"
+                       onclick="del()">删除</a>
+                </div>
+                <div style="padding-top: 6%;width: 60%;">
+                    <button class="btn btn-default btn-block" data-dismiss="modal" aria-hidden="true">取消</button>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<script>
+    function del() {
+        window.location.href = "__ROOT__/index/deal/deleteDeal/dealid/" + dealid +".html";
+    }
+</script>

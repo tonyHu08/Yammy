@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>购物车</title>
+    <link rel="stylesheet" href="__STATIC__/css/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <script src="__STATIC__/js/jquery-3.3.1.min.js"></script>
+    <script src="__STATIC__/css/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript"
+            src="__STATIC__/js/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript"
+            src="__STATIC__/js/ueditor/ueditor.all.js"></script>
+    <script>
+        var id = '';
+        var price = 0;
+
+        function add(shoppingcartid, price) {
+            var count = document.getElementById('count' + shoppingcartid).value;
+            if (count < 10) {
+                count++;
+                console.log(count);
+                document.getElementById('count' + shoppingcartid).value = count;
+                document.getElementById(shoppingcartid).value = price * count;
+                document.getElementById('price' + shoppingcartid).innerHTML = '¥' + price * count;
+                console.log(shoppingcartid);
+                goodscount(shoppingcartid, count);
+                queryCheckedValue();
+            }
+        }
+
+        function sub(shoppingcartid, price) {
+            var count = document.getElementById('count' + shoppingcartid).value;
+            if (count > 1) {
+                count--;
+                document.getElementById('count' + shoppingcartid).value = count;
+                document.getElementById(shoppingcartid).value = price * count;
+                document.getElementById('price' + shoppingcartid).innerHTML = '¥' + price * count;
+                goodscount(shoppingcartid, count);
+                queryCheckedValue();
+            }
+        }
+
+        function goodscount(shoppingcartid, count) {
+            $.get("{:url('index/Goods/updateShoppingCartGoodsCount')}", {
+                shoppingcartid: shoppingcartid,
+                count: count
+            }, function (data) {
+            }, 'json')
+        }
+
+        function checkall() {
+            if ($("#allcheckbox").is(":checked")) {
+                var objs = document.getElementsByTagName('input');
+                for (var i = objs.length - 1; i >= 0; i--) {
+                    objs[i].checked = true;
+                }
+                queryCheckedValue();
+            } else {
+                var objs = document.getElementsByTagName('input');
+                for (var i = objs.length - 1; i >= 0; i--) {
+                    objs[i].checked = false;
+                }
+                queryCheckedValue();
+            }
+        }
+
+        function checkone(value) {
+            console.log(value);
+        }
+
+        function queryCheckedValue() {
+            price = 0;
+            id = '';
+            $("input:checkbox[name='checkbox']:checked").each(function (i) {
+                id += this.id;
+                id += '|';
+                var val = $(this).val();
+                price = parseInt(val) + parseInt(price);
+            });
+            document.getElementById('sumprice').innerHTML = '¥' + price;
+        }
+
+        function buy() {
+            if (price == 0) {
+            } else {
+                document.getElementById("buy").href = 'cartdeal?id=' + id + '&price=' + price;
+            }
+        }
+
+    </script>
+
+    <style>
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none !important;
+        }
+
+        a:link, a:visited {
+            text-decoration: none; /*超链接无下划线*/
+        }
+
+        .hoverbg:hover {
+            background-color: #282828;
+            -webkit-transition: all 0.5s;
+            -moz-transition: all 0.5s;
+            -o-transition: all 0.5s;
+        }
+
+        .hoverbg:hover * {
+            color: whitesmoke;
+            font-size: 15px;
+            -webkit-transition: all 0.5s;
+            -moz-transition: all 0.5s;
+            -o-transition: all 0.5s;
+        }
+
+        .leftDiv {
+            height: 20px;
+        }
+
+        .hovertd {
+            border-top: gray 1px solid;
+        }
+
+        .hovertd a {
+            color: gray;
+        }
+
+        .hovertd * {
+            color: #a1a1a1;
+        }
+
+        .hovertd:hover > :first-child > .leftDiv {
+            height: 15px;
+            padding: 0 10px 0 0;
+            -webkit-transition: all 0.4s;
+            -moz-transition: all 0.4s;
+            -o-transition: all 0.4s;
+        }
+
+        .hovertd:hover a {
+            font-size: 16px;
+            color: whitesmoke;
+            -webkit-transition: all 0.4s;
+            -moz-transition: all 0.4s;
+            -o-transition: all 0.4s;
+        }
+
+        .hovertd:hover * {
+            font-size: 15px;
+            color: whitesmoke;
+            -webkit-transition: all 0.4s;
+            -moz-transition: all 0.4s;
+            -o-transition: all 0.4s;
+        }
+
+        .hovertd a:hover {
+            font-size: 16px;
+            -webkit-transition: all 0.4s;
+            -moz-transition: all 0.4s;
+            -o-transition: all 0.4s;
+        }
+
+        .hovertd:hover {
+            background-color: #282828;
+            -webkit-transition: all 0.2s;
+            -moz-transition: all 0.2s;
+            -o-transition: all 0.2s;
+        }
+
+        body {
+            min-width: 100%;
+            min-height: 100%;
+            position: absolute;
+            z-index: 0;
+        }
+
+        .bodytop {
+            background-color: #fafafa;
+            width: 100%;
+        }
+
+        .bodyMiddle {
+            height: 780px;
+            width: 83%;
+            background-color: #f1f1f1;
+        }
+
+        img {
+            -webkit-transition: all 0.6s;
+            -moz-transition: all 0.6s;
+            -o-transition: all 0.6s;
+        }
+
+        img:hover {
+            transform: scale(1.06);
+            -webkit-transition: all 0.8s;
+            -moz-transition: all 0.8s;
+            -o-transition: all 0.8s;
+        }
+
+        #head {
+            width: 100%;
+            height: 35px;
+            position: fixed;
+            top: 0px;
+            z-index: 10;
+        }
+
+        #main {
+            width: 100%;
+            padding-top: 35px;
+            padding-bottom: 80px;
+            z-index: 1;
+        }
+
+        #footer {
+            background-color: #f5f5f2;
+            width: 70%;
+            height: 60px;
+            position: fixed;
+            bottom: 0px;
+            z-index: 10;
+            left: 15%;
+            margin: auto;
+            padding: 0;
+        }
+
+        .breadcrumb > li + li:before {
+            color: #CCCCCC;
+            content: "/ ";
+            padding: 0 5px;
+        }
+    </style>
+</head>
+<body style="background-color: #fbfbfb;width: 100%;">
+<div id="head">
+    {include file="public/head"}
+</div>
+
+<div id="main" align="center">
+    <div id="nav" align="left" style="height: 150px;">
+        {include file="public/nav"}
+    </div>
+    {include file="shopping_cart/shopping_cart_body"}
+</div>
+{include file="shopping_cart/shopping_cart_foot"}
+</body>
+</html>
