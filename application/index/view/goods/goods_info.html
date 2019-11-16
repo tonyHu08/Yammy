@@ -2,7 +2,7 @@
      style="width: 1150px;height: 570px;border: cornflowerblue 0px solid;background-color: white;box-shadow: 2px 2px 5px #999999;">
     <div style="width: 45%;height: 500px;float: left;border: coral 0px solid;">
         <div style="width: 360px;height: 360px;background-color: #f9f9f9;;margin-top: 70px;margin-left: 30px;border: 1px #e5e5e5 solid;" id="img">
-            <img src="{$goodsinfo.goodsimg}" width="350px" height="350px">
+            <img src="{$goodsinfo.goodsimg}" width="350px" height="350px" id="good_img">
         </div>
     </div>
     <div style="width: 52%;height: 500px;float: right;border: cyan 0px solid;" align="left">
@@ -82,7 +82,7 @@
                         评价
                     </td>
                     <td>
-                        <font style="font-size: 20px;color: #111111;margin-right: 5px;">10</font>
+                        <font style="font-size: 20px;color: #111111;margin-right: 5px;">{$evaluation_count}</font>
                         用户评价
                     </td>
                 </tr>

@@ -16,19 +16,23 @@ class Goods extends Controller
     {
         $yd = model('YammyData');
         $goods = $yd->searchGoods(input('word'));
-        if($goods) {
+        //如果搜索到商品
+        if (isset($goods[0])) {
             $page = $goods->render();
             $this->assign('goods', $goods);
             $this->assign('searchword', input('word'));
             $this->assign('page', $page);
-            $this->assign('classify',$goods[0]['classify']);
-            $this->assign('title','商品搜索-'.input('word'));
-            $this->assign('come','商品搜索');
-            return $this->fetch('index/goodsClassify');
+            $this->assign('classify', $goods[0]['classify']);
+            $this->assign('title', '商品搜索-' . input('word'));
+            $this->assign('come', '商品搜索');
+            return $this->fetch('goods/goods_classify');
         } else {
             $this->assign('goods', 0);
             $this->assign('searchword', input('word'));
-            return $this->fetch('index/goodsSearch');
+            $this->assign('page', 1);
+            $this->assign('title', '商品搜索-' . input('word'));
+            $this->assign('come', '商品搜索');
+            return $this->fetch('goods/goods_classify');
         }
         return;
     }
@@ -44,7 +48,7 @@ class Goods extends Controller
             'goodsIntroduction' => input('goodsIntroduction')
         ];
         $vali = validate('IssueGoods');
-        if(!$vali->check($data)) {
+        if (!$vali->check($data)) {
             return $this->error($vali->getError());
         }
         $yd = model('YammyData');
@@ -52,16 +56,16 @@ class Goods extends Controller
 
         $headimgPath = '';
         $info = $data['file']->validate(['size' => 3000000, 'ext' => 'jpg,png,gif'])->rule('uniqid')->move(ROOT_PATH . 'public' . DS . 'static/goodimg', '');
-        if($info) {
+        if ($info) {
             $headimgPath = '/static/goodimg/' . $info->getFilename();
         } else {
             // 上传失败获取错误信息
             return $this->error($data['file']->getError());
         }
 
-        if($goodsid = $yd->issueGoods($data['goodsName'], $data['type'], $headimgPath, $data['goodsPrice'], $data['goodsIntroduction'], Seller::shopName(), Seller::shopId())) {
-            for($i = 0, $j = 1; $i < 5; $i++, $j++) {
-                if(input('goodsClassify' . $j) != null) {
+        if ($goodsid = $yd->issueGoods($data['goodsName'], $data['type'], $headimgPath, $data['goodsPrice'], $data['goodsIntroduction'], Seller::shopName(), Seller::shopId())) {
+            for ($i = 0, $j = 1; $i < 5; $i++, $j++) {
+                if (input('goodsClassify' . $j) != null) {
                     $goodsClassifycount = $i;
                     $goodsClassify[$i] = input('goodsClassify' . $j);
                     $goodsClassifyprice[$i] = input('goodsClassifyprice' . $j);
@@ -69,16 +73,16 @@ class Goods extends Controller
                     break;
                 }
             }
-            for($i = 0; $i <= $goodsClassifycount; $i++) {
+            for ($i = 0; $i <= $goodsClassifycount; $i++) {
                 $yd->issueGoodsClassify($goodsid, $goodsClassify[$i], $goodsClassifyprice[$i]);
             }
-            return $this->success('发布成功！', 'Seller/sellerCenter');
+            return $this->success('发布成功！', 'Seller/seller_center');
         }
     }
 
     public function modGoods()        //将更新商品信息插入数据库
     {
-        if(request()->file('file')) {
+        if (request()->file('file')) {
             $data = [
                 'goodsName' => input('goodsName'),
                 'type' => input('type'),
@@ -88,12 +92,12 @@ class Goods extends Controller
                 'goodsIntroduction' => input('goodsIntroduction')
             ];
             $vali = validate('IssueGoods');
-            if(!$vali->check($data)) {
+            if (!$vali->check($data)) {
                 return $this->error($vali->getError());
             }
             $headimgPath = '';
             $info = $data['file']->validate(['size' => 3000000, 'ext' => 'jpg,png,gif'])->rule('uniqid')->move(ROOT_PATH . 'public' . DS . 'static/goodimg', '');
-            if($info) {
+            if ($info) {
                 $headimgPath = '/static/goodimg/' . $info->getFilename();
             } else {
                 // 上传失败获取错误信息
@@ -101,9 +105,10 @@ class Goods extends Controller
             }
 
             $yd = model('YammyData');
-            if($yd->updateGoods($data['goodsName'], $data['type'], $headimgPath, $data['goodsPrice'], $data['goodsIntroduction'], input('goodsId'))) {
-                for($i = 0, $j = 1; $i < 5; $i++, $j++) {
-                    if(input('goodsClassify' . $j) != null) {
+            if ($yd->updateGoods($data['goodsName'], $data['type'], $headimgPath, $data['goodsPrice'], $data['goodsIntroduction'], input('goodsId'))) {
+                //插入商品类别信息
+                for ($i = 0, $j = 1; $i < 5; $i++, $j++) {
+                    if (input('goodsClassify' . $j) != null) {
                         $goodsClassifycount = $i;
                         $goodsClassify[$i] = input('goodsClassify' . $j);
                         $goodsClassifyprice[$i] = input('goodsClassifyprice' . $j);
@@ -112,19 +117,19 @@ class Goods extends Controller
                     }
                 }
                 $goodsClassifyInfo = $yd->selectGoodsClassify(input('goodsId'));
-                if($goodsClassifyInfo) {
-                    if(count($goodsClassifyInfo) <= ($goodsClassifycount + 1)) {
-                        for($i = 0; $i < count($goodsClassifyInfo); $i++) {
+                if ($goodsClassifyInfo) {
+                    if (count($goodsClassifyInfo) <= ($goodsClassifycount + 1)) {
+                        for ($i = 0; $i < count($goodsClassifyInfo); $i++) {
                             $yd->updateGoodsClassify(($goodsClassifyInfo[$i])['goodsclassifyid'], $goodsClassify[$i], $goodsClassifyprice[$i]);
                         }
-                        for($i; $i <= $goodsClassifycount; $i++) {
+                        for ($i; $i <= $goodsClassifycount; $i++) {
                             $yd->issueGoodsClassify(input('goodsId'), $goodsClassify[$i], $goodsClassifyprice[$i]);
                         }
                     } else {
-                        for($i = 0; $i <= $goodsClassifycount; $i++) {
+                        for ($i = 0; $i <= $goodsClassifycount; $i++) {
                             $yd->updateGoodsClassify(($goodsClassifyInfo[$i])['goodsclassifyid'], $goodsClassify[$i], $goodsClassifyprice[$i]);
                         }
-                        for($i; $i < count($goodsClassifyInfo); $i++) {
+                        for ($i; $i < count($goodsClassifyInfo); $i++) {
                             $yd->deleteGoodsClassify(($goodsClassifyInfo[$i])['goodsclassifyid']);
                         }
                     }
@@ -141,13 +146,13 @@ class Goods extends Controller
                 'goodsIntroduction' => input('goodsIntroduction')
             ];
             $vali = validate('IssueGoods');
-            if(!$vali->check($data)) {
+            if (!$vali->check($data)) {
                 return $this->error($vali->getError());
             }
             $yd = model('YammyData');
             $yd->updateGoodsNoImg($data['goodsName'], $data['type'], $data['goodsPrice'], $data['goodsIntroduction'], input('goodsId'));
-            for($i = 0, $j = 1; $i < 5; $i++, $j++) {
-                if(input('goodsClassify' . $j) != null) {
+            for ($i = 0, $j = 1; $i < 5; $i++, $j++) {
+                if (input('goodsClassify' . $j) != null) {
                     $goodsClassifycount = $i;
                     $goodsClassify[$i] = input('goodsClassify' . $j);
                     $goodsClassifyprice[$i] = input('goodsClassifyprice' . $j);
@@ -156,19 +161,19 @@ class Goods extends Controller
                 }
             }
             $goodsClassifyInfo = $yd->selectGoodsClassify(input('goodsId'));
-            if($goodsClassifyInfo) {
-                if(count($goodsClassifyInfo) <= ($goodsClassifycount + 1)) {
-                    for($i = 0; $i < count($goodsClassifyInfo); $i++) {
+            if ($goodsClassifyInfo) {
+                if (count($goodsClassifyInfo) <= ($goodsClassifycount + 1)) {
+                    for ($i = 0; $i < count($goodsClassifyInfo); $i++) {
                         $yd->updateGoodsClassify(($goodsClassifyInfo[$i])['goodsclassifyid'], $goodsClassify[$i], $goodsClassifyprice[$i]);
                     }
-                    for($i; $i <= $goodsClassifycount; $i++) {
+                    for ($i; $i <= $goodsClassifycount; $i++) {
                         $yd->issueGoodsClassify(input('goodsId'), $goodsClassify[$i], $goodsClassifyprice[$i]);
                     }
                 } else {
-                    for($i = 0; $i <= $goodsClassifycount; $i++) {
+                    for ($i = 0; $i <= $goodsClassifycount; $i++) {
                         $yd->updateGoodsClassify(($goodsClassifyInfo[$i])['goodsclassifyid'], $goodsClassify[$i], $goodsClassifyprice[$i]);
                     }
-                    for($i; $i < count($goodsClassifyInfo); $i++) {
+                    for ($i; $i < count($goodsClassifyInfo); $i++) {
                         $yd->deleteGoodsClassify(($goodsClassifyInfo[$i])['goodsclassifyid']);
                     }
                 }
@@ -183,13 +188,13 @@ class Goods extends Controller
         $classify = input('classify');
         $classifyinfo = model('YammyData');
         $goods = $classifyinfo->selectClassify($classify);
-        if($goods) {
+        if ($goods) {
             $page = $goods->render();
             $this->assign('goods', $goods);
             $this->assign('classify', $classify);
             $this->assign('page', $page);
-            $this->assign('title','商品分类-'.$classify);
-            $this->assign('come','商品分类');
+            $this->assign('title', '商品分类-' . $classify);
+            $this->assign('come', '商品分类');
             return $this->fetch();
         } else {
             $this->assign('goods', 0);
@@ -203,19 +208,19 @@ class Goods extends Controller
         $shop = input('shop');
         $shopinfo = model('YammyData');
         $goods = $shopinfo->selectSellerGoods($shop);
-        if($goods) {
+        if ($goods) {
             $page = $goods->render();
             $this->assign('goods', $goods);
             $this->assign('shopname', $shop);
             $this->assign('page', $page);
-            $this->assign('come','店铺商品');
-            $this->assign('title','店铺商品');
+            $this->assign('come', '店铺商品');
+            $this->assign('title', '店铺商品');
             return $this->fetch('goods/goods_classify');
         } else {
             $this->assign('goods', 0);
             $this->assign('shopname', $shop);
-            $this->assign('come','店铺商品');
-            $this->assign('title','店铺商品');
+            $this->assign('come', '店铺商品');
+            $this->assign('title', '店铺商品');
             return $this->fetch('goods/goods_classify');
         }
     }
@@ -229,12 +234,14 @@ class Goods extends Controller
         $evaluate = new Evaluate();
         $evaluation_list = $evaluate->showEvaluation(input('goodsid'));
         $this->assign('evaluation_list', $evaluation_list);
-        if($goodsClassify) {
+        $evaluation_count = count($evaluation_list);
+        $this->assign('evaluation_count', $evaluation_count);
+        if ($goodsClassify) {
             $goodsClassifyId = ($goodsClassify[0])['goodsclassifyid'];
         } else {
             $goodsClassifyId = 0;
         }
-        if($goodsinfo) {
+        if ($goodsinfo) {
             $this->assign('goodsinfo', $goodsinfo);
             $this->assign('goodsClassify', $goodsClassify);
             $this->assign('goodsClassifyId', $goodsClassifyId);
@@ -246,26 +253,13 @@ class Goods extends Controller
     }
 
 
-    public function insertGoodsDeal()           //将订单插入数据库
-    {
-        $yd = model('YammyData');
-        $deal = model('deal');
-        $goodsInfo = $yd->selectGoodsId(input('goodsid'));
-        if($deal->insertGoodsDeal(input('goodsid'), $goodsInfo['goodsname'], $goodsInfo['shop'], $goodsInfo['shopid'], $goodsInfo['username'], session('username'), input('classifyid'), input('price'), input('count'), $goodsInfo['goodsimg'], input('classify'))) {
-            $this->deleteShoppingCart(input('shoppingcartid'));
-        }else{
-            return 0;
-        }
-
-    }
-
     public function insertShoppingCart()              //添加购物车
     {
         $yd = model('YammyData');
         $sc = model('ShoppingCart');
         $goodsinfo = $yd->selectGoodsId(input('goodsid'));          //获取店铺id
         $shopid = $goodsinfo['shopid'];
-        if(!$sc->sameGoods(session('username'), input('goodsid'), input('goodsclassifyid'))) {
+        if (!$sc->sameGoods(session('username'), input('goodsid'), input('goodsclassifyid'))) {
             $sc->insertShoppingCart(session('username'), $shopid, input('goodsid'), input('count'), input('goodsclassifyid'));
             return 1;
         } else {
@@ -277,7 +271,7 @@ class Goods extends Controller
     public function updateShoppingCartGoodsCount()          //更新商品数量
     {
         $sc = model('ShoppingCart');
-        if($sc->updateChangeCount(session('username'), input('shoppingcartid'), input('count'))) {
+        if ($sc->updateChangeCount(session('username'), input('shoppingcartid'), input('count'))) {
             return 0;
         }
     }

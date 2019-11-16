@@ -13,7 +13,7 @@
     <script>
         function buy() {
             '{foreach $goods as $goodsinfo}'
-                $.post("/index/goods/insertGoodsDeal/goodsid/{$goodsinfo.goodsid}/classifyid/{$goodsinfo.goodsclassifyid}/count/{$goodsinfo.count}/price/{$goodsinfo.price*$goodsinfo.count}/classify/{$goodsinfo.goodsclassify}/shoppingcartid/{$goodsinfo.shoppingcartid}.html", '',
+                $.post("/index/deal/insertDeal/goodsid/{$goodsinfo.goodsid}/classifyid/{$goodsinfo.goodsclassifyid}/count/{$goodsinfo.count}/price/{$goodsinfo.price*$goodsinfo.count}/classify/{$goodsinfo.goodsclassify}/shoppingcartid/{$goodsinfo.shoppingcartid}.html", '',
                     function (data) {
                     }, 'json');
             '{/foreach}'

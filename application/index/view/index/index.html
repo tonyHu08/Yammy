@@ -180,11 +180,11 @@
                 </div>
                 <div style="float: right;width: 333px;height:645px;">
                     {eq name="null" value="$Think.session.username"}
-                    {include file="public/personalInfoBefore"}
+                    {include file="index/personal_info_before"}
                     {else/}
-                    {include file="public/personalInfoAfter"}
+                    {include file="index/personal_info_after"}
                     {/eq}
-                    {include file="public/serveCenter"}
+                    {include file="index/serve_center"}
                 </div>
             </div>
         </div>

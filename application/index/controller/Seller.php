@@ -93,10 +93,10 @@ class Seller extends Controller
             return $this->fetch('Login/login');
         }
         if(!$this->activeVali()) {                         //如果还没有激活账号
-            return $this->fetch('index/activeWarning');
+            return $this->fetch('index/active_warning');
         }
         if(!$this->sellerVali()) {                        //如果还不是卖家
-            return $this->fetch('index/sellerWarning');
+            return $this->fetch('index/seller_warning');
         }
         if(self::shopVali()) {
             $this->assign('shop', 'index');        //如果有店铺
@@ -139,6 +139,15 @@ class Seller extends Controller
             $deal = model('deal');
             $dealInfo = $deal->selectSellerReturn(session('username'));
             $this->assign('deal', $dealInfo);
+        }
+        if (input('func') == 'evaluation') {                //如果点击了评价管理
+            $this->assign('shop', 'evaluation');
+            $evaluate = model('Evaluate');
+            //查找当前用户的shopid
+            $yd = model('YammyData');
+            $shopid = $yd->selectShopId(session('username'));
+            $dealAndEva = $evaluate->getDealOfEvaluation($shopid);
+            $this->assign('deal', $dealAndEva);
         }
         if(input('goodsid') != null) {
             $goods = $this->shopGoodsId(input('goodsid'));

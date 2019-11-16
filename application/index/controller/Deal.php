@@ -83,4 +83,18 @@ class Deal extends Controller
         $this->assign('goods', $goods);
         return $this->fetch();
     }
+
+
+    public function insertDeal()           //将订单插入数据库
+    {
+        $yd = model('YammyData');
+        $deal = model('deal');
+        $goodsInfo = $yd->selectGoodsId(input('goodsid'));
+        if ($deal->insertGoodsDeal(input('goodsid'), $goodsInfo['goodsname'], $goodsInfo['shop'], $goodsInfo['shopid'], $goodsInfo['username'], session('username'), input('classifyid'), input('price'), input('count'), $goodsInfo['goodsimg'], input('classify'))) {
+            //如果插入成功，删除购物车里的已购买商品
+            $this->deleteShoppingCart(input('shoppingcartid'));
+        } else {
+            return 0;
+        }
+    }
 }

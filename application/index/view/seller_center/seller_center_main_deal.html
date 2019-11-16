@@ -1,5 +1,4 @@
-<div style="width: 70%;height: 630px;float: left;margin-left: 1%;margin-top:3%;border: #282828 1px solid;background: rgba(200,200,200,0.1);overflow-y: auto;"
-     align="center">
+<div class="scrollContent" align="center">
     <div style="font-family: 'Heiti SC';font-size: 22px;padding:10px 0 0 30px;" align="left">
         已卖出的商品
     </div>
@@ -56,6 +55,9 @@
                         {/eq}
                         {eq name="$deal.dealstate" value="已退款"}
                         已退款
+                        {/eq}
+                        {eq name="$deal.dealstate" value="已收货"}
+                        已收货
                         {/eq}
                     </td>
                 </tr>
