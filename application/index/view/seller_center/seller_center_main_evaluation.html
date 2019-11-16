@@ -1,0 +1,77 @@
+<div class="scrollContent" align="center">
+    <div style="font-family: 'Heiti SC';font-size: 22px;padding:10px 0 0 30px;" align="left">
+        评价管理
+    </div>
+    {volist name="deal" id="deal"}
+    <div class="panel panel-default" style="width: 800px;margin-bottom: 40px;margin-top: 20px;">
+        <div class="panel-heading" align="left" style="height:40px;">
+            <div style="width: 30%;float: left;">
+                下单时间：{:date('Y-m-d H:i:s',$deal.dealtime)}
+            </div>
+            <div style="width: 15%;float: left;">
+                订单编号：{$deal.dealid}
+            </div>
+            <div style="width: 20%;float: left;" id="{$deal.dealid}">
+                交易状态：{$deal.dealstate}
+            </div>
+            <div style="width: 25%;float: left;">
+                评分：
+                {for start="0" end='$deal.rate'}
+                <span class="glyphicon glyphicon-star star" id=5></span>
+                {/for}
+            </div>
+        </div>
+        <div class="panel-body">
+            <table align="center">
+                <tr>
+                    <td style="width: 200px;">
+                        <div style="height: 100px;width: 100px;float: left;background-color: #f9f9f9;border: 1px #e5e5e5 solid;margin-left: 30px;">
+                            <a href="__ROOT__/index/Goods/goods/goodsid/{$deal.goodsid}.html">
+                                <img src="{$deal.goodsimg}" height="100px" width="100px"/>
+                            </a>
+                        </div>
+                    </td>
+                    <td style="width: 220px;">
+                        <a href="__ROOT__/index/Goods/goods/goodsid/{$deal.goodsid}.html" style="color: #000;">
+                            {$deal.goodsname}*{$deal.count}
+                        </a>
+                        <p style="font-size: 13px;color: gray;">商品分类：{$deal.goodsclassify}</p>
+                    </td>
+                    <td style="width: 180px;" align="left">
+                        交易价格：<font style="color: crimson">¥{$deal.dealprice}</font>
+                    </td>
+                    <td style="width: 250px;" align="center">
+                        买家用户：{$deal.username}
+                    </td>
+                    <td style="width: 150px;" align="center" id="but{$deal.dealid}">
+                        {eq name="$deal.dealstate" value="已下单"}
+                        <button class="btn btn-primary" onclick="deliverGoods('{$deal.dealid}')" data-toggle="modal"
+                                data-target="#cartsuc">发货</button>
+                        {/eq}
+                        {eq name="$deal.dealstate" value="已发货"}
+                        <button class="btn btn-danger" onclick="cancelGoods('{$deal.dealid}')" data-toggle="modal"
+                                data-target="#canceldeal">取消交易</button>
+                        {/eq}
+                        {eq name="$deal.dealstate" value="申请退货"}
+                        <button class="btn btn-danger" onclick="goodsReturn('{$deal.dealid}')" data-toggle="modal"
+                                data-target="#canceldeal">退款</button>
+                        {/eq}
+                        {eq name="$deal.dealstate" value="交易已取消"}
+                        交易已取消
+                        {/eq}
+                        {eq name="$deal.dealstate" value="已退款"}
+                        已退款
+                        {/eq}
+                        {eq name="$deal.dealstate" value="已收货"}
+                        已收货
+                        {/eq}
+                    </td>
+                </tr>
+            </table>
+            <div class="evaluationContent" align="left">
+                评价内容：{$deal.evaluation}
+            </div>
+        </div>
+    </div>
+    {/volist}
+</div>
