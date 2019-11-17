@@ -143,7 +143,7 @@ class YammyData extends Model
     //查找一家店铺的全部商品
     public function selectShopAllGoods($shop)
     {
-        $info = db('goods')->where('shop', $shop)->order('createtime desc')->paginate(10);
+        $info = db('goods')->where('shop', $shop)->where('available', 1)->order('createtime desc')->paginate(10);
         return $info;
     }
 

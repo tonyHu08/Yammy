@@ -115,7 +115,7 @@ class Seller extends Controller
             $this->assign('info', $shopInfo);
             $this->assign('shop', 'setShop');
         }
-        if(input('func') == 'manage') {
+        if(input('func') == 'manage') {                         //如果点了出售中的商品
             $allGoods = $this->shopAllGoods();
             $page = $allGoods->render();
             $this->assign('goods', $allGoods);

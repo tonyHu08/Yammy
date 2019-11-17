@@ -4,9 +4,10 @@
     </div>
     <div style="height: 480px;width: 100%;margin-bottom: 20px">
         {volist name="goods" id="list" key="k"}
-        <div style="width: 17%;height: 225px;float: left;background-color: white;margin-top:20px;margin-left: 25px; ">
-            <div style="height: 75%;width: 100%;border: coral 0px solid">
-                <a href="__ROOT__/index/Seller/sellerCenter?goodsid={$list.goodsid}">
+        <div style="width: 17%;height: 225px;float: left;background-color: white;margin-top:20px;margin-left: 25px;position: relative;">
+            <div class="delete" data-toggle="modal" data-target="#modalDeleteVerlify" onclick="goodsid='{$list.goodsid}'"><span class="glyphicon glyphicon-trash delete-button"></span></div>
+            <div style="height: 75%;width: 100%;">
+                <a href="__ROOT__/index/Seller/sellerCenter?goodsid={$list.goodsid}" style="z-index: 1;">
                     <img src="{$list.goodsimg}" width="150px" height="150px">
                 </a>
             </div>
@@ -31,3 +32,5 @@
         {$page}
     </div>
 </div>
+{include file="seller_center/modal_delete_verify"}
+{include file="modal/modal_tip"}

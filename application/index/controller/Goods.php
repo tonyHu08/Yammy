@@ -252,6 +252,15 @@ class Goods extends Controller
         }
     }
 
+    public function deleteGood()        //卖家删除商品
+    {
+        $deal = model('Goods');
+        return $deal->deletegood(input('goodsid'));
+        if ($deal->deletegood(input('goodsid'))) {
+            return $this->redirect('Deal/deal', ['operation' => 'delete']);
+        }
+    }
+
 
     public function insertShoppingCart()              //添加购物车
     {
@@ -275,4 +284,6 @@ class Goods extends Controller
             return 0;
         }
     }
+
+
 }
