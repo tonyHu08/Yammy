@@ -24,6 +24,8 @@
         })
 
         function shoppingcart(goodsid) {
+            let shopping_cart_tip = document.getElementById('tip');
+            shopping_cart_tip.innerText = '加入购物车成功';
             var count = document.getElementById('count').value;
             $.get("{:url('index/Goods/insertShoppingcart')}", {
                 goodsid: goodsid,
@@ -100,7 +102,6 @@
             -moz-transition: all 0.6s;
             -o-transition: all 0.6s;
         }
-
     </style>
 </head>
 <body style="background-color: #f3f3f3">
@@ -130,5 +131,6 @@
 
 {include file="modal/modal_login"}
 {include file="modal/modal_tip"}
+{include file="chat/modal_chat"}
 </body>
 </html>

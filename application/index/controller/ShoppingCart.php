@@ -71,6 +71,5 @@ class ShoppingCart extends Controller
         } else {
             $this->error('删除失败');
         }
-
     }
 }

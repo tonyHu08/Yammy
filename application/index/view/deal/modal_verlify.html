@@ -22,6 +22,17 @@
 </div>
 <script>
     function del() {
-        window.location.href = "__ROOT__/index/deal/deleteDeal/dealid/" + dealid +".html";
+        $.get("{:url('index/Deal/deleteDeal')}", {dealid: dealid}, function (data) {
+            if (data == 1) {
+                $("#modalVerlify").modal('hide');
+                document.getElementById("tip").innerHTML = "删除订单";
+                $('#tips').modal('show');
+                //延时函数让浮窗消失
+                setTimeout(function () {
+                    dismiss;
+                    location.reload();
+                }, 1300);
+            }
+        })
     }
 </script>

@@ -89,16 +89,16 @@ class Seller extends Controller
 
     public function sellerCenter()       //卖家中心验证身份
     {
-        if(session('username') == null) {            //如果还未登录
+        if (session('username') == null) {            //如果还未登录
             return $this->fetch('Login/login');
         }
-        if(!$this->activeVali()) {                         //如果还没有激活账号
+        if (!$this->activeVali()) {                         //如果还没有激活账号
             return $this->fetch('index/active_warning');
         }
-        if(!$this->sellerVali()) {                        //如果还不是卖家
+        if (!$this->sellerVali()) {                        //如果还不是卖家
             return $this->fetch('index/seller_warning');
         }
-        if(self::shopVali()) {
+        if (self::shopVali()) {
             $this->assign('shop', 'index');        //如果有店铺
             $this->assign('shopname', self::shopName());
             $this->assign('shopage', (int)$this->shopAge());
@@ -107,34 +107,34 @@ class Seller extends Controller
         } else {
             $this->assign('shop', 'setUpShop');         //如果没有店铺
         }
-        if(input('func') == 'issue') {                          //如果点击了发布商品
+        if (input('func') == 'issue') {                          //如果点击了发布商品
             $this->assign('shop', 'issue');
         }
-        if(input('func') == 'setShop') {                        //如果点击了设置店铺
+        if (input('func') == 'setShop') {                        //如果点击了设置店铺
             $shopInfo = $this->shopInfo();
             $this->assign('info', $shopInfo);
             $this->assign('shop', 'setShop');
         }
-        if(input('func') == 'manage') {                         //如果点了出售中的商品
+        if (input('func') == 'manage') {                         //如果点了出售中的商品
             $allGoods = $this->shopAllGoods();
             $page = $allGoods->render();
             $this->assign('goods', $allGoods);
             $this->assign('page', $page);
             $this->assign('shop', 'manage');
         }
-        if(input('func') == 'deal') {                           //如果点击了已卖出的商品
+        if (input('func') == 'deal') {                           //如果点击了已卖出的商品
             $this->assign('shop', 'deal');
             $deal = model('deal');
             $dealInfo = $deal->selectSellerDealInfo(session('username'));
             $this->assign('deal', $dealInfo);
         }
-        if(input('func') == 'deliver') {                           //如果点击了发货
+        if (input('func') == 'deliver') {                           //如果点击了发货
             $this->assign('shop', 'deliver');
             $deal = model('deal');
             $dealInfo = $deal->selectSellerDeliver(session('username'));
             $this->assign('deal', $dealInfo);
         }
-        if(input('func') == 'return') {                           //如果点击了退款管理
+        if (input('func') == 'return') {                           //如果点击了退款管理
             $this->assign('shop', 'return');
             $deal = model('deal');
             $dealInfo = $deal->selectSellerReturn(session('username'));
@@ -147,14 +147,18 @@ class Seller extends Controller
             $yd = model('YammyData');
             $shopid = $yd->selectShopId(session('username'));
             $dealAndEva = $evaluate->getDealOfEvaluation($shopid);
+            for ($i = 0; $i < count($dealAndEva); $i++) {
+                $evaluate->markReadEvaluation($dealAndEva[$i]['evaluation_id']);
+            }
             $this->assign('deal', $dealAndEva);
         }
-        if(input('goodsid') != null) {
+        if (input('goodsid') != null) {
             $goods = $this->shopGoodsId(input('goodsid'));
             $this->assign('goodsid', $goods);
             $goodsClassifyInfo = $this->selectGoodsClassify(input('goodsid'));
-            if($goodsClassifyInfo) {
-                $this->assign('count', (count($goodsClassifyInfo) + 1));
+            if ($goodsClassifyInfo) {
+                //分类数量
+                $this->assign('count', (count($goodsClassifyInfo)));
                 $this->assign('goodsClassify', $goodsClassifyInfo);
             } else {
                 $this->assign('goodsClassify', 0);
@@ -168,14 +172,14 @@ class Seller extends Controller
     public function applySeller()        //点击申请卖家按钮后
     {
         $yd = model('YammyData');
-        if($yd->applySeller(session('username'))) {
+        if ($yd->applySeller(session('username'))) {
             return $this->success('成功申请成为卖家！', 'Seller/sellerCenter');
         }
     }
 
     public function reSetShop()         //更新店铺信息
     {
-        if(request()->file('file')) {
+        if (request()->file('file')) {
             $data = [
                 'shopname' => input('shopname'),
                 'type' => input('type'),
@@ -183,12 +187,12 @@ class Seller extends Controller
             ];
             $vali = validate('SetUpShop');
 
-            if(!$vali->check($data)) {
+            if (!$vali->check($data)) {
                 return $this->error($vali->getError());
             }
             $headimgPath = '';
             $info = $data['file']->validate(['size' => 3000000, 'ext' => 'jpg,png,gif'])->rule('uniqid')->move(ROOT_PATH . 'public' . DS . 'static/shopheadimg', '');
-            if($info) {
+            if ($info) {
                 $headimgPath = '/static/shopheadimg/' . $info->getFilename();
                 //裁剪头像
                 $image = \think\Image::open('./static/shopheadimg/' . $info->getSaveName());
@@ -198,8 +202,8 @@ class Seller extends Controller
                 return $this->error($data['file']->getError());
             }
             $yd = model('YammyData');
-            if($yd->updateshop($data['shopname'], $data['type'], $headimgPath)) {
-                if($yd->goodsShopName(session('username'), $data['shopname'])) {
+            if ($yd->updateshop($data['shopname'], $data['type'], $headimgPath)) {
+                if ($yd->goodsShopName(session('username'), $data['shopname'])) {
                     return $this->success('修改店铺信息成功！', 'Seller/sellerCenter');
                 }
             }
@@ -210,12 +214,12 @@ class Seller extends Controller
                 'file' => 'have'
             ];
             $vali = validate('SetUpShop');
-            if(!$vali->check($data)) {
+            if (!$vali->check($data)) {
                 return $this->error($vali->getError());
             }
             $yd = model('YammyData');
-            if($yd->updateshopNoImg($data['shopname'], $data['type'])) {
-                if($yd->goodsShopName(session('username'), $data['shopname'])) {
+            if ($yd->updateshopNoImg($data['shopname'], $data['type'])) {
+                if ($yd->goodsShopName(session('username'), $data['shopname'])) {
                     return $this->success('修改店铺信息成功！', 'Seller/sellerCenter');
                 }
             }
@@ -231,12 +235,12 @@ class Seller extends Controller
         ];
         $vali = validate('SetUpShop');
 
-        if(!$vali->check($data)) {
+        if (!$vali->check($data)) {
             return $this->error($vali->getError());
         }
         $headimgPath = '';
         $info = $data['file']->validate(['size' => 3000000, 'ext' => 'jpg,png,gif'])->rule('uniqid')->move(ROOT_PATH . 'public' . DS . 'static/shopheadimg', '');
-        if($info) {
+        if ($info) {
             $headimgPath = '/static/shopheadimg/' . $info->getFilename();
             //裁剪头像
             $image = \think\Image::open('./static/shopheadimg/' . $info->getSaveName());
@@ -246,32 +250,53 @@ class Seller extends Controller
             return $this->error($data['file']->getError());
         }
         $yd = model('YammyData');
-        if($yd->shop($data['shopname'], $data['type'], $headimgPath)) {
+        if ($yd->shop($data['shopname'], $data['type'], $headimgPath)) {
             return $this->success('开店成功！', 'Seller/sellerCenter');
         }
     }
 
     public function deliverGoods()            //发货
     {
-        $deal = model('deal');
-        if($deal->deliverGoods(input('dealid'))) {
-            return 1;
+        $deal_m = model('deal');
+        $deal_id = input('dealid');
+        if ($deal_m->deliverGoods($deal_id)) {
+            $deal_info = $deal_m->selectDealInfoByDealId($deal_id);
+            if ($deal_m->insertDealStatusInfo($deal_id, session('uid'), $deal_info['uid'], '已发货')) {
+                //更新userlist表中的未读数据
+                $yd = model('YammyData');
+                $yd->updateInformNum($deal_info['uid']);
+                return 1;
+            }
         }
     }
 
     public function cancelGoods()            //取消订单
     {
-        $deal = model('deal');
-        if($deal->cancelGoods(input('dealid'))) {
-            return 1;
+        $deal_m = model('deal');
+        $deal_id = input('dealid');
+        if ($deal_m->cancelGoods($deal_id)) {
+            $deal_info = $deal_m->selectDealInfoByDealId($deal_id);
+            if ($deal_m->insertDealStatusInfo($deal_id, session('uid'), $deal_info['uid'], '卖家取消')) {
+                //更新userlist表中的未读数据
+                $yd = model('YammyData');
+                $yd->updateInformNum($deal_info['uid']);
+                return 1;
+            }
         }
     }
 
-    public function goodsReturn()            //取消订单
+    public function goodsReturn()            //退货
     {
-        $deal = model('deal');
-        if($deal->goodsReturnDispose(input('dealid'))) {
-            return 1;
+        $deal_m = model('deal');
+        $deal_id = input('dealid');
+        if ($deal_m->goodsReturnDispose($deal_id)) {
+            $deal_info = $deal_m->selectDealInfoByDealId($deal_id);
+            if ($deal_m->insertDealStatusInfo($deal_id, session('uid'), $deal_info['uid'], '确认退货')) {
+                //更新userlist表中的未读数据
+                $yd = model('YammyData');
+                $yd->updateInformNum($deal_info['uid']);
+                return 1;
+            }
         }
     }
 

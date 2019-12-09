@@ -247,6 +247,14 @@
             -moz-transition: all 0.5s;
             -o-transition: all 0.5s;
         }
+
+        .classify-name {
+            margin-top: 10px;width: 60%;float: left;
+        }
+
+        .classify-price {
+            margin-top: 10px;width: 40%;float: left;
+        }
     </style>
     <script>
         //浮窗消失
@@ -255,6 +263,12 @@
             //刷新页面
             location.reload();
             setTimeout(changeTip, 1000);
+        }
+    </script>
+    <script>
+        function checkForm() {
+            var form = document.getElementById('issue-form');
+
         }
     </script>
 </head>
@@ -322,5 +336,6 @@
     </div>
 </div>
 {include file="modal/modal_tip"}
+{include file="chat/modal_chat"}
 </body>
 </html>

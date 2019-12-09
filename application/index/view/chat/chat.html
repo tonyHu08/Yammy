@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>聊天</title>
+    <link rel="stylesheet" href="__STATIC__/css/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="__STATIC__/css/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <script src="__STATIC__/js/jquery-3.3.1.min.js"></script>
+    <script src="__STATIC__/css/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript"
+            src="__STATIC__/js/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript"
+            src="__STATIC__/js/ueditor/ueditor.all.js"></script>
+
+    <style>
+        .chat-window {
+            width: 400px;
+            height: 700px;
+            border: 0px solid gray;
+            border-radius: 5px;
+            margin-top: 50px;
+        }
+
+        .chat-list {
+            width: 100%;
+            height: 500px;
+            border: 1px solid black;
+            padding-top: 10px;
+            overflow-y: auto;
+        }
+
+        .chat-editor-area {
+            width: 100%;
+            height: 200px;
+            border: 1px solid black;
+            padding: 15px;
+        }
+
+        .chat-editor {
+            margin: 5px;
+        }
+
+        .row-div {
+            height: 60px;
+            width: 100%;
+            margin-bottom: 10px;
+            background: whitesmoke;
+        }
+
+        .headimg-div {
+            float: left;
+            height: 100%;
+            width: 15%;
+            padding: 10px;
+        }
+
+        .message-div {
+            float: left;
+            height: 60px;
+            line-height: 60px;
+            vertical-align: middle;
+            width: 85%;
+            text-align: left;
+        }
+
+        .time-div {
+            margin-top: -10px;
+            padding-top: -10px;
+        }
+    </style>
+
+    <script>
+        var set_time = 1;
+
+        function createMessageDiv(chat) {
+            var all_div = document.createElement('div');
+            var headimg_div = document.createElement('div');
+            var message_div = document.createElement('div');
+            all_div.className = 'row-div';
+            headimg_div.className = 'headimg-div';
+            message_div.className = 'message-div';
+            var headimg = document.createElement("img");
+
+            message_div.innerHTML = chat['chat_content'];
+            if (chat['sender_uid'] == "{$Think.session.uid}") {
+                headimg_div.style.cssFloat = "right";
+                message_div.style.textAlign = "right";
+
+                headimg.src = "{$Think.session.headimg}";
+                headimg.width = 35;
+                headimg.height = 35;
+                headimg_div.appendChild(headimg);
+            } else {
+                headimg.src = chat['headimg'];
+                headimg.width = 35;
+                headimg.height = 35;
+                headimg_div.appendChild(headimg);
+            }
+            all_div.appendChild(headimg_div);
+            all_div.appendChild(message_div);
+            return all_div;
+        }
+
+        function createSendMessageDiv(msg) {
+            var all_div = document.createElement('div');
+            var headimg_div = document.createElement('div');
+            var message_div = document.createElement('div');
+            all_div.className = 'row-div';
+            headimg_div.className = 'headimg-div';
+            message_div.className = 'message-div';
+            message_div.innerHTML = msg;
+
+            headimg_div.style.cssFloat = "right";
+            message_div.style.textAlign = "right";
+
+            var headimg = document.createElement("img");
+            headimg.src = "{$Think.session.headimg}";
+            headimg.width = 35;
+            headimg.height = 35;
+            headimg_div.appendChild(headimg);
+
+            all_div.appendChild(headimg_div);
+            all_div.appendChild(message_div);
+
+            var chat_list = document.getElementById('chat-list');
+
+            if (set_time == 1) {
+                var time = timestampToTime(new Date().getTime() / 1000);
+                var time_div = setTime(time);
+                chat_list.appendChild(time_div);
+            }
+            chat_list.appendChild(all_div);
+            chat_list.scrollTop = chat_list.scrollHeight;
+        }
+
+        $(function () {
+            var chat_list = document.getElementById('chat-list');
+            $.get("{:url('index/Chat/receiveMessageInitialize')}", {opposite_uid: '{$opposite_uid}'}, function (data) {
+                console.log(data);
+                console.log(data.length)
+                for (i = 0; i < data.length; i++) {
+                    //如果消息间隔八条，显示时间
+                    if (i % 8 == 0) {
+                        var time = timestampToTime(data[i]['time']);
+                        var time_div = setTime(time);
+                        chat_list.appendChild(time_div);
+                    }
+                    var div = createMessageDiv(data[i]);
+                    chat_list.appendChild(div);
+                }
+                chat_list.scrollTop = chat_list.scrollHeight;
+            }, 'json')
+        })
+
+        function sendMessage() {
+            var msg = document.getElementById('chat-editor').value;
+            $.get("{:url('index/Chat/sendMessage')}", {msg: msg, receiver: '{$opposite_uid}'}, function (data) {
+                if (data == 1) {
+                    document.getElementById('chat-editor').value = '';
+                    createSendMessageDiv(msg);
+                    console.log("发送成功");
+                } else {
+                    console.log("发送失败");
+                }
+            }, "json");
+        }
+
+        function receiveMessage() {
+            var chat_list = document.getElementById('chat-list');
+
+            $.get("{:url('index/Chat/receiveMessageActualTime')}", {opposite_uid: '{$opposite_uid}'}, function (data) {
+                console.log(data);
+                console.log(data.length);
+                for (i = 0; i < data.length; i++) {
+                    if (set_time == 1) {
+                        var time = timestampToTime(data[i]['time']);
+                        var time_div = setTime(time);
+                        chat_list.appendChild(time_div);
+                    }
+                    var div = createMessageDiv(data[i]);
+                    chat_list.appendChild(div);
+                    chat_list.scrollTop = chat_list.scrollHeight;
+                }
+            }, 'json')
+        }
+
+        function setTimeCount() {
+            set_time = 1;
+        }
+
+        function setTime(time) {
+            var time_div = document.createElement('div');
+            time_div.className = 'time-div';
+            time_div.innerHTML = time;
+            set_time = 0;
+            return time_div;
+        }
+
+        function timestampToTime(timestamp) {
+            var date = new Date(timestamp * 1000);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+            var Y = date.getFullYear() + '-';
+            var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+            var D = (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()) + ' ';
+            var h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
+            var m = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) + ':';
+            var s = (date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds());
+            return Y + M + D + h + m + s;
+        }
+
+        function enterToSend(e) {
+            var et = e || window.event;
+            var keycode = et.charCode || et.keyCode;
+            if (keycode == 13) {
+                sendMessage();
+            }
+        }
+
+        $(function () {
+            setInterval(receiveMessage, 3000);
+            setInterval(setTimeCount, 30000);
+        });
+    </script>
+</head>
+<body>
+<div class="head">
+    {include file="public/head"}
+</div>
+<div id="main" align="center">
+    <div class="chat-window">
+        <div class="chat-list" id="chat-list">
+
+        </div>
+        <div class="chat-editor-area" align="right">
+            <textarea class="form-control chat-editor" rows="6" id="chat-editor"
+                      onkeydown="enterToSend(event)"></textarea>
+            <button class="btn btn-success" onclick="sendMessage()">sent</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -6,6 +6,11 @@ a:link, a:visited {
     text-decoration: none; /*超链接无下划线*/
 }
 
+
+#informDrop {
+
+}
+
 .hoverbg:hover {
     background-color: #282828;
     -webkit-transition: all 0.5s;

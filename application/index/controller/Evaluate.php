@@ -7,6 +7,7 @@ use think\Controller;
 
 class Evaluate extends Controller
 {
+    //插入评论信息
     public function evaluate()
     {
         $evaluation = input("evaluation");
@@ -18,9 +19,14 @@ class Evaluate extends Controller
 
         $evaluate = model('Evaluate');
         $deal = model('Deal');
-        $deal_info = $deal->selectDealInfoByDealId($deal_id);
-        if ($evaluate->insertEvaluation($deal_info['dealid'], $deal_info['goodsid'], $deal_info['username'], $evaluation, $rate)) {
-            return $this->redirect('Deal/deal', ['operation' => 'evaluateSuccess']);
+        if ($deal_info = $deal->selectDealInfoByDealId($deal_id)) {
+            if ($evaluate->insertEvaluation($deal_info['dealid'], $deal_info['goodsid'], $deal_info['username'], $deal_info['seller_uid'], $evaluation, $rate)) {
+                $yd = model('YammyData');
+                $yd->updateInformNum($deal_info['seller_uid']);
+                return 1;
+            }
+        }else{
+            return print_r(input());
         }
     }
 

@@ -3,7 +3,11 @@
         评价管理
     </div>
     {volist name="deal" id="deal"}
-    <div class="panel panel-default" style="width: 800px;margin-bottom: 40px;margin-top: 20px;">
+    {eq name="$deal.is_read" value="0"}
+    <div class="panel panel-danger" style="width: 800px;margin-bottom: 40px;margin-top: 20px;">
+        {else/}
+        <div class="panel panel-default" style="width: 800px;margin-bottom: 40px;margin-top: 20px;">
+        {/eq}
         <div class="panel-heading" align="left" style="height:40px;">
             <div style="width: 30%;float: left;">
                 下单时间：{:date('Y-m-d H:i:s',$deal.dealtime)}

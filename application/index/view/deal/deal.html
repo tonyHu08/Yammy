@@ -13,44 +13,31 @@
             src="__STATIC__/js/ueditor/ueditor.all.js"></script>
 
     <script>
-        $(function () {
-            if ("{$operation}" != "null") {
-                switch ("{$operation}") {
-                    case "delete":
-                        document.getElementById("tip").innerHTML = "订单已删除";
-                        break;
-                    case "return":
-                        document.getElementById("tip").innerHTML = "退货申请成功";
-                        break;
-                    case "takeOver":
-                        document.getElementById("tip").innerHTML = "确认收货成功";
-                        break;
-                    case "evaluateSuccess":
-                        document.getElementById("tip").innerHTML = "评价成功";
-                        break;
-                }
-                $('#tips').modal('show');
-                //延时函数让浮窗消失
-                setTimeout(dismiss, 1200);
-            }
-        })
+        var star_num = 0;
 
         //浮窗消失
         function dismiss() {
             $('#tips').modal('hide');
-            setTimeout(changeTip, 1000);
         }
 
-        //更换浮窗内容
-        function changeTip() {
-            document.getElementById("tip").innerHTML = "提醒发货成功"
+
+        //提醒发货
+        function remindDelivery() {
+            $.get("{:url('index/Deal/remindDelivery')}", {dealid: dealid}, function (data) {
+                if (data == 1) {
+                    document.getElementById("tip").innerHTML = "提醒发货成功";
+                    $('#tips').modal('show');
+                    //延时函数让浮窗消失
+                    setTimeout(dismiss, 1200);
+                }
+            })
         }
 
         //星级评价
         $(document).ready(function () {
             var star = document.getElementsByClassName("star");
             $(".star").click(function () {
-                var star_num = $(this).attr("id");
+                star_num = $(this).attr("id");
                 i = 1;
                 for (i; i <= star_num; i++) {
                     ob = document.getElementById(i);
@@ -60,8 +47,7 @@
                     ob = document.getElementById(i);
                     ob.className = "glyphicon glyphicon-star-empty star";
                 }
-                document.getElementById("rate").value = star_num;
-                document.getElementById("submit_btn").disabled = false;
+                document.getElementById("submitBtn").disabled = false;
             })
         });
     </script>
@@ -117,7 +103,8 @@
                     </td>
                     <td style="width: 250px;" align="center">
                         店铺：
-                        <a href="__ROOT__/index/Goods/goodsSeller/shop/{$deal.shopname}.html" style="font-size: 14px;color: black;">
+                        <a href="__ROOT__/index/Goods/goodsSeller/shop/{$deal.shopname}.html"
+                           style="font-size: 14px;color: black;">
                             {$deal.shopname}
                         </a>
                     </td>
@@ -133,7 +120,7 @@
                         {/case}
                         {case value="已收货"}
                         <button class="btn btn-danger" data-toggle="modal" data-target="#modalReturn"
-                                onclick="document.getElementById('submit').value='{$deal.dealid}';"
+                                onclick="document.getElementById('dealid').value='{$deal.dealid}';"
                                 style="width: 80px;">退货
                         </button>
                         <button class="btn btn-success" data-toggle="modal" data-target="#modalEvaluate"
@@ -142,7 +129,7 @@
                         {/case}
                         {case value="申请退货"}
                         <button class="btn btn-danger" data-toggle="modal" data-target="#modalReturn"
-                                onclick="document.getElementById('submit').value='{$deal.dealid}';"
+                                onclick="document.getElementById('dealid').value='{$deal.dealid}';"
                                 style="width: 80px;" disabled>退货
                         </button>
                         <button class="btn btn-success" data-toggle="modal" data-target="#modalEvaluate"
@@ -151,16 +138,17 @@
                         {/case}
                         {case value="已下单"}
                         <button class="btn btn-danger" data-toggle="modal" data-target="#modalReturn"
-                                onclick="document.getElementById('submit').value='{$deal.dealid}';"
+                                onclick="document.getElementById('dealid').value='{$deal.dealid}';"
                                 style="width: 80px;">退款
                         </button>
                         <button class="btn btn-success" data-toggle="modal" data-target="#tips"
-                                style="width: 80px;margin: 5px;">提醒发货
+                                style="width: 80px;margin: 5px;" onclick=";dealid='{$deal.dealid}';remindDelivery();">
+                            提醒发货
                         </button>
                         {/case}
                         {default /}
                         <button class="btn btn-danger" data-toggle="modal" data-target="#modalReturn"
-                                onclick="document.getElementById('submit').value='{$deal.dealid}';"
+                                onclick="document.getElementById('dealid').value='{$deal.dealid}';"
                                 style="width: 80px;">退货
                         </button>
                         <button class="btn btn-success" data-toggle="modal" data-target="#modalTakeOver"
@@ -181,6 +169,6 @@
 {include file="deal/modal_take_over"}
 {include file="modal/modal_tip"}
 {include file="evaluate/modal_evaluate"}
-
+{include file="chat/modal_chat"}
 </body>
 </html>

@@ -68,7 +68,7 @@ class Goods extends Controller
                 if (input('goodsClassify' . $j) != null) {
                     $goodsClassifycount = $i;
                     $goodsClassify[$i] = input('goodsClassify' . $j);
-                    $goodsClassifyprice[$i] = input('goodsClassifyprice' . $j);
+                    $goodsClassifyprice[$i] = input('goodsClassifyPrice' . $j);
                 } else {
                     break;
                 }
@@ -76,19 +76,20 @@ class Goods extends Controller
             for ($i = 0; $i <= $goodsClassifycount; $i++) {
                 $yd->issueGoodsClassify($goodsid, $goodsClassify[$i], $goodsClassifyprice[$i]);
             }
-            return $this->success('发布成功！', 'Seller/seller_center');
+            return $this->success('发布成功！', 'Seller/sellerCenter');
         }
     }
 
     public function modGoods()        //将更新商品信息插入数据库
     {
+        //如果上传了新的商品图片
         if (request()->file('file')) {
             $data = [
                 'goodsName' => input('goodsName'),
                 'type' => input('type'),
                 'file' => request()->file('file'),
                 'goodsClassify' => input('goodsClassify1'),
-                'goodsPrice' => input('goodsClassifyprice1'),
+                'goodsPrice' => input('goodsClassifyPrice1'),
                 'goodsIntroduction' => input('goodsIntroduction')
             ];
             $vali = validate('IssueGoods');
@@ -107,11 +108,11 @@ class Goods extends Controller
             $yd = model('YammyData');
             if ($yd->updateGoods($data['goodsName'], $data['type'], $headimgPath, $data['goodsPrice'], $data['goodsIntroduction'], input('goodsId'))) {
                 //插入商品类别信息
-                for ($i = 0, $j = 1; $i < 5; $i++, $j++) {
+                for ($i = 0, $j = 1; $i < 99; $i++, $j++) {
                     if (input('goodsClassify' . $j) != null) {
                         $goodsClassifycount = $i;
                         $goodsClassify[$i] = input('goodsClassify' . $j);
-                        $goodsClassifyprice[$i] = input('goodsClassifyprice' . $j);
+                        $goodsClassifyPrice[$i] = input('goodsClassifyPrice' . $j);
                     } else {
                         break;
                     }
@@ -120,14 +121,14 @@ class Goods extends Controller
                 if ($goodsClassifyInfo) {
                     if (count($goodsClassifyInfo) <= ($goodsClassifycount + 1)) {
                         for ($i = 0; $i < count($goodsClassifyInfo); $i++) {
-                            $yd->updateGoodsClassify(($goodsClassifyInfo[$i])['goodsclassifyid'], $goodsClassify[$i], $goodsClassifyprice[$i]);
+                            $yd->updateGoodsClassify(($goodsClassifyInfo[$i])['goodsclassifyid'], $goodsClassify[$i], $goodsClassifyPrice[$i]);
                         }
                         for ($i; $i <= $goodsClassifycount; $i++) {
-                            $yd->issueGoodsClassify(input('goodsId'), $goodsClassify[$i], $goodsClassifyprice[$i]);
+                            $yd->issueGoodsClassify(input('goodsId'), $goodsClassify[$i], $goodsClassifyPrice[$i]);
                         }
                     } else {
                         for ($i = 0; $i <= $goodsClassifycount; $i++) {
-                            $yd->updateGoodsClassify(($goodsClassifyInfo[$i])['goodsclassifyid'], $goodsClassify[$i], $goodsClassifyprice[$i]);
+                            $yd->updateGoodsClassify(($goodsClassifyInfo[$i])['goodsclassifyid'], $goodsClassify[$i], $goodsClassifyPrice[$i]);
                         }
                         for ($i; $i < count($goodsClassifyInfo); $i++) {
                             $yd->deleteGoodsClassify(($goodsClassifyInfo[$i])['goodsclassifyid']);
@@ -136,12 +137,13 @@ class Goods extends Controller
                 }
                 return $this->success('设置成功！', 'Seller/sellerCenter?func=manage');
             }
+            //如果没有上传商品图片
         } else {
             $data = [
                 'goodsName' => input('goodsName'),
                 'type' => input('type'),
                 'goodsClassify' => input('goodsClassify1'),
-                'goodsPrice' => input('goodsClassifyprice1'),
+                'goodsPrice' => input('goodsClassifyPrice1'),
                 'file' => 'have',
                 'goodsIntroduction' => input('goodsIntroduction')
             ];
@@ -151,31 +153,37 @@ class Goods extends Controller
             }
             $yd = model('YammyData');
             $yd->updateGoodsNoImg($data['goodsName'], $data['type'], $data['goodsPrice'], $data['goodsIntroduction'], input('goodsId'));
-            for ($i = 0, $j = 1; $i < 5; $i++, $j++) {
+            for ($i = 0, $j = 1; $i < 99; $i++, $j++) {
                 if (input('goodsClassify' . $j) != null) {
                     $goodsClassifycount = $i;
                     $goodsClassify[$i] = input('goodsClassify' . $j);
-                    $goodsClassifyprice[$i] = input('goodsClassifyprice' . $j);
+                    $goodsClassifyPrice[$i] = input('goodsClassifyPrice' . $j);
                 } else {
                     break;
                 }
             }
             $goodsClassifyInfo = $yd->selectGoodsClassify(input('goodsId'));
+            //如果已经有分类信息
             if ($goodsClassifyInfo) {
                 if (count($goodsClassifyInfo) <= ($goodsClassifycount + 1)) {
                     for ($i = 0; $i < count($goodsClassifyInfo); $i++) {
-                        $yd->updateGoodsClassify(($goodsClassifyInfo[$i])['goodsclassifyid'], $goodsClassify[$i], $goodsClassifyprice[$i]);
+                        $yd->updateGoodsClassify(($goodsClassifyInfo[$i])['goodsclassifyid'], $goodsClassify[$i], $goodsClassifyPrice[$i]);
                     }
                     for ($i; $i <= $goodsClassifycount; $i++) {
-                        $yd->issueGoodsClassify(input('goodsId'), $goodsClassify[$i], $goodsClassifyprice[$i]);
+                        $yd->issueGoodsClassify(input('goodsId'), $goodsClassify[$i], $goodsClassifyPrice[$i]);
                     }
                 } else {
                     for ($i = 0; $i <= $goodsClassifycount; $i++) {
-                        $yd->updateGoodsClassify(($goodsClassifyInfo[$i])['goodsclassifyid'], $goodsClassify[$i], $goodsClassifyprice[$i]);
+                        $yd->updateGoodsClassify(($goodsClassifyInfo[$i])['goodsclassifyid'], $goodsClassify[$i], $goodsClassifyPrice[$i]);
                     }
                     for ($i; $i < count($goodsClassifyInfo); $i++) {
                         $yd->deleteGoodsClassify(($goodsClassifyInfo[$i])['goodsclassifyid']);
                     }
+                }
+                //如果没有分类信息，新增分类信息
+            } else {
+                for ($i = 0; $i <= $goodsClassifycount; $i++) {
+                    $yd->issueGoodsClassify(input('goodsId'), $goodsClassify[$i], $goodsClassifyPrice[$i]);
                 }
             }
             return $this->success('设置成功！', 'Seller/sellerCenter?func=manage');
@@ -246,6 +254,10 @@ class Goods extends Controller
             $this->assign('goodsClassify', $goodsClassify);
             $this->assign('goodsClassifyId', $goodsClassifyId);
             $this->assign('tip', '加入购物车成功！');
+            $chat = new Chat();
+            $opposite_uid = $chat->chatModal($goodsinfo['shopid']);
+            $this->assign('opposite_uid', $opposite_uid);
+            $this->assign('shop_id', $goodsinfo['shopid']);
             return $this->fetch();
         } else {
             return $this->error('商品信息错误');

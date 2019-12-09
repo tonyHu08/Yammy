@@ -11,13 +11,41 @@
     <script type="text/javascript"
             src="__STATIC__/js/ueditor/ueditor.all.js"></script>
     <script>
+        //浮窗消失
+        function dismiss() {
+            $('#tips').modal('hide');
+            setTimeout(changeTip, 1000);
+        }
+
+        //更换浮窗内容
+        function changeTip() {
+            document.getElementById("tip").innerHTML = "提醒发货成功"
+        }
+
+
         function buy() {
             '{foreach $goods as $goodsinfo}'
-                $.post("/index/deal/insertDeal/goodsid/{$goodsinfo.goodsid}/classifyid/{$goodsinfo.goodsclassifyid}/count/{$goodsinfo.count}/price/{$goodsinfo.price*$goodsinfo.count}/classify/{$goodsinfo.goodsclassify}/shoppingcartid/{$goodsinfo.shoppingcartid}.html", '',
-                    function (data) {
-                    }, 'json');
+            $.get("{:url('index/Deal/insertDeal')}",
+                {
+                    goodsid: "{$goodsinfo.goodsid}",
+                    classifyid: "{$goodsinfo.goodsclassifyid}",
+                    count: "{$goodsinfo.count}",
+                    price: "{$goodsinfo.price*$goodsinfo.count}",
+                    classify: "{$goodsinfo.goodsclassify}",
+                    shoppingcartid: "{$goodsinfo.shoppingcartid}"
+                },
+                function (data) {
+                    console.log(data);
+                }, 'json');
             '{/foreach}'
-            document.getElementById("buy").href = "{:url('Deal/successDeal')}";
+
+            document.getElementById("tip").innerHTML = "下单成功";
+            $('#tips').modal('show');
+            //延时函数让浮窗消失
+            setTimeout(dismiss, 1200);
+            setTimeout(function () {
+                location.replace("{:url('index/Deal/deal')}");
+            }, 1300);
         }
     </script>
     {css href="/static/css/public.css"}
@@ -96,7 +124,7 @@
                         ¥{$sumprice}
                     </td>
                     <td width="10%">
-                        <a  onclick="buy()" href="" id="buy">
+                        <a onclick="buy()" href="javascript:;" id="buy">
                             <div style="width: 100%;height: 50px;background-color: #bd4946;font-size: 22px;color: white;box-shadow: 1px 1px 2px #777777;line-height: 50px;vertical-align: middle;"
                                  align="center">
                                 买单
@@ -107,7 +135,7 @@
             </table>
         </div>
     </div>
-
 </div>
+{include file="modal/modal_tip"}
 </body>
 </html>

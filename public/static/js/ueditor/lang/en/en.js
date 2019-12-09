@@ -482,7 +482,7 @@ UE.I18N['en'] = {
             'lang_chart_format': 'Chart format:',
             'lang_data_align': 'Align',
             'lang_chart_align_same': 'Consistent with the X-axis Y-axis',
-            'lang_chart_align_reverse': 'X-axis Y-axis opposite',
+            'lang_chart_align_reverse': 'X-axis Y-axis opposite_uid',
             'lang_chart_title': 'Title',
             'lang_chart_main_title': 'main title:',
             'lang_chart_sub_title': 'sub title:',

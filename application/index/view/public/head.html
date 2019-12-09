@@ -1,4 +1,210 @@
-<div style="background-color: #e0e0e0;vertical-align: middle;height: 35px;width: 100%;line-height: 35px;box-shadow: 1px 1px 10px #323232;">
+<style>
+    .head {
+        background-color: #e0e0e0;
+        vertical-align: middle;
+        height: 35px;
+        width: 100%;
+        line-height: 35px;
+        box-shadow: 1px 1px 10px #323232;
+        position: relative;
+    }
+
+    #informDrop {
+        display: none;
+        background: whitesmoke;
+        height: 500px;
+        width: 350px;
+        position: relative;
+        right: 0px;
+        top: 0px;
+        overflow: scroll;
+        border: lightgray 1px solid;
+        border-radius: 5px;
+        /*box-shadow: 2px 2px 5px #999999;*/
+    }
+
+    #informTitle {
+        width: 100%;
+        height: 40px;
+        line-height: 40px;
+        vertical-align: middle;
+        background: lightgray;
+        font-size: 20px;
+        padding-left: 10px;
+    }
+
+    #chatInformArea {
+        width: 100%;
+        height: 70px;
+        line-height: 70px;
+        vertical-align: middle;
+        border-bottom: lightgray 1px solid;
+    }
+
+    #chatIconArea {
+        width: 70px;
+        font-size: 27px;
+        float: left;
+    }
+
+    #chatInform {
+        width: 250px;
+        float: left;
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+    #chatListGuide, #dealListGuide {
+        width: 350px;
+        height: 35px;
+        padding-left: 7px;
+        font-size: 18px;
+        border-bottom: 1px lightgray solid;
+    }
+
+    #chatList {
+        width: 350px;
+        height: 460px;
+        display: none;
+    }
+
+    #dealList {
+        width: 350px;
+        height: 460px;
+        display: none;
+        position: relative;
+    }
+
+    .unread-chat-item {
+        width: 350px;
+        height: 60px;
+        border-bottom: 1px lightgray solid;
+        vertical-align: middle;;
+        /*line-height: 60px;*/
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    .item-badge {
+        margin-left: 5px;
+        margin-top: 20px;
+        float: left;
+
+    }
+
+    .chat-item-headimg {
+        width: 40px;
+        margin: 10px;
+        float: left;
+    }
+
+    .chat-msg-area {
+        height: 60px;
+        width: 200px;
+        float: left;
+        padding-top: 5px;
+    }
+    .chat-username {
+        color: black;
+        font-size: 15px;
+    }
+
+    .item-msg {
+        /*width: 200px;*/
+        /*border: black 1px solid;*/
+        /*float: left;*/
+        position: relative;
+        color: gray;
+        /*display: block;*/
+    }
+
+
+
+    .deal-item-btn {
+
+        position: absolute;
+        right: 20px;
+        top: 30px;
+        /*float: right;*/
+        /*margin: 10px;*/
+        /*height: 30px;*/
+        /*width: 40px;*/
+        /*line-height: 30px;*/
+        /*vertical-align: middle;*/
+    }
+
+    #evaluationInformArea {
+        width: 100%;
+        height: 70px;
+        line-height: 70px;
+        vertical-align: middle;
+        border-bottom: lightgray 1px solid;
+    }
+
+    #evaluationIconArea {
+        width: 70px;
+        font-size: 27px;
+        float: left;
+    }
+
+    #evaluationInform {
+        width: 250px;
+        float: left;
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+    #dealInformArea {
+        width: 100%;
+        height: 70px;
+        line-height: 70px;
+        vertical-align: middle;
+        border-bottom: lightgray 1px solid;
+    }
+
+    #dealIconArea {
+        width: 70px;
+        font-size: 27px;
+        float: left;
+    }
+
+    #dealInform {
+        width: 250px;
+        float: left;
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+    .unread-deal-item {
+        width: 350px;
+        height: 100px;
+        border-bottom: 1px lightgray solid;
+        vertical-align: middle;
+        line-height: 100px;
+        cursor: pointer;
+        position: relative;
+    }
+
+    .deal-item-goodsimg {
+        width: 80px;
+    }
+
+    /* Chrome, Safari, Opera */
+    @-webkit-keyframes mymove {
+        50% {
+            height: 500px;
+        }
+    }
+
+    /* Standard syntax */
+    @keyframes mymove {
+        50% {
+            height: 500px;
+        }
+    }
+</style>
+
+<div class="head">
     <small>
         {eq name="null" value="$Think.session.username"}
         <div style="float: left;padding-left: 10%;vertical-align: middle;height: 35px;line-height: 35px;white-space: nowrap;">
@@ -51,9 +257,284 @@
             <div style="float: left;margin-right: 5%;">
                 <font color="#939393">|</font>
             </div>
-            <a href="" style="color: #939393;">
-                未读通知：<span class="badge">0</span>
+            <a href="javascript:;" style="color: #939393;" id="dropbtn">
+                未读通知：<span class="badge" id="informNum">0</span>
             </a>
+            <div id="informDrop">
+                <div id="informTitle">
+                    通知中心
+                </div>
+                <div id="chatList">
+                    <div id="chatListGuide">
+                        <a href="javascript:;" onclick="backToInformContent()"><span
+                                class="glyphicon glyphicon-chevron-left" style="color: gray;"></span></a>
+                    </div>
+                </div>
+
+                <div id="dealList">
+                    <div id="dealListGuide">
+                        <a href="javascript:;" onclick="backToInformContent()"><span
+                                class="glyphicon glyphicon-chevron-left" style="color: gray;"></span></a>
+                    </div>
+                </div>
+
+                <div id="informContent">
+                    <div id="chatInformArea">
+                        <div id="chatIconArea" align="center">
+                            <span class="glyphicon glyphicon-comment"></span>
+                        </div>
+                        <div id="chatInform">
+
+                        </div>
+                    </div>
+                    <div id="evaluationInformArea">
+                        <div id="evaluationIconArea" align="center">
+                            <span class="glyphicon glyphicon-align-left"></span>
+                        </div>
+                        <div id="evaluationInform">
+
+                        </div>
+                    </div>
+                    <div id="dealInformArea">
+                        <div id="dealIconArea" align="center">
+                            <span class="glyphicon glyphicon-gift"></span>
+                        </div>
+                        <div id="dealInform">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </small>
 </div>
+
+
+<script>
+    var informNum = document.getElementById('informNum');
+
+    function checkInformNum() {
+        $.get("{:url('index/Inform/checkInformNum')}", null, function (data) {
+            informNum.innerText = data;
+            if (data > 0) {
+                informNum.style.background = 'red';
+            } else {
+                informNum.style.background = 'gray';
+            }
+        }, 'json');
+    }
+
+    function refreshInformNum() {
+        $.get("{:url('index/Inform/refreshInformNum')}", null, function () {
+
+        }, 'json')
+    }
+
+    var drop = document.getElementById('informDrop');
+    var dropbtn = document.getElementById('dropbtn');
+    var chatInformBtn = document.getElementById('chatInform');
+    var inform_content = document.getElementById('informContent');
+    var chat_list = document.getElementById('chatList');
+    var chat_list_guide = document.getElementById('chatListGuide');
+    var dealInformBtn = document.getElementById('dealInform');
+    var deal_list = document.getElementById('dealList');
+    var deal_list_guide = document.getElementById('dealListGuide');
+
+    var evaluation_inform_btn = document.getElementById('evaluationInform');
+
+    function backToInformContent() {
+        if (chat_list.style.display == 'block') {
+            chat_list.style.display = 'none';
+            drop.replaceChild(inform_content, chat_list);
+        }
+        if (deal_list.style.display == 'block') {
+            deal_list.style.display = 'none';
+            drop.replaceChild(inform_content, deal_list);
+        }
+    }
+
+    window.onload = function () {
+        checkInformNum();
+        setInterval(checkInformNum, 5000);
+        document.onclick = function (e) {
+            if ($('body').hasClass('modal-open')) {
+                var e = e || window.e;
+                stopFunc(e);
+            } else {
+                drop.style.display = 'none';
+                console.log('document');
+                backToInformContent();
+            }
+        }
+        dropbtn.onclick = function (e) {
+            console.log('btn');
+            if (drop.style.display == 'block') {
+                backToInformContent();
+                drop.style.display = 'none';
+            } else {
+                refreshInformNum();
+                drop.style.display = 'block';
+                checkInform();
+            }
+            var e = e || window.e;
+            stopFunc(e);
+        }
+
+        drop.onclick = function (e) {
+            var e = e || window.e;
+            stopFunc(e);
+        }
+
+        //按下未读消息按钮后
+        chatInformBtn.onclick = function (e) {
+            chat_list.style.display = 'block';
+            var e = e || window.e;
+            stopFunc(e);
+            chat_list.innerHTML = '';
+
+            chat_list.appendChild(chat_list_guide);
+            $.ajaxSettings.async = false;
+            $.get("{:url('index/Inform/checkAllChatInformByGroup')}", null, function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    console.log(data[i]);
+                    var unread_chat_item = document.createElement('div');
+                    var headimg = document.createElement('img');
+                    var msg_area = document.createElement('div');
+                    var msg = document.createElement('font');
+                    var username = document.createElement('font');
+                    msg_area.className = 'chat-msg-area';
+                    headimg.className = 'chat-item-headimg';
+                    username.className = 'chat-username';
+                    unread_chat_item.className = 'unread-chat-item';
+                    msg.className = 'item-msg';
+                    var num = document.createElement('span');
+                    num.className = 'badge item-badge';
+                    var unreadNum = data[i]['count(chat_content)'] - data[i]['sum(is_read)'];
+                    if (unreadNum != 0) {
+                        num.style.background = 'red';
+                    }
+                    num.innerHTML = unreadNum;
+                    unread_chat_item.appendChild(num);
+
+                    $.get("{:url('index/Chat/getUnreadItem')}", {opposite_uid: data[i]['sender_uid']}, function (item) {
+                        console.log(item);
+                        headimg.src = item['headimg'];
+                        headimg.width = 40;
+                        headimg.height = 40;
+
+                        username.innerHTML = item['username'] + '<br>';
+
+                        msg.innerHTML = item['newest_msg'];
+
+                        msg_area.appendChild(username);
+                        msg_area.appendChild(msg);
+
+                        unread_chat_item.onclick = function (e) {
+                            //点击聊天栏后，打开聊天窗口，未读标记清零
+                            createChat(item['sender_uid']);
+                            var item_div = this;
+                            var item_num = item_div.getElementsByTagName('span')[0];
+                            item_num.innerHTML = 0;
+                            item_num.style.background = 'gray';
+                            var e = e || window.e;
+                            stopFunc(e);
+                        }
+                    }, 'json');
+                    unread_chat_item.appendChild(headimg);
+                    unread_chat_item.appendChild(msg_area);
+                    chat_list.appendChild(unread_chat_item);
+                }
+            }, 'json')
+            $.ajaxSettings.async = true;
+            drop.replaceChild(chat_list, inform_content);
+        }
+
+        dealInformBtn.onclick = function (e) {
+            deal_list.style.display = 'block';
+            var e = e || window.e;
+            stopFunc(e);
+            deal_list.innerHTML = '';
+
+            deal_list.appendChild(chat_list_guide);
+            $.ajaxSettings.async = false;
+            $.get("{:url('index/Inform/checkAllDealInfrom')}", null, function (deal) {
+                    console.log(deal);
+                    for (var i = 0; i < deal.length; i++) {
+                        var this_deal = deal[i];
+                        var unread_deal_item = document.createElement('div');
+                        var goodsimg = document.createElement('img');
+                        var msg = document.createElement('font');
+                        var time = document.createElement('p');
+                        var deal_btn = document.createElement('button');
+                        deal_btn.className = 'deal-item-btn btn btn-danger';
+                        unread_deal_item.className = 'unread-deal-item';
+                        goodsimg.src = deal[i]['goodsimg'];
+                        goodsimg.width = 80;
+                        goodsimg.height = 80;
+                        goodsimg.className = 'deal-item-goodssimg';
+                        unread_deal_item.appendChild(goodsimg);
+                        unread_deal_item.appendChild(msg);
+                        //如果是卖家接受的信息
+                        if (deal[i]['seller_uid'] == "{:session('uid')}") {
+                            msg.innerHTML = "您的订单 买家" + deal[i]['deal_status'];
+                            deal_btn.innerHTML = "发货";
+                            deal_btn.onclick = function (e) {
+                                deliverGoods(this_deal['dealid']);
+                                this.innerHTML = "已发货";
+                                this.style.disabled = true;
+                                var e = e || window.e;
+                                stopFunc(e);
+                            }
+                            // unread_deal_item.appendChild(deal_btn);
+                        } else {
+                            msg.innerHTML = "您的订单 卖家" + deal[i]['deal_status'];
+                        }
+                        // time.innerText = deal[i]['time'];
+                        msg.className = 'item-msg';
+
+                        // unread_deal_item.appendChild(time);
+                        unread_deal_item.id = i;
+                        deal_list.appendChild(unread_deal_item);
+
+                        unread_deal_item.onclick = function (e) {
+                            console.log(this.id);
+                            //如果这是卖家订单通知
+                            if (deal[this.id]['seller_uid'] == "{:session('uid')}") {
+                                location.replace("{:url('index/seller/sellerCenter?func=deal')}");
+                            } else {
+                                location.replace("{:url('index/Deal/deal')}");
+                            }
+                            stopFunc(e);
+                        }
+                    }
+                }, 'json'
+            )
+            $.ajaxSettings.async = true;
+            drop.replaceChild(deal_list, inform_content);
+        }
+
+        //点击未读评论跳转到评论管理页面
+        evaluation_inform_btn.onclick = function () {
+            location.replace("{:url('index/Seller/sellerCenter?func=evaluation')}");
+        }
+
+        function checkInform() {
+            $.get("{:url('index/Inform/checkAllInform')}", null, function (data) {
+                var chat_inform = document.getElementById('chatInform');
+                var evaluation_inform = document.getElementById('evaluationInform');
+                var deal_inform = document.getElementById('dealInform');
+                console.log(data);
+                chat_inform.innerText = "你有 " + data[0] + " 条未读聊天";
+                evaluation_inform.innerText = "你有 " + data[1] + " 条未读评论";
+                deal_inform.innerText = "你有 " + data[2] + " 条未读订单信息";
+            }, 'json')
+        }
+
+
+        function stopFunc(e) {
+            /*标准浏览器有效 IE不行   e.stopPropagation();*/
+            /*没有兼容性问题阻止事件冒泡e.cancelBubble = true;*/
+            e.stopPropagation ? e.stopPropagation() : e.cancelBubble = true;
+        }
+    }
+</script>

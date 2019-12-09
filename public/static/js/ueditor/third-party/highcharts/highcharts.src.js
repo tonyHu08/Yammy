@@ -4782,7 +4782,7 @@ Highcharts.VMLElement = VMLElement = {
 							value = value === HIDDEN ? '-999em' : 0;
 
 							// In order to redraw, IE7 needs the div to be visible when tucked away
-							// outside the viewport. So the visibility is actually opposite of
+							// outside the viewport. So the visibility is actually opposite_uid of
 							// the expected value. This applies to the tooltip only.
 							if (!docMode8) {
 								elemStyle[key] = value ? VISIBLE : HIDDEN;
@@ -6500,7 +6500,7 @@ Axis.prototype = {
 		minorTickLength: 2,
 		minorTickPosition: 'outside', // inside or outside
 		//minorTickWidth: 0,
-		//opposite: false,
+		//opposite_uid: false,
 		//offset: 0,
 		//plotBands: [{
 		//	events: {},
@@ -7054,7 +7054,7 @@ Axis.prototype = {
 
 	/**
 	 * Create the path for a plot line that goes from the given value on
-	 * this axis, across the plot to the opposite side
+	 * this axis, across the plot to the opposite_uid side
 	 * @param {Number} value
 	 * @param {Number} lineWidth Used for calculation crisp line
 	 * @param {Number] old Use old coordinates (for resizing and rescaling)
@@ -8188,7 +8188,7 @@ Axis.prototype = {
 			// the position in the perpendicular direction of the axis
 			offAxis = (horiz ? axisTop + this.height : axisLeft) +
 				(horiz ? 1 : -1) * // horizontal axis reverses the margin
-				(opposite ? -1 : 1) * // so does opposite axes
+				(opposite ? -1 : 1) * // so does opposite_uid axes
 				this.axisTitleMargin +
 				(this.side === 2 ? fontSize : 0);
 

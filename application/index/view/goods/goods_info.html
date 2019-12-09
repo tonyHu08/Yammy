@@ -1,7 +1,8 @@
 <div id="bodyhead"
      style="width: 1150px;height: 570px;border: cornflowerblue 0px solid;background-color: white;box-shadow: 2px 2px 5px #999999;">
     <div style="width: 45%;height: 500px;float: left;border: coral 0px solid;">
-        <div style="width: 360px;height: 360px;background-color: #f9f9f9;;margin-top: 70px;margin-left: 30px;border: 1px #e5e5e5 solid;" id="img">
+        <div style="width: 360px;height: 360px;background-color: #f9f9f9;;margin-top: 70px;margin-left: 30px;border: 1px #e5e5e5 solid;"
+             id="img">
             <img src="{$goodsinfo.goodsimg}" width="350px" height="350px" id="good_img">
         </div>
     </div>
@@ -60,9 +61,19 @@
                         </font>
                     </td>
                     <td>
-                        <a href="__ROOT__/index/Goods/goodsSeller/shop/{$goodsinfo.shop}.html" style="font-size: 14px;color: black;">
+                        <a href="__ROOT__/index/Goods/goodsSeller/shop/{$goodsinfo.shop}.html"
+                           style="font-size: 14px;color: black;">
                             {$goodsinfo.shop}
                         </a>
+                        {eq name="null" value="$Think.session.username"}
+                        <a href="" data-toggle="modal"
+                           data-target="#myModal"><span class="glyphicon glyphicon-comment"></span></a>
+                        {elseif $goodsinfo.uid != $Think.session.uid}
+<!--                        <a href="{:url('Chat/chat',['shop_id' => $goodsinfo.shopid])}"><span-->
+<!--                                class="glyphicon glyphicon-comment"></span></a>-->
+                        <a href="javascript:;" onclick="createChat('{$goodsinfo.uid}')"><span
+                                class="glyphicon glyphicon-comment"></span></a>
+                        {/eq}
                     </td>
                 </tr>
                 <tr style="border-top: gray 1px dashed;">
@@ -102,12 +113,14 @@
                             {eq name="0" value="$key"}
                             <label class="btn btn-default active">
                                 <input type="radio" name="options"
-                                       value="{$list.goodsprice}" onchange="classifyPrice(value,'{$list.goodsclassifyid}','{$list.goodsimg}')">{$list.goodsclassify}
+                                       value="{$list.goodsprice}"
+                                       onchange="classifyPrice(value,'{$list.goodsclassifyid}','{$list.goodsimg}')">{$list.goodsclassify}
                             </label>
                             {else/}
                             <label class="btn btn-default">
                                 <input type="radio" name="options"
-                                       value="{$list.goodsprice}" onchange="classifyPrice(value,'{$list.goodsclassifyid}','{$list.goodsimg}')">{$list.goodsclassify}
+                                       value="{$list.goodsprice}"
+                                       onchange="classifyPrice(value,'{$list.goodsclassifyid}','{$list.goodsimg}')">{$list.goodsclassify}
                             </label>
                             {/eq}
                             {/volist}
@@ -141,7 +154,11 @@
         <div style="float: left;margin-top: 0px;margin-left: 5px;">
             {eq name="null" value="$Think.session.username"}
             <button type="button" class="btn btn-success btn-lg" data-toggle="modal"
-                    data-target="#myModal">立即购买</button>
+                    data-target="#myModal">立即购买
+                {elseif $goodsinfo.uid == $Think.session.uid}
+                <button type="button" class="btn btn-success btn-lg" data-toggle="modal"
+                    data-target="#myModal" disabled>立即购买
+            </button>
             {else/}
             <button type="button" class="btn btn-success btn-lg" onclick=buy() id="buy">立即购买</button>
             {/eq}
@@ -152,9 +169,14 @@
                     data-toggle="modal" data-target="#myModal"
             ><span class="glyphicon glyphicon-shopping-cart"></span>加入购物车
             </button>
+            {elseif $goodsinfo.uid == $Think.session.uid}
+            <button type="button" class="btn btn-danger btn-lg"
+                    data-toggle="modal" data-target="#myModal" disabled
+            ><span class="glyphicon glyphicon-shopping-cart"></span>加入购物车
+            </button>
             {else/}
             <button type="button" class="btn btn-danger btn-lg"
-                    onclick="shoppingcart(this.value)" id="goodsid" value="{$goodsinfo.goodsid}" data-toggle="modal"
+                    onclick="shoppingcart(this.value);" id="goodsid" value="{$goodsinfo.goodsid}" data-toggle="modal"
                     data-target="#tips"><span
                     class="glyphicon glyphicon-shopping-cart"></span>加入购物车
             </button>

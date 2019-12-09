@@ -2,8 +2,9 @@
     <div style="font-family: 'Heiti SC';font-size: 22px;padding:10px 0 0 30px;">
         发布商品
     </div>
+
     <form method="post" action="{:url('Goods/issueGoods')}" role="form" class="form-horizontal"
-          enctype="multipart/form-data">
+          enctype="multipart/form-data" id="issue-form" onsubmit="return checkForm()">
         <div style="width: 100%;height: 250px;margin-top: 1%;border: lightblue 0px solid;">
             <div style="width: 30%;height: 70%;border: lightcoral 0px solid;float: left;" align="center">
                 <div style="margin-top: 40px">
@@ -121,30 +122,42 @@
                 <span class="glyphicon glyphicon-chevron-right" style="font-size: 25px;"></span>
             </div>
             <div id="inputdiv" style="width: 60%;height: 100%;float: left;" align="center">
-                <div style="width: 45%;height: 100%;border: coral 0px solid;float: left;overflow-y: auto;margin-top: 20px;margin-left: 12%">
+                <div style="width: 80%;height: 100%;overflow-y: auto;margin-top: 20px;"
+                     id="classify">
                     <input type="text" name="goodsClassify1" id="goodsClassify1" placeholder="请输入商品分类"
-                           class="form-control" style="margin-top: 10px;"/>
-                    <input type="text" name="goodsClassify2" id="goodsClassify2" placeholder="请输入商品分类"
-                           class="form-control" style="margin-top: 10px;"/>
-                    <input type="text" name="goodsClassify3" id="goodsClassify3" placeholder="请输入商品分类"
-                           class="form-control" style="margin-top: 10px;"/>
-                    <input type="text" name="goodsClassify4" id="goodsClassify4" placeholder="请输入商品分类"
-                           class="form-control" style="margin-top: 10px;"/>
-                    <input type="text" name="goodsClassify5" id="goodsClassify5" placeholder="请输入商品分类"
-                           class="form-control" style="margin-top: 10px;"/>
+                           class="form-control classify-name">
+                    <input type="number" name="goodsClassifyPrice1" id="goodsClassifyprice1" placeholder="请输入分类价格"
+                           class="form-control classify-price" min="0"/>
+                    <button onclick="addGoodsClassify()" type="button" id="append" class="btn-default btn" style="margin-top: 10px;">
+                        <span class="glyphicon glyphicon-plus" style="font-size: 18px;"></span>
+                    </button>
                 </div>
-                <div style="width: 31%;height: 100%;border: coral 0px solid;float: left;overflow-y: auto;margin-top: 20px;">
-                    <input type="number" name="goodsClassifyprice1" id="goodsClassifyprice1" placeholder="请输入分类价格"
-                           class="form-control" style="margin-top: 10px;"/>
-                    <input type="number" name="goodsClassifyprice2" id="goodsClassifyprice2" placeholder="请输入分类价格"
-                           class="form-control" style="margin-top: 10px;"/>
-                    <input type="number" name="goodsClassifyprice3" id="goodsClassifyprice3" placeholder="请输入分类价格"
-                           class="form-control" style="margin-top: 10px;"/>
-                    <input type="number" name="goodsClassifyprice4" id="goodsClassifyprice4" placeholder="请输入分类价格"
-                           class="form-control" style="margin-top: 10px;"/>
-                    <input type="number" name="goodsClassifyprice5" id="goodsClassifyprice5" placeholder="请输入分类价格"
-                           class="form-control" style="margin-top: 10px;"/>
-                </div>
+                <script>
+                    var count = 1;
+
+                    function addGoodsClassify() {
+                        count++;
+                        append = document.getElementById('append');
+
+                        classify_div = document.getElementById('classify');
+                        classify = document.createElement("input");
+                        classify.name = "goodsClassify" + count;
+                        classify.type = "text";
+                        classify.id = "goodsClassify" + count;
+                        classify.placeholder = "请输入分类名称";
+                        classify.className = "form-control classify-name";
+                        classify_div.insertBefore(classify, append);
+
+                        classify_price = document.createElement("input");
+                        classify_price.name = "goodsClassifyPrice" + count;
+                        classify_price.type = "number";
+                        classify_price.id = "goodsClassifyPrice" + count;
+                        classify_price.placeholder = "请输入分类价格";
+                        classify_price.className = "form-control classify-price";
+                        classify_price.min = 0;
+                        classify_div.insertBefore(classify_price, append);
+                    }
+                </script>
             </div>
         </div>
         <div style="width: 100%;height: 250px;border-top: gray 1px solid;margin-top: 30px;">

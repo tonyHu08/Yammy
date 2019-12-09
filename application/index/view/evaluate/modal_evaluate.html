@@ -6,11 +6,10 @@
                 <h4 class="modal-title" id="myModalLabel">商品评价</h4>
             </div>
             <div class="modal-body" align="center" style="height: 470px;background-color: #303030">
-                <form role="form" method="post" action="{:url('index/Evaluate/evaluate')}" id="evaluate_form">
                     <div style="color:#fff8dc;font-size: 20px;margin-top: 5%;">
 
                         <div class="form-group">
-                            <textarea class="form-control" rows="13" name="evaluation"></textarea>
+                            <textarea class="form-control" rows="13" id="evaluation"></textarea>
                         </div>
                     </div>
                     <div style="padding-top: 30px;width: 60%;color: whitesmoke;" align="left">
@@ -32,21 +31,24 @@
                         </a>
                     </div>
                     <div style="padding-top: 30px;width: 60%;">
-                        <input type="number" name="rate" id="rate" style="display: none;">
-                        <button class="btn btn-default btn-block" onclick="eva()" name="dealid"
-                                id="submit_btn" disabled>评价
+                        <button class="btn btn-default btn-block" onclick="eva()" type="button"disabled id="submitBtn">评价
                         </button>
                     </div>
-                </form>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
 </div>
 <script>
     function eva() {
-        document.getElementById("submit_btn").value = dealid;
-        var form = document.getElementById('evaluate_form');
-
-        form.submit();
+        let evaluation = document.getElementById('evaluation').value;
+        $.get("{:url('index/Evaluate/evaluate')}", {dealid: dealid, evaluation: evaluation, rate: star_num}, function (data) {
+            if (data == 1) {
+                $("#modalEvaluate").modal('hide');
+                document.getElementById("tip").innerHTML = "评论成功";
+                $('#tips').modal('show');
+                //延时函数让浮窗消失
+                setTimeout(dismiss, 1200);
+            }
+        })
     }
 </script>

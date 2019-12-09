@@ -22,6 +22,17 @@
 </div>
 <script>
     function conf() {
-        window.location.href = "__ROOT__/index/Deal/goodsTakeOver/dealid/" + dealid +".html";
+        $.get("{:url('index/deal/goodsTakeOver')}", {dealid: dealid}, function (data) {
+            if (data == 1) {
+                $("#modalTakeOver").modal('hide');
+                document.getElementById("tip").innerHTML = "确认收货成功";
+                $('#tips').modal('show');
+                //延时函数让浮窗消失
+                setTimeout(function () {
+                    dismiss;
+                    location.reload();
+                }, 1300);
+            }
+        }, 'json')
     }
 </script>

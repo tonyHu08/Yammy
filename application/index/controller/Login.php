@@ -27,6 +27,7 @@ class Login extends Controller
         $info = $userlist->login($data['username'], $data['password']);
         if ($info) {
             session('username', $info['username']);
+            session('uid', $info['uid']);
             session('headimg', $info['headimg']);        //将登陆的用户名及头像信息存入session
             return $this->redirect($_SERVER['HTTP_REFERER']);
         } else {
@@ -38,6 +39,8 @@ class Login extends Controller
     public function exitLogin()         //退出登录
     {
         session('username', null);
+        session('uid', null);
+        session('headimg', null);
         return $this->redirect('Index/index');
     }
 }
