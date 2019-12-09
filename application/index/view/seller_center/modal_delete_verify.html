@@ -1,0 +1,41 @@
+<div class="modal fade" id="modalDeleteVerlify" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true"
+     style="padding-top: 7%;">
+    <div class="modal-dialog" style="width: 40%;">
+        <div class="modal-content">
+            <div class="modal-header" align="center">
+                <h4 class="modal-title" id="myModalLabel">订单删除</h4>
+            </div>
+            <div class="modal-body" align="center" style="height: 270px;background-color: #303030">
+                <div style="color:#fff8dc;font-size: 20px;margin-top: 5%;">
+                    确认删除商品？
+                </div>
+                <div style="padding-top: 10%;width: 60%;">
+                    <a class="btn btn-default btn-block"
+                       onclick="del()">删除</a>
+                </div>
+                <div style="padding-top: 6%;width: 60%;">
+                    <button class="btn btn-default btn-block" data-dismiss="modal" aria-hidden="true">取消</button>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<script>
+    function del() {
+        // window.location.href = "__ROOT__/index/goods/deletegood/goodsid/" + goodsid +".html";
+        $.get("{:url('index/goods/deletegood')}", {goodsid: goodsid}, function (data) {
+            if (data == 1) {
+                delSuc();
+            }
+        }, 'json')
+    }
+
+    function delSuc() {
+        $('#modalDeleteVerlify').modal('hide');
+        document.getElementById('tip').innerText = "商品已删除";
+        $('#tips').modal('show');
+        setTimeout(dismiss, 1200);
+    }
+
+</script>

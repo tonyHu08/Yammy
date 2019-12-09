@@ -1,0 +1,324 @@
+<style>
+    .chat-window {
+        width: 500px;
+        height: 600px;
+        border: 0px solid gray;
+        border-radius: 5px;
+    }
+
+    .chat-list {
+        width: 100%;
+        height: 400px;
+        border: 0px solid black;
+        padding-top: 10px;
+        overflow-y: auto;
+    }
+
+    .chat-editor-area {
+        width: 100%;
+        height: 200px;
+        border-top: 1px solid gray;
+        padding: 15px;
+        padding-top: 5px;
+        margin-top: 15px;
+    }
+
+    .chat-editor {
+        margin: 5px;
+    }
+
+    .row-div {
+        height: 60px;
+        width: 100%;
+        margin-bottom: 10px;
+        background: whitesmoke;
+        border-radius: 5px;
+    }
+
+    .headimg-div {
+        float: left;
+        height: 100%;
+        width: 15%;
+        padding: 10px;
+    }
+
+    .message-div {
+        float: left;
+        height: 60px;
+        line-height: 60px;
+        vertical-align: middle;
+        width: 85%;
+        text-align: left;
+    }
+
+    .time-div {
+        margin-top: -10px;
+        padding-top: -10px;
+    }
+</style>
+
+<script>
+
+
+    //获取goodsid
+    // function getGoodsId() {
+    //     var query = location.pathname;
+    //     var vars = query.split("/");
+    //     for (i = 0; i < vars.length; i++) {
+    //         if (vars[i] == 'goodsid') {
+    //             var goods_id = vars[i + 1];
+    //         }
+    //     }
+    //     goods_id = goods_id.split(".")[0];
+    //     return goods_id;
+    // }
+    //
+    function getOppositeUsername() {
+        var opposite_username;
+        $.ajaxSettings.async = false;
+        $.get("{:url('index/Chat/findOppositeInfo')}", {opposite_uid: opposite_uid}, function (data) {
+            opposite_username = data['username'];
+        }, 'json')
+        $.ajaxSettings.async = true;
+        return opposite_username;
+    }
+    // function getOppositeUid(goods_id) {
+    //     var opposite_info;
+    //     $.ajaxSettings.async = false;
+    //     $.get("{:url('index/Chat/findGoodsInfo')}", {goods_id: goods_id}, function (data) {
+    //         opposite_info = data;
+    //     }, 'json')
+    //     $.ajaxSettings.async = true;
+    //     opposite_uid = opposite_info[0];
+    //     opposite_username = opposite_info[1];
+    //     return opposite_info;
+    // }
+
+
+    // window.onload = function () {
+    //     //通过获取url中的goodsid来获取店铺信息，以此获得聊天对象的信息，以此获得聊天记录
+    //     // getOppositeUid(goods_id);
+    //     var chat_list = document.getElementById('chat-list');
+    //     //data接收到消息数据
+    //     $.get("{:url('index/Chat/receiveMessageInitialize')}", {opposite_uid: opposite_uid}, function (data) {
+    //         console.log(data);
+    //         console.log(data.length)
+    //         for (i = 0; i < data.length; i++) {
+    //             //如果消息间隔5条，显示时间
+    //             if (i % 5 == 0) {
+    //                 var time = timestampToTime(data[i]['time']);
+    //                 var time_div = setTime(time);
+    //                 chat_list.appendChild(time_div);
+    //             }
+    //             var div = createMessageDiv(data[i]);
+    //             chat_list.appendChild(div);
+    //         }
+    //         chat_list.scrollTop = chat_list.scrollHeight;
+    //
+    //         var modalLabel = document.getElementById('modalLabel');
+    //         // modalLabel.innerText = "与卖家 " + opposite_username + " 的聊天";
+    //     }, 'json')
+    // }
+
+
+    var set_time = 1;
+    var opposite_uid;
+    let opposite_username;
+    window.fresh;
+
+    function createChat(opposite_uid) {
+        $('#chatModal').modal('show');
+        this.opposite_uid = opposite_uid;
+        opposite_username = getOppositeUsername();
+        console.log(opposite_uid);
+        var chat_list = document.getElementById('chat-list');
+        //data接收到消息数据
+        $.get("{:url('index/Chat/receiveMessageInitialize')}", {opposite_uid: opposite_uid}, function (data) {
+            console.log(data);
+            console.log(data.length)
+            for (i = 0; i < data.length; i++) {
+                //如果消息间隔5条，显示时间
+                if (i % 5 == 0) {
+                    var time = timestampToTime(data[i]['time']);
+                    var time_div = setTime(time);
+                    chat_list.appendChild(time_div);
+                }
+                var div = createMessageDiv(data[i]);
+                chat_list.appendChild(div);
+            }
+            set_time = 1;
+            chat_list.scrollTop = chat_list.scrollHeight;
+
+            let modalLabel = document.getElementById('modalLabel');
+            modalLabel.innerText = "与卖家 " + opposite_username + " 的聊天";
+        }, 'json');
+
+    }
+
+    function createMessageDiv(chat) {
+        var all_div = document.createElement('div');
+        var headimg_div = document.createElement('div');
+        var message_div = document.createElement('div');
+        all_div.className = 'row-div';
+        headimg_div.className = 'headimg-div';
+        message_div.className = 'message-div';
+        var headimg = document.createElement("img");
+
+        message_div.innerHTML = chat['chat_content'];
+        if (chat['sender_uid'] == "{$Think.session.uid}") {
+            headimg_div.style.cssFloat = "right";
+            message_div.style.textAlign = "right";
+
+            headimg.src = "{$Think.session.headimg}";
+            headimg.width = 35;
+            headimg.height = 35;
+            headimg_div.appendChild(headimg);
+        } else {
+            headimg.src = chat['headimg'];
+            headimg.width = 35;
+            headimg.height = 35;
+            headimg_div.appendChild(headimg);
+        }
+        all_div.appendChild(headimg_div);
+        all_div.appendChild(message_div);
+        return all_div;
+    }
+
+    function createSendMessageDiv(msg) {
+        var all_div = document.createElement('div');
+        var headimg_div = document.createElement('div');
+        var message_div = document.createElement('div');
+        all_div.className = 'row-div';
+        headimg_div.className = 'headimg-div';
+        message_div.className = 'message-div';
+        message_div.innerHTML = msg;
+
+        headimg_div.style.cssFloat = "right";
+        message_div.style.textAlign = "right";
+
+        var headimg = document.createElement("img");
+        headimg.src = "{$Think.session.headimg}";
+        headimg.width = 35;
+        headimg.height = 35;
+        headimg_div.appendChild(headimg);
+
+        all_div.appendChild(headimg_div);
+        all_div.appendChild(message_div);
+
+        var chat_list = document.getElementById('chat-list');
+
+        if (set_time == 1) {
+            var time = timestampToTime(new Date().getTime() / 1000);
+            var time_div = setTime(time);
+            chat_list.appendChild(time_div);
+        }
+        chat_list.appendChild(all_div);
+        chat_list.scrollTop = chat_list.scrollHeight;
+    }
+
+
+    function sendMessage() {
+        var msg = document.getElementById('chat-editor').value;
+        $.get("{:url('index/Chat/sendMessage')}", {msg: msg, receiver: opposite_uid}, function (data) {
+            if (data == 1) {
+                document.getElementById('chat-editor').value = '';
+                createSendMessageDiv(msg);
+                console.log("发送成功");
+            } else {
+                console.log("发送失败");
+            }
+        }, "json");
+    }
+
+    function receiveMessage() {
+        var chat_list = document.getElementById('chat-list');
+
+        $.get("{:url('index/Chat/receiveMessageActualTime')}", {opposite_uid: opposite_uid}, function (data) {
+            console.log(data);
+            console.log(data.length);
+            for (i = 0; i < data.length; i++) {
+                if (set_time == 1) {
+                    var time = timestampToTime(data[i]['time']);
+                    var time_div = setTime(time);
+                    chat_list.appendChild(time_div);
+                }
+                var div = createMessageDiv(data[i]);
+                chat_list.appendChild(div);
+                chat_list.scrollTop = chat_list.scrollHeight;
+            }
+        }, 'json')
+    }
+
+    function setTimeCount() {
+        set_time = 1;
+    }
+
+    function setTime(time) {
+        var time_div = document.createElement('div');
+        time_div.className = 'time-div';
+        time_div.innerHTML = time;
+        set_time = 0;
+        return time_div;
+    }
+
+    function timestampToTime(timestamp) {
+        var date = new Date(timestamp * 1000);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+        var Y = date.getFullYear() + '-';
+        var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+        var D = (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()) + ' ';
+        var h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
+        var m = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) + ':';
+        var s = (date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds());
+        return Y + M + D + h + m + s;
+    }
+
+    function enterToSend(e) {
+        var et = e || window.event;
+        var keycode = et.charCode || et.keyCode;
+        if (keycode == 13) {
+            sendMessage();
+        }
+    }
+
+    $(function () {
+
+    });
+
+</script>
+
+<div class="modal fade" id="chatModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="modalLabel">聊天</h4>
+            </div>
+            <div class="modal-body" align="center">
+                <div class="chat-window">
+                    <div class="chat-list" id="chat-list"></div>
+                    <div class="chat-editor-area" align="right">
+                        <textarea class="form-control chat-editor" rows="6" id="chat-editor"
+                                  onkeydown="enterToSend(event)"></textarea>
+                        <button class="btn btn-success" onclick="sendMessage()">sent</button>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<script>
+    //打开模态框后将scroll拉到最底部
+    $('#chatModal').on('shown.bs.modal', function () {
+        checkInformNum();
+        var chat_list = document.getElementById('chat-list');
+        chat_list.scrollTop = chat_list.scrollHeight;
+        //聊天窗口打开后开始定时刷新聊天消息
+        window.fresh = setInterval(receiveMessage, 3000);
+        setInterval(setTimeCount, 30000);
+    })
+    $('#chatModal').on('hide.bs.modal', function () {
+        //关闭聊天窗口后停止刷新，否则被刷新到的消息会被标为已读
+        clearInterval(fresh);
+    })
+</script>
