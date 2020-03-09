@@ -19,19 +19,19 @@ class ShoppingCart extends Controller
         for ($i = 0; $i < count($scgoods); $i++) {
             $goodsinfo[$i] = $sc->selectGoodsid(($scgoods[$i])['goodsid']);         //获取当前商品的详细信息
             if (($scgoods[$i])['goodsclassifyid'] == 0) {
-                ($goodsinfo[$i])['goodsclassify'] = '默认分类';
+                $goodsinfo[$i]['goodsclassify'] = '默认分类';
             } else {
                 $goodsClassifyInfo = $sc->selectGoodsClassify(($scgoods[$i])['goodsclassifyid']);
                 if ($goodsClassifyInfo) {
-                    ($goodsinfo[$i])['goodsclassify'] = $goodsClassifyInfo['goodsclassify'];
-                    ($goodsinfo[$i])['price'] = $goodsClassifyInfo['goodsprice'];
+                    $goodsinfo[$i]['goodsclassify'] = $goodsClassifyInfo['goodsclassify'];
+                    $goodsinfo[$i]['price'] = $goodsClassifyInfo['goodsprice'];
                 } else {
-                    ($goodsinfo[$i])['goodsclassify'] = '已下架';
-                    ($goodsinfo[$i])['price'] = 0;
+                    $goodsinfo[$i]['goodsclassify'] = '已下架';
+                    $goodsinfo[$i]['price'] = 0;
                 }
             }
-            ($goodsinfo[$i])['count'] = ($scgoods[$i])['count'];
-            ($goodsinfo[$i])['shoppingcartid'] = ($scgoods[$i])['shoppingcartid'];
+            $goodsinfo[$i]['count'] = ($scgoods[$i])['count'];
+            $goodsinfo[$i]['shoppingcartid'] = ($scgoods[$i])['shoppingcartid'];
         }
         $this->assign('goods', $goodsinfo);
         return $this->fetch();
@@ -46,15 +46,15 @@ class ShoppingCart extends Controller
         $goodsInfo = [];
         for ($i = 0; $i < (count($idarr) - 1); $i++) {
             $goodsInfo[$i] = $sp->selectShoppingCartId($idarr[$i]);
-            ($goodsInfo[$i])['goodsname'] = $ym->selectGoodsId(($goodsInfo[$i])['goodsid'])['goodsname'];
-            ($goodsInfo[$i])['goodsimg'] = $ym->selectGoodsId(($goodsInfo[$i])['goodsid'])['goodsimg'];
-            ($goodsInfo[$i])['shoppingcartid'] = $idarr[$i];
+            $goodsInfo[$i]['goodsname'] = $ym->selectGoodsId(($goodsInfo[$i])['goodsid'])['goodsname'];
+            $goodsInfo[$i]['goodsimg'] = $ym->selectGoodsId(($goodsInfo[$i])['goodsid'])['goodsimg'];
+            $goodsInfo[$i]['shoppingcartid'] = $idarr[$i];
             if (($goodsInfo[$i])['goodsclassifyid'] != 0) {
-                ($goodsInfo[$i])['price'] = $sp->selectGoodsClassify(($goodsInfo[$i])['goodsclassifyid'])['goodsprice'];
-                ($goodsInfo[$i])['goodsclassify'] = $sp->selectGoodsClassify(($goodsInfo[$i])['goodsclassifyid'])['goodsclassify'];
+                $goodsInfo[$i]['price'] = $sp->selectGoodsClassify(($goodsInfo[$i])['goodsclassifyid'])['goodsprice'];
+                $goodsInfo[$i]['goodsclassify'] = $sp->selectGoodsClassify(($goodsInfo[$i])['goodsclassifyid'])['goodsclassify'];
             } else {
-                ($goodsInfo[$i])['price'] = $ym->selectGoodsId(($goodsInfo[$i])['goodsid'])['price'];
-                ($goodsInfo[$i])['goodsclassify'] = '默认分类';
+                $goodsInfo[$i]['price'] = $ym->selectGoodsId(($goodsInfo[$i])['goodsid'])['price'];
+                $goodsInfo[$i]['goodsclassify'] = '默认分类';
             }
         }
         $this->assign('sumprice', input('price'));
