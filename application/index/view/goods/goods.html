@@ -65,7 +65,6 @@
         function buy() {
             window.location.href = '__ROOT__/index/Deal/dealConfirm/goodsid/{$goodsinfo.goodsid}/classifyid/' + goodsclassifyid + '/goodscount/' + count + '.html';
         }
-
     </script>
     {css href="/static/css/public.css"}
     <style>
@@ -129,16 +128,7 @@
     {include file="goods/goods_info"}
     {include file="evaluate/evaluation_list"}
 </div>
-<?php
-$infoValue = urlencode("&userId="."1"."&name="."ss"."&memo="."e");
-?>
-<!-- Live800在线客服图标:hxtest[浮动图标]开始-->
-<!--<div style='display:none;'><a href='https://www.live800.com'>在线营销</a></div><script language="javascript" src="https://dev.live800.com/live800_saas/chatClient/floatButton.js?jid=1111111111&companyID=12345&configID=53073&codeType=custom&ss=1"></script><div style='display:none;'><a href='https://en.live800.com'>live chat</a></div>-->
-<!-- 在线客服图标:hxtest结束-->
-<!-- Live800默认功能代码: 开始-->
-<script language="javascript"
-        src="https://dev.live800.com/live800_saas/chatClient/monitor.js?jid=1111111111&companyID=12345&configID=49278&codeType=custom&info=<?php echo $infoValue;?>&ss=1"></script>
-<!-- Live800默认功能代码: 结束-->
+
 {include file="modal/modal_login"}
 {include file="modal/modal_tip"}
 {include file="chat/modal_chat"}
