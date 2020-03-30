@@ -14,13 +14,13 @@ use think\Model;
 class YammyData extends Model
 {
     //插入注册信息
-    public function reg($username, $password, $phonenum, $email, $headimg)
+    public function reg($username, $password, $phonenum, $num, $email, $headimg, $identity)
     {
-        if(!$headimg) {
-            $info = db('userlist')->insert(['username' => $username, 'password' => $password, 'phone' => $phonenum, 'email' => $email, 'regtime' => time(), 'active' => 0, 'seller' => 0, 'headimg' => "/static/headimg/moren.png", 'inform' => 0]);
+        if (!$headimg) {
+            $info = db('userlist')->insert(['username' => $username, 'password' => $password, 'phone' => $phonenum, 'num' => $num, 'email' => $email, 'regtime' => time(), 'active' => 0, 'seller' => 0, 'headimg' => "/static/headimg/moren.png", 'inform' => 0, 'identity' => $identity]);
             return $info;
         } else {
-            $info = db('userlist')->insert(['username' => $username, 'password' => $password, 'phone' => $phonenum, 'email' => $email, 'regtime' => time(), 'active' => 0, 'seller' => 0, 'headimg' => $headimg, 'inform' => 0]);
+            $info = db('userlist')->insert(['username' => $username, 'password' => $password, 'phone' => $phonenum, 'num' => $num, 'email' => $email, 'regtime' => time(), 'active' => 0, 'seller' => 0, 'headimg' => $headimg, 'inform' => 0, 'identity' => $identity]);
             return $info;
         }
     }
@@ -199,7 +199,7 @@ class YammyData extends Model
     //插入商品信息
     public function issueGoods($goodsname, $type, $goodsimg, $price, $goodsintroduction, $shopname, $shopid)
     {
-        $info = db('goods')->insert(['goodsname' => $goodsname, 'classify' => $type, 'createtime' => time(), 'goodsimg' => $goodsimg, 'username' => session('username'), 'uid'=>session('uid'), 'price' => $price, 'goodsintroduction' => $goodsintroduction, 'shop' => $shopname, 'shopid' => $shopid, 'freight' => 0]);
+        $info = db('goods')->insert(['goodsname' => $goodsname, 'classify' => $type, 'createtime' => time(), 'goodsimg' => $goodsimg, 'username' => session('username'), 'uid' => session('uid'), 'price' => $price, 'goodsintroduction' => $goodsintroduction, 'shop' => $shopname, 'shopid' => $shopid, 'freight' => 0]);
         return $this->getLastInsID();
     }
 
@@ -305,18 +305,21 @@ class YammyData extends Model
     }
 
     //通过uid查找用户信息
-    public function findUserInfoByUid($uid) {
-        $info = db('userlist')->where('uid',$uid)->find();
+    public function findUserInfoByUid($uid)
+    {
+        $info = db('userlist')->where('uid', $uid)->find();
         return $info;
     }
 
-    public function findUserInfoByUsername($username) {
-        $info = db('userlist')->where('username',$username)->find();
+    public function findUserInfoByUsername($username)
+    {
+        $info = db('userlist')->where('username', $username)->find();
         return $info;
     }
 
     //更新通知系统通知数量
-    public function updateInformNum($uid) {
+    public function updateInformNum($uid)
+    {
         $informNum = $this->findUserInfoByUid($uid)['inform'];
         $info = db('userlist')->where('uid', $uid)->update(['inform' => $informNum + 1]);
         return $info;

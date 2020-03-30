@@ -9,7 +9,19 @@ class Register extends Controller
 {
     public function register()           //显示注册页面
     {
-        return $this->fetch();
+        return $this->fetch('register/student_register');
+    }
+
+    public function studentRegister()     //显示注册页面
+    {
+        session('captcha', null);
+        return $this->fetch('');
+    }
+
+    public function teacherRegister()       //显示教师注册页面
+    {
+        session('captcha', null);
+        return $this->fetch('');
     }
 
     public function registerVerify()         //注册验证
@@ -18,6 +30,7 @@ class Register extends Controller
         $data = [
             'username' => input('username'),
             'phonenum' => input('phonenum'),
+            'num' => input('num'),
             'email' => input('email'),
             'password' => input('password'),
             'repassword' => input('repassword'),
@@ -67,7 +80,9 @@ class Register extends Controller
         if ($password != $repassword) {
             $this->error('两次密码不一致，请重新输入');
         }
-        $info = $userlist->reg($data['username'], $data['password'], $data['phonenum'], $data['email'], $headimgPath);    //用userlist中reg方法将数据插入数据库
+        $identity = input('identity');      //身份代号，学生为0，老师为1
+        session('identity', $identity);
+        $info = $userlist->reg($data['username'], $data['password'], $data['phonenum'], $data['num'] ,$data['email'], $headimgPath, $identity);    //用userlist中reg方法将数据插入数据库
         if ($info) {
             session('username', null);        //在Mall中再存username，以此判断注册操作还是二次发送操作
             session('headimg', $headimgPath);        //将登陆的用户名及头像信息存入session
