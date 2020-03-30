@@ -1,0 +1,10 @@
+{extend name="admin/base" /}
+{block name="body"}
+<h4>添加学生</h4>
+<form action="{:url('Admin/adminAddStudent')}">
+    <input type="text" name="username" placeholder="输入学生姓名" class="form-control">
+    <input type="text" name="num" placeholder="输入学号" class="form-control">
+    <input type="text" name="email" placeholder="输入学生邮箱" class="form-control">
+    <input type="submit" value="提交" class="btn btn-default">
+</form>
+{/block}

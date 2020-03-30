@@ -1,0 +1,83 @@
+{extend name="student/base"}
+{block name="body"}
+<div class="container">
+    <div class="jumbotron" style="overflow: hidden;padding-left: 15%;">
+        <h2>{$paper.paper_name}</h2>
+        <form action="{:url('Student/studentTestResult')}" method="post">
+            <div style="width: 100%;overflow: hidden;">
+                <h3>单选题(每题{$paper.single_choice_score}分)</h3>
+                {volist name="single_choice" id="tq" key="k"}
+                <div class="test_questions">
+                    <h4 class="topic">{$key+1}：{$tq.topic}</h4>
+                    <button class="btn btn-info" style="width: 250px;text-align: left;margin: 2px;" type="button"
+                            onclick='radio_choice("s","{$tq.single_choice_id}","A")'>
+                        <input name="single_choice[{$tq.single_choice_id}]" type="radio" value="A"
+                               id="s.{$tq.single_choice_id}.A"/>
+                        A:{$tq.A}
+                    </button>
+                    <br>
+                    <button class="btn btn-warning" style="width: 250px;text-align: left;margin: 2px;" type="button"
+                            onclick='radio_choice("s","{$tq.single_choice_id}","B")'>
+                        <input name="single_choice[{$tq.single_choice_id}]" type="radio" value="B"
+                               id="s.{$tq.single_choice_id}.B"/>
+                        B:{$tq.B}
+                    </button>
+                    <br>
+                    <button class="btn btn-success" style="width: 250px;text-align: left;margin: 2px;" type="button"
+                            onclick='radio_choice("s","{$tq.single_choice_id}","C")'>
+                        <input name="single_choice[{$tq.single_choice_id}]" type="radio" value="C"
+                               id="s.{$tq.single_choice_id}.C"/>
+                        C:{$tq.C}
+                    </button>
+                    <br>
+                    <button class="btn btn-primary" style="width: 250px;text-align: left;margin: 2px;" type="button"
+                            onclick='radio_choice("s","{$tq.single_choice_id}","D")'>
+                        <input name="single_choice[{$tq.single_choice_id}]" type="radio" value="D"
+                               id="s.{$tq.single_choice_id}.D"/>
+                        D:{$tq.D}
+                    </button>
+                    <br>
+                    解题思路：{$tq.soleve_thinking}<br>
+                    题目难度：{$tq.difficulty}<br>
+                </div>
+                {/volist}
+            </div>
+            <div style="width: 100%;overflow: hidden;">
+                <h3>判断题(每题{$paper.true_or_false_score}分)</h3>
+                {volist name="true_or_false" id="tof" key="k"}
+                <div class="test_questions" style="height: 150px">
+                    <h4 class="topic">{$key+1}：{$tof.topic}</h4>
+                    <button class="btn btn-success" type="button"
+                            onclick='radio_choice("t","{$tof.true_or_false_id}","T")'>
+                        <input name="true_or_false[{$tof.true_or_false_id}]" type="radio" value="正确"
+                               id="t.{$tof.true_or_false_id}.T"/>
+                        正确
+                    </button>
+                    <button class="btn btn-danger" type="button"
+                            onclick='radio_choice("t","{$tof.true_or_false_id}","F")'>
+                        <input name="true_or_false[{$tof.true_or_false_id}]" type="radio" value="错误"
+                               id="t.{$tof.true_or_false_id}.F"/>
+                        错误
+                    </button>
+                    <br>
+                    解题思路：{$tof.soleve_thinking}<br>
+                    题目难度：{$tof.difficulty}<br>
+                </div>
+                {/volist}
+            </div>
+            <div style="width: 100%;overflow: hidden;">
+                <h3>简答题(每题{$paper.short_answer_score}分)</h3>
+                {volist name="short_answer" id="sa" key="k"}
+                <div class="test_questions" style="height: 230px">
+                    <h4 class="topic">{$key+1}：{$sa.topic}</h4>
+                    <textarea rows="5" class="form-control" placeholder="输入简答题答案" name="short_answer[{$sa.short_answer_id}]"></textarea>
+                    解题思路：{$sa.soleve_thinking}<br>
+                    题目难度：{$sa.difficulty}<br>
+                </div>
+                {/volist}
+            </div>
+            <button type="submit" class="btn btn-success" name="paper_num" value="{$paper.paper_num}">交卷</button>
+        </form>
+    </div>
+</div>
+{/block}

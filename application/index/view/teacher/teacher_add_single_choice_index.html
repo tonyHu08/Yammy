@@ -1,0 +1,33 @@
+{extend name="teacher/base"}
+{block name="body"}
+<h2>添加单选题</h2>
+<form action="{:url('Teacher/teacherAddSingleChoice')}" id="add_test_questions">
+    题目：<input type="text" name="topic" class="form-control" placeholder="输入题目">
+    A: <input type="text" name="A" class="form-control" placeholder="输入A选项">
+    B: <input type="text" name="B" class="form-control" placeholder="输入B选项">
+    C: <input type="text" name="C" class="form-control" placeholder="输入C选项">
+    D: <input type="text" name="D" class="form-control" placeholder="输入D选项">
+    解题思路：
+    <textarea name="soleve_thinking" class="form-control" rows="4" placeholder="输入解题思路"></textarea>
+    答案：
+    <select name="answer" class="form-control">
+        <option value="A">A</option>
+        <option value="B">B</option>
+        <option value="C">C</option>
+        <option value="D">D</option>
+    </select>
+    题目难度：
+    <select name="difficulty" class="form-control">
+        <option>简单</option>
+        <option>普通</option>
+        <option>困难</option>
+    </select>
+    所属课堂：
+    <select name="class_num" class="form-control">
+        {volist name="class_info" id="class"}
+        <option value="{$class.class_num}">{$class.class_name}</option>
+        {/volist}
+    </select>
+    <input type="submit" value="提交" class="btn btn-success">
+</form>
+{/block}

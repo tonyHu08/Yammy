@@ -1,0 +1,13 @@
+{extend name="teacher/base"}
+{block name="body"}
+<h2>查询已删除试卷库</h2>
+<form action="{:url('Teacher/teacherDeletedManage')}" id="add_test_questions">
+    要恢复的试卷：
+    <select name="paper_num" class="form-control">
+        {volist name="paper" id="p"}
+        <option value="{$p.paper_num}">{$p.paper_name}--{$p.class_name}</option>
+        {/volist}
+    </select>
+    <input type="submit" value="恢复" class="btn btn-default">
+</form>
+{/block}

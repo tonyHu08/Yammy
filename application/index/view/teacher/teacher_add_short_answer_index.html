@@ -1,0 +1,22 @@
+{extend name="teacher/base"}
+{block name="body"}
+<h2>添加简答题</h2>
+<form action="{:url('Teacher/teacherAddShortAnswer')}" id="add_test_questions">
+    题目：<input type="text" name="topic" class="form-control" placeholder="输入题目">
+    解题思路：
+    <textarea name="soleve_thinking" class="form-control" rows="4" placeholder="输入解题思路"></textarea>
+    题目难度：
+    <select name="difficulty" class="form-control">
+        <option>简单</option>
+        <option>普通</option>
+        <option>困难</option>
+    </select>
+    所属课堂：
+    <select name="class_num" class="form-control">
+        {volist name="class_info" id="class"}
+        <option value="{$class.class_num}">{$class.class_name}</option>
+        {/volist}
+    </select>
+    <input type="submit" value="提交" class="btn btn-success">
+</form>
+{/block}

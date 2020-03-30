@@ -1,0 +1,28 @@
+{extend name="teacher/base"}
+{block name="body"}
+<h2>
+    编辑判断题
+</h2>
+<form action="{:url('Teacher/teacherCompileShortAnswer')}">
+    <input type="button" name="Submit" value="<--返回" onclick="javascript:history.back(1)" class="btn" style="background-color: rgba(0,0,0,0);"/>
+    <br>
+    题目：<input type="text" name="topic" class="form-control" placeholder="输入题目" value="{$short_answer_info.topic}">
+    解题思路：
+    <textarea name="soleve_thinking" class="form-control" rows="4" placeholder="输入解题思路">{$short_answer_info.soleve_thinking}</textarea>
+    题目难度：
+    <select name="difficulty" class="form-control">
+        <option>{$short_answer_info.difficulty}</option>
+        <option>简单</option>
+        <option>普通</option>
+        <option>困难</option>
+    </select>
+    所属课堂：
+    <select name="class_num" class="form-control">
+        <option value="{$short_answer_info.class_num}">{$short_answer_info.class_name}</option>
+        {volist name="class_info" id="class"}
+        <option value="{$class.class_num}">{$class.class_name}</option>
+        {/volist}
+    </select>
+    <button name="short_answer_id" type="submit" value="{$short_answer_info.short_answer_id}" class="btn btn-danger">提交</button>
+</form>
+{/block}

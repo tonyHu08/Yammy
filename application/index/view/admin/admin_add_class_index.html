@@ -1,0 +1,19 @@
+{extend name="admin/base" /}
+{block name="body"}
+<h4>添加课堂</h4>
+<form action="{:url('Admin/adminAddClass')}">
+    <input type="text" name="class_name" placeholder="输入课程名称" class="form-control">
+    <input type="text" name="class_num" placeholder="输入课程号" class="form-control">
+    <br>
+    任课教师：
+    <select name="teacher_num">
+        {volist name="teacher" id="teacher"}
+        <option value="{$teacher.num}">{$teacher.username}</option>
+        {/volist}
+    </select>
+    <input type="text" name="time" placeholder="输入上课时间" class="form-control">
+    <br>
+    <textarea name="basic_information" class="form-control" rows="5" placeholder="课堂描述"></textarea>
+    <input type="submit" class="btn btn-default" value="提交">
+</form>
+{/block}

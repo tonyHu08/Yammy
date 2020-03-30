@@ -1,0 +1,12 @@
+{extend name="admin/base" /}
+{block name="body"}
+<h4>{$inside_title}</h4>
+<form action="{:url('Admin/adminSearchClass')}">
+    <select name="class_num" class="form-control">
+        {volist name="class" id="c"}
+        <option value="{$c.class_num}">{$c.class_num}--{$c.class_name}--{$c.teacher}</option>
+        {/volist}
+    </select>
+    <input type="submit" value="搜索" class="btn btn-default">
+</form>
+{/block}

@@ -1,0 +1,49 @@
+{extend name="teacher/base"}
+{block name="body"}
+<h2>试题管理</h2>
+<div style="width: 100%;overflow: hidden;">
+    <h3>单选题</h3>
+    {volist name="single_choice" id="tq"}
+    <div class="test_questions">
+        <h4 class="topic">题目：{$tq.topic}</h4>
+        A:{$tq.A}<br>
+        B:{$tq.B}<br>
+        C:{$tq.C}<br>
+        D:{$tq.D}<br>
+        解题思路：{$tq.soleve_thinking}<br>
+        答案：{$tq.answer}<br>
+        题目难度：{$tq.difficulty}<br>
+        所属课堂：{$tq.class_name}<br>
+        <a href="{:url('Teacher/teacherDeleteSingleChoice')}?id={$tq.single_choice_id}">删除试题</a>
+        <a href="{:url('Teacher/teacherCompileSingleChoiceIndex',['id'=>$tq.single_choice_id])}}">编辑试题</a>
+    </div>
+    {/volist}
+</div>
+<div style="width: 100%;overflow: hidden;">
+    <h3>判断题</h3>
+    {volist name="true_or_false" id="tof"}
+    <div class="test_questions" style="height: 180px">
+        <h4 class="topic">题目：{$tof.topic}</h4>
+        解题思路：{$tof.soleve_thinking}<br>
+        答案：{$tof.answer}<br>
+        题目难度：{$tof.difficulty}<br>
+        所属课堂：{$tof.class_name}<br>
+        <a href="{:url('Teacher/teacherDeleteTrueOrFalse')}?id={$tof.true_or_false_id}">删除试题</a>
+        <a href="{:url('Teacher/teacherCompileTrueOrFalseIndex',['id'=>$tof.true_or_false_id])}}">编辑试题</a>
+    </div>
+    {/volist}
+</div>
+<div style="width: 100%;overflow: hidden;">
+    <h3>简答题</h3>
+    {volist name="short_answer" id="sa"}
+    <div class="test_questions" style="height: 180px">
+        <h4 class="topic">题目：{$sa.topic}</h4>
+        解题思路：{$sa.soleve_thinking}<br>
+        题目难度：{$sa.difficulty}<br>
+        所属课堂：{$sa.class_name}<br>
+        <a href="{:url('Teacher/teacherDeleteShortAnswer')}?id={$tof.true_or_false_id}">删除试题</a>
+        <a href="{:url('Teacher/teacherCompileShortAnswerIndex',['id'=>$sa.short_answer_id])}}">编辑试题</a>
+    </div>
+    {/volist}
+</div>
+{/block}

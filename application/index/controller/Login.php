@@ -29,6 +29,8 @@ class Login extends Controller
             session('username', $info['username']);
             session('uid', $info['uid']);
             session('headimg', $info['headimg']);        //将登陆的用户名及头像信息存入session
+            session('identity', $info['identity']);
+            session('num', $info['num']);
             return $this->redirect($_SERVER['HTTP_REFERER']);
         } else {
             return $this->error('帐号或密码错误，请重新输入！');

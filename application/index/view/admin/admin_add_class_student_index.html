@@ -1,0 +1,20 @@
+{extend name="admin/base" /}
+{block name="body"}
+<a href="{:url('Admin/adminSearchClass',['class_num'=>$class_info.class_num])}"><--返回</a>
+<p>
+    当前课堂：{$class_info.class_name}
+</p>
+<form action="{:url('Admin/adminAddClassStudent')}" method="post">
+    <table border="1px" class="table table-bordered" style="width: 60%;background: white;">
+        <th>选课状态</th>
+        <th>学生姓名</th>
+        {volist name="student" id="student" key="k"}
+        <tr>
+            <td align="center" width="10px"><input type="checkbox" value="{$student.num}" name="student_num[{$k}]"></td>
+            <td width="70%">{$student.username}</td>
+        </tr>
+        {/volist}
+    </table>
+    <button type="submit" value="{$class_info.class_num}" name="class_num" class="btn btn-default">添加</button>
+</form>
+{/block}

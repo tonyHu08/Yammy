@@ -1,0 +1,12 @@
+{extend name="admin/base"}
+{block name="body"}
+<h4>查询学生信息</h4>
+<form action="{:url('Admin/adminSearchStudent')}">
+    <select name="num" class="form-control">
+        {volist name="student" id="s"}
+        <option value="{$s.num}">{$s.username}-{$s.num}</option>
+        {/volist}
+    </select>
+    <input type="submit" value="搜索" class="btn btn-default">
+</form>
+{/block}

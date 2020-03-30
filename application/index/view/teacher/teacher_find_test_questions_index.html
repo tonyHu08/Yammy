@@ -1,0 +1,13 @@
+{extend name="teacher/base"}
+{block name="body"}
+<h2>查询课堂题库</h2>
+<form action="{:url('Teacher/teacherFindTestQuestions')}" id="add_test_questions">
+    所属课堂：
+    <select name="class_num" class="form-control">
+        {volist name="class_info" id="class"}
+        <option value="{$class.class_num}">{$class.class_name}</option>
+        {/volist}
+    </select>
+    <input type="submit" value="提交" class="btn btn-success">
+</form>
+{/block}

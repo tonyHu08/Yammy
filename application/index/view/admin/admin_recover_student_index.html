@@ -1,0 +1,13 @@
+{extend name="admin/base"}
+{block name="body"}
+<h4>恢复学生账号</h4>
+<form action="{:url('Admin/adminRecoverStudent')}">
+    <select name="num" class="form-control">
+        <option>选择你要恢复的学生</option>
+        {volist name="student" id="s"}
+        <option value="{$s.num}">{$s.username}-{$s.num}</option>
+        {/volist}
+    </select>
+    <input type="submit" value="提交" class="btn btn-default">
+</form>
+{/block}

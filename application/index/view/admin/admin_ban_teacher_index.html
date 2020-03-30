@@ -1,0 +1,13 @@
+{extend name="admin/base"}
+{block name="body"}
+<h4>停用教师账号</h4>
+<form action="{:url('Admin/adminBanTeacher')}">
+    <select name="num" class="form-control">
+        <option>选择你要停用的老师</option>
+        {volist name="teacher" id="t"}
+        <option value="{$t.num}">{$t.username}-{$t.num}</option>
+        {/volist}
+    </select>
+    <input type="submit" value="提交" class="btn btn-default">
+</form>
+{/block}

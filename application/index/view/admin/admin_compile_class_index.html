@@ -1,0 +1,21 @@
+{extend name="admin/base"}
+{block name="body"}
+<a href="{:url('Admin/adminSearchClass',['class_num'=>$class_info.class_num])}"><--返回</a>
+<form action="{:url('Admin/adminCompileClass')}" method="post">
+    <p>课程号：{$class_info.class_num}</p>
+    <input type="text" name="class_name" placeholder="输入课程名称" class="form-control" value="{$class_info.class_name}">
+    <br>
+    任课教师：
+    <select name="teacher_num">
+        <option value="{$class_info.teacher_num}">{$class_info.teacher}</option>
+        {volist name="teacher" id="teacher"}
+        <option value="{$teacher.num}">{$teacher.username}</option>
+        {/volist}
+    </select>
+    <input type="text" name="time" placeholder="输入上课时间" class="form-control" value="{$class_info.time}">
+    <br>
+    <textarea name="basic_information" class="form-control" rows="5" placeholder="课堂描述"
+              value="{$class_info.basic_information}"></textarea>
+    <button type="submit" value="{$class_info.class_num}" name="class_num" class="btn btn-default">提交</button>
+</form>
+{/block}

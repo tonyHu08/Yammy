@@ -1,0 +1,21 @@
+{extend name="admin/base" /}
+{block name="body"}
+<a href="{:url('Admin/adminSearchStudentIndex')}"><--返回</a>
+<p>
+    学生姓名：{$student_info.username}
+</p>
+<p>
+    学号：{$student_info.num}
+</p>
+<p>
+    邮箱：{$student_info.email}
+</p>
+<p>
+    账号状态：
+    {eq name="$student_info.ban" value="0"}
+    正常
+    {else/}
+    被停用
+    {/eq}
+</p>
+{/block}

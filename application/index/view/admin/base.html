@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="__STATIC__/css/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <script src="__STATIC__/js/jquery-3.3.1.min.js"></script>
+    <script src="__STATIC__/css/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript"
+            src="__STATIC__/js/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript"
+            src="__STATIC__/js/ueditor/ueditor.all.js"></script>
+    <title>{$title}</title>
+    <style>
+
+
+        /* 超链接的下划线 */
+        a:link, a:visited {
+            text-decoration: none;
+        }
+
+        <!--
+        搜索框
+
+        -->
+        #container {
+            width: 500px;
+            height: 820px;
+            margin: 0 auto;
+        }
+
+        div.search {
+            padding: 30px 0;
+        }
+
+        #login_after_head form {
+            position: relative;
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        #login_after_head form {
+            position: relative;
+            width: 300px;
+            margin: 0 auto;
+        }
+
+        #login_after_head input, button {
+            border: none;
+            outline: none;
+        }
+
+        #login_after_head input {
+            width: 100%;
+            height: 42px;
+            padding-left: 13px;
+        }
+
+        #login_after_head button {
+            height: 50px;
+            width: 50px;
+            cursor: pointer;
+            position: absolute;
+
+        }
+
+        .bar7 form {
+            height: 42px;
+        }
+
+        .bar7 input {
+            width: 350px;
+            height: 50px;
+            border-radius: 42px;
+
+            background: whitesmoke;
+            transition: .3s linear;
+            float: right;
+            border: 1px dashed #b3d7ff;
+        }
+
+        .bar7 input:focus {
+            width: 300px;
+        }
+
+        .bar7 button {
+            background: none;
+            top: -2px;
+            right: 0;
+
+        }
+
+        <!--
+        搜索图标
+
+        -->
+        .bar7 button:before {
+
+            color: cornflowerblue;
+
+        }
+
+        .bar7 button:hover {
+            background-color: rgba(0, 0, 0, 0);
+
+        }
+
+        <!--
+        登录图标
+
+        -->
+        /* 超链接 */
+        #sidebar a:link,
+        #sidebar a:visited {
+            color: white;
+            text-decoration: none;
+        }
+
+        #sidebar a:hover,
+        #sidebar a:active {
+            color: seagreen;
+
+        }
+
+        <!--
+        左侧导航
+
+        -->
+
+        #sidebar2 a:link,
+        #sidebar2 a:visited {
+            color: white;
+            text-decoration: none;
+        }
+
+        #sidebar2 a:hover {
+            color: #008800;
+
+        }
+
+        #sidebar2 a:active {
+            text-decoration: underline;
+
+        }
+
+        .topic {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            height: 40px;
+        }
+
+        .test_questions {
+            border: gray 0px solid;
+            width: 80%;
+            height: 250px;
+            float: left;
+            padding: 5px;
+            margin-bottom: 10px;
+            background-color: white;
+            box-shadow: 2px 2px 5px #999999;
+        }
+    </style>
+    <!-- 导航css -->
+    <style>
+        a:link, a:visited {
+            text-decoration: none; /*超链接无下划线*/
+        }
+
+        .hoverbg:hover {
+            background-color: #282828;
+            -webkit-transition: all 0.5s;
+            -moz-transition: all 0.5s;
+            -o-transition: all 0.5s;
+        }
+
+        .hoverbg:hover * {
+            color: whitesmoke;
+            font-size: 15px;
+            -webkit-transition: all 0.5s;
+            -moz-transition: all 0.5s;
+            -o-transition: all 0.5s;
+        }
+
+        .leftDiv {
+            height: 20px;
+        }
+
+        .hovertd {
+            border-top: gray 1px solid;
+        }
+
+        .hovertd a {
+            color: gray;
+        }
+
+        .hovertd * {
+            color: #a1a1a1;
+        }
+
+        .hovertd:hover > :first-child > .leftDiv {
+            height: 15px;
+            padding: 0 10px 0 0;
+            -webkit-transition: all 0.4s;
+            -moz-transition: all 0.4s;
+            -o-transition: all 0.4s;
+        }
+
+        .hovertd:hover * {
+            font-size: 13px;
+            color: #949687;
+            -webkit-transition: all 0.4s;
+            -moz-transition: all 0.4s;
+            -o-transition: all 0.4s;
+        }
+
+        .hovertd:hover a {
+            font-size: 16px;
+            color: whitesmoke;
+            -webkit-transition: all 0.4s;
+            -moz-transition: all 0.4s;
+            -o-transition: all 0.4s;
+        }
+
+        .hovertd a:hover {
+            font-size: 16px;
+            -webkit-transition: all 0.4s;
+            -moz-transition: all 0.4s;
+            -o-transition: all 0.4s;
+        }
+
+        .hovertd:hover {
+            background-color: #282828;
+            -webkit-transition: all 0.2s;
+            -moz-transition: all 0.2s;
+            -o-transition: all 0.2s;
+        }
+
+        .tablehead {
+            width: 140px;
+            height: 60px;
+            font-size: 18px;
+        }
+
+        .tablebody {
+            font-size: 19px;
+        }
+
+        body {
+            min-width: 100%;
+            min-height: 100%;
+            position: absolute;
+            z-index: 0;
+        }
+
+        .bodytop {
+            background-color: #fafafa;
+            width: 100%;
+            height: 645px;
+        }
+
+        .bodyMiddle {
+            height: 700px;
+            width: 100%;
+            background-color: #f1f1f1;
+        }
+
+        img {
+            -webkit-transition: all 0.6s;
+            -moz-transition: all 0.6s;
+            -o-transition: all 0.6s;
+        }
+
+        img:hover {
+            transform: scale(1.1);
+            -webkit-transition: all 0.6s;
+            -moz-transition: all 0.6s;
+            -o-transition: all 0.6s;
+        }
+
+        #head {
+            width: 100%;
+            height: 35px;
+            position: fixed;
+            top: 0px;
+            z-index: 10;
+        }
+
+        #main {
+            width: 100%;
+            height: auto;
+            padding-top: 35px;
+            padding-bottom: 75px;
+            z-index: 2;
+        }
+
+        #footer {
+            background-color: #282828;
+            width: 100%;
+            height: 75px;
+            position: fixed;
+            bottom: 0px;
+            z-index: -1;
+        }
+    </style>
+    <!-- 输入框css -->
+
+</head>
+<body style="min-width: 1300px;width: 100%;">
+{include file="public/login_after_head"}
+<div style="border: 1px solid red;width: 100%;height: 700px;float: left;margin-top: -40px;overflow: hidden;">
+
+    <!-- 左边导航栏 -->
+    <div style="border: 1px solid blueviolet;width: 300px;height: 100%;float: left;">
+
+        <!-- 头像 -->
+
+        <!-- 导航 -->
+        <div style="width: 75%;height: 470px;float: left;margin-left: 10%;margin-top:10%;border: #282828 1px solid;background: rgba(200,200,200,0.1);">
+            <table width="100%">
+                <tr class="hovertr">
+                    <td align="" width="100%" height="45px" bgcolor="#404040">
+                        <div style="margin-left: 13%;">
+                            <font color="#f5f5f5" size="4px">
+                                🖇管理中心
+                            </font>
+                        </div>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td align="" width="100%" height="80px" class="hovertd">
+                        <div style="margin-left: 13%;">
+                            <div class="leftDiv">
+                                <font size="4px">
+                                    🖇️ 课堂管理
+                                </font>
+                            </div>
+                            <div style="margin-top: 10px;">
+                                <a href="{:url('Admin/adminSearchClassIndex?func=search')}">查询课堂</a>
+                            </div>
+                            <div style="margin-top: 10px;">
+                                <a href="{:url('Admin/adminAddClassIndex')}">添加课堂</a>
+                            </div>
+                            <div style="margin-top: 10px;">
+                                <a href="{:url('Admin/adminSearchClassIndex?func=compile')}">编辑课堂</a>
+                            </div>
+                            <div style="margin-top: 10px;">
+                                <a href="{:url('Admin/adminSearchClassIndex?func=ban')}">停用课堂</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="" width="100%" height="90px" class="hovertd">
+                        <div style="margin-left: 13%;width: 100%;">
+                            <div class="leftDiv">
+                                <font size="4px">
+                                    🖇️教师管理
+                                </font>
+                            </div>
+                            <div style="margin-top: 10px;">
+                                <a href="{:url('Admin/adminSearchTeacherIndex')}">查询老师</a>
+                            </div>
+                            <div style="margin-top: 10px;">
+                                <a href="{:url('Admin/adminAddTeacherIndex')}">添加老师</a>
+                            </div>
+                            <div style="margin-top: 10px;">
+                                <a href="{:url('Admin/adminRecoverTeacherIndex')}">恢复老师</a>
+                            </div>
+                            <div style="margin-top: 10px;">
+                                <a href="{:url('Admin/adminBanTeacherIndex')}">停用老师</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="" width="100%" height="90px" class="hovertd">
+                        <div style="margin-left: 13%;width: 100%;">
+                            <div class="leftDiv">
+                                <font size="4px">
+                                    🖇️ 学生管理
+                                </font>
+                            </div>
+                            <div style="margin-top: 10px;">
+                                <a href="{:url('Admin/adminSearchStudentIndex')}">查询学生</a>
+                            </div>
+                            <div style="margin-top: 10px;">
+                                <a href="{:url('Admin/adminAddStudentIndex')}">添加学生</a>
+                            </div>
+                            <div style="margin-top: 10px;">
+                                <a href="{:url('Admin/adminRecoverStudentIndex')}">恢复学生</a>
+                            </div>
+                            <div style="margin-top: 10px;">
+                                <a href="{:url('Admin/adminBanStudentIndex')}">停用学生</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <!-- 右边内容 -->
+    <div style="width: 70%;float: left;padding: 20px;margin: 20px;">
+        <div class="container">
+            <div class="jumbotron" style="width: 80%;overflow: hidden;">
+                {block name="body"}{/block}
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{extend name="admin/base" /}
+{block name="body"}
+<a href="{:url('Admin/adminSearchTeacherIndex')}"><--返回</a>
+<p>
+    教师姓名：{$teacher_info.username}
+</p>
+<p>
+    教职工号：{$teacher_info.num}
+</p>
+<p>
+    邮箱：{$teacher_info.email}
+</p>
+<p>
+    账号状态：
+    {eq name="$teacher_info.ban" value="0"}
+    正常
+    {else/}
+    被停用
+    {/eq}
+</p>
+{/block}

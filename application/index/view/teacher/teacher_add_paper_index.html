@@ -1,0 +1,100 @@
+{extend name="teacher/base"}
+{block name="body"}
+<h2>"{$class_name}" 课堂的题库</h2>
+<div style="overflow: hidden;">
+    <form action="teacherAddPaper" method="post">
+        <h3>试卷名称：</h3>
+        <input type="text" name="paper_name" class="form-control" placeholder="输入试卷名称" style="width: 80%;"/>
+        <h3>单选题</h3>
+        <table class="table table-bordered" style="width:80%;box-shadow: 2px 2px 5px #999999;background-color: white;">
+            <tr>
+                <th width="30px">
+                    <input type="checkbox" name="allcheck" id="single_all_check" onclick="single_choice_check_all()">
+                </th>
+                <th>
+                    题目
+                </th>
+                <th width="50px">
+                    难度
+                </th>
+            </tr>
+            {volist name="single_choice" id="tq" k="key"}
+            <tr>
+                <td>
+                    <input type="checkbox" value="{$tq.single_choice_id}" class="checkbox single_choice" name="single_choice[{$key}]">
+                </td>
+                <td>
+                    {$tq.topic}
+                </td>
+                <td>
+                    {$tq.difficulty}
+                </td>
+            </tr>
+            {/volist}
+        </table>
+        单选题分数：
+        <input type="number" name="single_choice_score" class="form-control" placeholder="输入每道单选题的分数" style="width: 80%;"/>
+        <h3>判断题</h3>
+        <table class="table table-bordered" style="width:80%;box-shadow: 2px 2px 5px #999999;background-color: white;">
+            <tr>
+                <th width="30px">
+                    <input type="checkbox" name="allcheck" id="true_or_false_all_check" onclick="true_or_false_check_all()">
+                </th>
+                <th>
+                    题目
+                </th>
+                <th width="50px">
+                    难度
+                </th>
+            </tr>
+            {volist name="true_or_false" id="tof"}
+            <tr>
+                <td>
+                    <input type="checkbox" value="{$tof.true_or_false_id}" class="checkbox true_or_false" name="true_or_false[{$key}]">
+                </td>
+                <td>
+                    {$tof.topic}
+                </td>
+                <td>
+                    {$tof.difficulty}
+                </td>
+            </tr>
+            {/volist}
+        </table>
+        判断题分数：
+        <input type="number" name="true_or_false_score" class="form-control" placeholder="输入每道判断题的分数" style="width: 80%;"/>
+        <button type="submit" class="btn btn-default" name="class_num" value="{$class_num}">提交</button>
+
+        <h3>简答题</h3>
+        <table class="table table-bordered" style="width:80%;box-shadow: 2px 2px 5px #999999;background-color: white;">
+            <tr>
+                <th width="30px">
+                    <input type="checkbox" name="allcheck" id="short_answer_all_check" onclick="short_answer_check_all()">
+                </th>
+                <th>
+                    题目
+                </th>
+                <th width="50px">
+                    难度
+                </th>
+            </tr>
+            {volist name="short_answer" id="sa"}
+            <tr>
+                <td>
+                    <input type="checkbox" value="{$sa.short_answer_id}" class="checkbox short_answer" name="short_answer[{$key}]">
+                </td>
+                <td>
+                    {$sa.topic}
+                </td>
+                <td>
+                    {$sa.difficulty}
+                </td>
+            </tr>
+            {/volist}
+        </table>
+        判断题分数：
+        <input type="number" name="short_answer_score" class="form-control" placeholder="输入每道判断题的分数" style="width: 80%;"/>
+        <button type="submit" class="btn btn-default" name="class_num" value="{$class_num}">提交</button>
+    </form>
+</div>
+{/block}

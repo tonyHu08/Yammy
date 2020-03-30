@@ -1,0 +1,40 @@
+{extend name="admin/base"}
+{block name="body"}
+<a href="{:url('Admin/adminSearchClassIndex?func=search')}"><--返回</a>
+<p>
+    课堂名称：{$class_info.class_name}
+</p>
+<p>
+    课程号：{$class_info.class_num}
+</p>
+<p>
+    科任老师：{$class_info.teacher}
+</p>
+<p>
+    上课时间：{$class_info.time}
+</p>
+<p>
+    课堂简介：{$class_info.basic_information}
+</p>
+<p>
+    课堂状态：
+    {eq name="$class_info.ban" value="0"}
+    正常
+    {else/}
+    被停用
+    {/eq}
+</p>
+<p>
+    该课堂的学生：
+    {volist name="class_student" id="student"}
+    {$student.student_name}
+    {/volist}
+</p>
+<a href="{:url('Admin/adminCompileClassIndex')}?class_num={$class_info.class_num}">编辑</a>
+{eq name="$class_info.ban" value="0"}
+<a href="{:url('Admin/adminBanClass')}?class_num={$class_info.class_num}">停用课堂</a>
+{else/}
+<a href="{:url('Admin/adminRecoverClass')}?class_num={$class_info.class_num}">恢复课堂</a>
+{/eq}
+<a href="{:url('Admin/adminAddClassStudentIndex')}?class_num={$class_info.class_num}">添加该课堂学生</a>
+{/block}

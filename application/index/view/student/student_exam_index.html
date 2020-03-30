@@ -1,0 +1,20 @@
+{extend name="student/base"}
+{block name="body"}
+<div class="container">
+    <div class="jumbotron" style="overflow: hidden;padding-left: 15%;">
+        {volist name="paper" id="p"}
+        {eq name="null" value="$p.0"}
+        <h3>{$p.class_name}</h3>
+        <p>该课堂目前没有考试</p>
+        {else/}
+        <h3>{$p.0.class_name}</h3>
+        {volist name="p" id="pi"}
+        <p>
+            <a href="{:url('Student/studentTestIndex',['paper_num'=>$pi.paper_num])}">{$pi.paper_name}</a>
+        </p>
+        {/volist}
+        {/eq}
+        {/volist}
+    </div>
+</div>
+{/block}

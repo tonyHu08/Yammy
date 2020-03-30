@@ -1,0 +1,191 @@
+{extend name="teacher/base"}
+{block name="body"}
+<h2>{$paper.paper_name}</h2>
+<a href="{:url('Teacher/teacherDeletePaper',['paper_num'=>$paper.paper_num])}" class="btn btn-danger">删除试卷</a>
+<div style="width: 100%;overflow: hidden;">
+    <h3>单选题(每题{$paper.single_choice_score}分)</h3>
+    {volist name="single_choice" id="tq" key="k"}
+    <div class="test_questions">
+        <h4 class="topic">{$key+1}：{$tq.topic}</h4>
+        A:{$tq.A}<br>
+        B:{$tq.B}<br>
+        C:{$tq.C}<br>
+        D:{$tq.D}<br>
+        解题思路：{$tq.soleve_thinking}<br>
+        答案：{$tq.answer}<br>
+        题目难度：{$tq.difficulty}<br>
+        所属课堂：{$tq.class_name}<br>
+        <a href="{:url('Teacher/teacherDeleteSingleChoiceInPaper',['single_choice_id'=>$tq.single_choice_id,'paper_num'=>$paper.paper_num])}">删除试题</a>
+        <a href="{:url('Teacher/teacherCompileSingleChoiceIndex',['id'=>$tq.single_choice_id,'page'=>'teacherFindPaper'])}">编辑试题</a>
+    </div>
+    {/volist}
+    <form action="{:url('Teacher/teacherAddSingleChoiceInPaper')}">
+        <table class="table table-bordered" style="width:80%;box-shadow: 2px 2px 5px #999999;background-color: white;">
+            <tr>
+                <th colspan="3"><h3>添加单选题</h3></th>
+            </tr>
+            <tr>
+                <th width="30px">
+                    <input type="checkbox" name="allcheck" id="single_all_check" onclick="single_choice_check_all()">
+                </th>
+                <th>
+                    题目
+                </th>
+                <th width="50px">
+                    难度
+                </th>
+            </tr>
+            {volist name="single_choice_option" id="tq" k="key"}
+            <tr>
+                <td>
+                    <input type="checkbox" value="{$tq.single_choice_id}" class="checkbox single_choice"
+                           name="single_choice[{$key}]">
+                </td>
+                <td>
+                    {$tq.topic}
+                </td>
+                <td>
+                    {$tq.difficulty}
+                </td>
+            </tr>
+            {/volist}
+            <tr>
+                <td colspan="3">
+                    <button type="submit" class="btn btn-default" name="paper_num" value="{$paper.paper_num}">添加单选题
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <form action="{:url('Teacher/teacherChangeSingleChoiceScore')}">
+        <div class="test_questions" style="height: 140px;">
+            <h3>修改单选题分数</h3>
+            <input type="number" name="single_choice_score" placeholder="输入要修改的单选题分数" class="form-control">
+            <button type="submit" class="btn btn-default" name="paper_num" value="{$paper.paper_num}">修改
+            </button>
+        </div>
+    </form>
+</div>
+<div style="width: 100%;overflow: hidden;">
+    <h3>判断题(每题{$paper.true_or_false_score}分)</h3>
+    {volist name="true_or_false" id="tof" key="k"}
+    <div class="test_questions" style="height: 180px">
+        <h4 class="topic">{$key+1}：{$tof.topic}</h4>
+        解题思路：{$tof.soleve_thinking}<br>
+        答案：{$tof.answer}<br>
+        题目难度：{$tof.difficulty}<br>
+        所属课堂：{$tof.class_name}<br>
+        <a href="{:url('Teacher/teacherDeleteTrueOrFalseInPaper',['true_or_false_id'=>$tof.true_or_false_id,'paper_num'=>$paper.paper_num])}">删除试题</a>
+        <a href="{:url('Teacher/teacherCompileTrueOrFalseIndex',['id'=>$tof.true_or_false_id,'page'=>'teacherFindPaper'])}">编辑试题</a>
+    </div>
+    {/volist}
+    <form action="{:url('Teacher/teacherAddTrueOrFalseInPaper')}">
+        <table class="table table-bordered" style="width:80%;box-shadow: 2px 2px 5px #999999;background-color: white;">
+            <tr>
+                <th colspan="3"><h3>添加判断题</h3></th>
+            </tr>
+            <tr>
+                <th width="30px">
+                    <input type="checkbox" name="allcheck" id="true_or_false_all_check"
+                           onclick="true_or_false_check_all()">
+                </th>
+                <th>
+                    题目
+                </th>
+                <th width="50px">
+                    难度
+                </th>
+            </tr>
+            {volist name="true_or_false_option" id="tof"}
+            <tr>
+                <td>
+                    <input type="checkbox" value="{$tof.true_or_false_id}" class="checkbox true_or_false"
+                           name="true_or_false[{$key}]">
+                </td>
+                <td>
+                    {$tof.topic}
+                </td>
+                <td>
+                    {$tof.difficulty}
+                </td>
+            </tr>
+            {/volist}
+            <tr>
+                <td colspan="3">
+                    <button type="submit" class="btn btn-default" name="paper_num" value="{$paper.paper_num}">添加判断题
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <form action="{:url('Teacher/teacherChangeTrueOrFalseScore')}">
+        <div class="test_questions" style="height: 140px;">
+            <h3>修改判断题分数</h3>
+            <input type="number" name="true_or_false_score" placeholder="输入要修改的判断题分数" class="form-control">
+            <button type="submit" class="btn btn-default" name="paper_num" value="{$paper.paper_num}">修改
+            </button>
+        </div>
+    </form>
+</div>
+
+<div style="width: 100%;overflow: hidden;">
+    <h3>简答题(每题{$paper.short_answer_score}分)</h3>
+    {volist name="short_answer" id="sa" key="k"}
+    <div class="test_questions" style="height: 180px">
+        <h4 class="topic">{$key+1}：{$sa.topic}</h4>
+        解题思路：{$sa.soleve_thinking}<br>
+        题目难度：{$sa.difficulty}<br>
+        所属课堂：{$sa.class_name}<br>
+        <a href="{:url('Teacher/teacherDeleteShortAnswerInPaper',['short_answer_id'=>$sa.short_answer_id,'paper_num'=>$paper.paper_num])}">删除试题</a>
+        <a href="{:url('Teacher/teacherCompileShortAnswerIndex',['id'=>$sa.short_answer_id,'page'=>'teacherFindPaper'])}">编辑试题</a>
+    </div>
+    {/volist}
+    <form action="{:url('Teacher/teacherAddShortAnswerInPaper')}">
+        <table class="table table-bordered" style="width:80%;box-shadow: 2px 2px 5px #999999;background-color: white;">
+            <tr>
+                <th colspan="3"><h3>添加简答题</h3></th>
+            </tr>
+            <tr>
+                <th width="30px">
+                    <input type="checkbox" name="allcheck" id="short_answer_all_check"
+                           onclick="short_answer_check_all()">
+                </th>
+                <th>
+                    题目
+                </th>
+                <th width="50px">
+                    难度
+                </th>
+            </tr>
+            {volist name="short_answer_option" id="sa"}
+            <tr>
+                <td>
+                    <input type="checkbox" value="{$sa.short_answer_id}" class="checkbox short_answer"
+                           name="short_answer[{$key}]">
+                </td>
+                <td>
+                    {$sa.topic}
+                </td>
+                <td>
+                    {$sa.difficulty}
+                </td>
+            </tr>
+            {/volist}
+            <tr>
+                <td colspan="3">
+                    <button type="submit" class="btn btn-default" name="paper_num" value="{$paper.paper_num}">添加判断题
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <form action="{:url('Teacher/teacherChangeShortAnswerScore')}">
+        <div class="test_questions" style="height: 140px;">
+            <h3>修改简答题分数</h3>
+            <input type="number" name="short_answer_score" placeholder="输入要修改的判断题分数" class="form-control">
+            <button type="submit" class="btn btn-default" name="paper_num" value="{$paper.paper_num}">修改
+            </button>
+        </div>
+    </form>
+</div>
+{/block}
