@@ -132,6 +132,7 @@
         opposite_username = getOppositeUsername();
         console.log(opposite_uid);
         var chat_list = document.getElementById('chat-list');
+        chat_list.innerHTML = '';
         //data接收到消息数据
         $.get("{:url('index/Chat/receiveMessageInitialize')}", {opposite_uid: opposite_uid}, function (data) {
             console.log(data);
