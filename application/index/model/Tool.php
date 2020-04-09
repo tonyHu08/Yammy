@@ -194,4 +194,11 @@ class Tool extends Model
         return $info;
     }
 
+    //根据考生学号查找答卷
+    public function studentNumFindPaper($student_num)
+    {
+        $info = db('student_answer_paper')->where('student_num', $student_num)->select();
+        return $info;
+    }
+
 }

@@ -10,22 +10,28 @@
         {eq name="null" value="$Think.session.username"}
         <a href="#myModal" data-toggle="modal" data-target="#myModal">考试</a>
         {else/}
+        {eq name="0" value="$Think.session.identity"}
         <a href="{:url('Student/studentExamIndex')}">考试</a>
+        <a href="{:url('Student/studentSelectPaper')}">查看答卷</a>
+        {/eq}
+        {eq name="1" value="$Think.session.identity"}
+        <a href="">教师功能</a>
+        {/eq}
         {/eq}
     </div>
 
     <!-- 搜索框 -->
 
-    <div class="search bar7">
-        <form>
-            <input type="text" placeholder="搜索考试课程 开课老师......">
-            <button type="button" class="btn btn-default" style="border: 0px">
-                <a href="#">
-                    <span class="glyphicon glyphicon-search"></span>
-                </a>
-            </button>
-        </form>
-    </div>
+<!--    <div class="search bar7">-->
+<!--        <form>-->
+<!--            <input type="text" placeholder="搜索考试课程 开课老师......">-->
+<!--            <button type="button" class="btn btn-default">-->
+<!--                <a href="#">-->
+<!--                    <span class="glyphicon glyphicon-search"></span>-->
+<!--                </a>-->
+<!--            </button>-->
+<!--        </form>-->
+<!--    </div>-->
 </div>
 {include file="modal/modal_login"}
 {include file="chat/modal_chat"}
@@ -59,7 +65,7 @@
     }
 
     .options-bar {
-        width: 400px;
+        width: 700px;
         height: 100%;
         float: left;
         margin-left: 00px;
@@ -73,8 +79,8 @@
     }
 
     .bar7 {
-        width: 15%;
-        height: 20px;
+        width: 200px;
+        height: 100%;
         float: right;
         margin-right: 150px;
         text-align: center;

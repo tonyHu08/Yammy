@@ -9,7 +9,7 @@ class Tool extends Controller
 {
     public function loginStatusVerify()
     {
-        if(session('username') == null) {            //如果还未登录
+        if (session('username') == null) {            //如果还未登录
             return $this->fetch('Login/login');
         }
     }
@@ -26,7 +26,7 @@ class Tool extends Controller
     {
         $username = input('name');
         $userlist = model('Tool');
-        if($userlist->findUsername($username)) {
+        if ($userlist->findUsername($username)) {
             return 0;
         } else {
             return 1;
@@ -98,6 +98,7 @@ class Tool extends Controller
         $tool = model('Tool');
         return $tool->findAllClass();
     }
+
     /*--------------------------------------课堂管理--------------------------------------*/
 
     public function classNumFindClass($class_num)     //根据课程号查找课程信息
@@ -109,9 +110,9 @@ class Tool extends Controller
     public function classNumFindSingleChoice($class_num)      //根据课程号查找单选题
     {
         $tool = model('Tool');
-        if($tool->classNumFindSingleChoice($class_num)) {
+        if ($tool->classNumFindSingleChoice($class_num)) {
             return $tool->classNumFindSingleChoice($class_num);
-        }else{
+        } else {
             return null;
         }
     }
@@ -119,9 +120,9 @@ class Tool extends Controller
     public function classNumFindTrueOrFalse($class_num)      //根据课程号查找判断题
     {
         $tool = model('Tool');
-        if($tool->classNumFindTrueOrFalse($class_num)) {
+        if ($tool->classNumFindTrueOrFalse($class_num)) {
             return $tool->classNumFindTrueOrFalse($class_num);
-        }else{
+        } else {
             return null;
         }
     }
@@ -129,9 +130,9 @@ class Tool extends Controller
     public function classNumFindShortAnswer($class_num)
     {
         $tool = model('Tool');
-        if($tool->classNumFindShortAnswer($class_num)) {
+        if ($tool->classNumFindShortAnswer($class_num)) {
             return $tool->classNumFindShortAnswer($class_num);
-        }else{
+        } else {
             return null;
         }
     }
@@ -176,6 +177,8 @@ class Tool extends Controller
         return $tool->classNumFindPaper($class_num);
     }
 
+
+
     /*--------------------------------------将试卷库中的试题号字符串转为题信息数组--------------------------------------*/
 
     //单选题
@@ -183,7 +186,7 @@ class Tool extends Controller
     {
         $single_choice_arr = explode('|', $str);
         $single_choice = [];
-        foreach($single_choice_arr as $num => $i) {
+        foreach ($single_choice_arr as $num => $i) {
             $single_choice[$num] = $this->singleChoiceIdFindSingleChoice($i);
         }
         $single_choice = array_filter($single_choice);
@@ -195,7 +198,7 @@ class Tool extends Controller
     {
         $true_or_false_arr = explode('|', $str);
         $true_or_false = [];
-        foreach($true_or_false_arr as $num => $i) {
+        foreach ($true_or_false_arr as $num => $i) {
             $true_or_false[$num] = $this->trueOrFalseIdFindTrueOrFalse($i);
         }
         $true_or_false = array_filter($true_or_false);
@@ -207,7 +210,7 @@ class Tool extends Controller
     {
         $short_answer_arr = explode('|', $str);
         $short_answer = [];
-        foreach($short_answer_arr as $num => $i) {
+        foreach ($short_answer_arr as $num => $i) {
             $short_answer[$num] = $this->shortAnswerIdFindShortAnswer($i);
         }
         $short_answer = array_filter($short_answer);
@@ -221,7 +224,12 @@ class Tool extends Controller
         return $tool->studentAnswerPaperIdFindPaper($student_answer_paper_id);
     }
 
-
+    //根据考生学号查找考卷
+    public function studentNumFindPaper($student_num)
+    {
+        $tool = model('Tool');
+        return $tool->studentNumFindPaper($student_num);
+    }
 
 
     public function sendMail()         //发送邮件

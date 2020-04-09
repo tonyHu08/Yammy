@@ -137,4 +137,14 @@ class Student extends Controller
         $this->assign('title', 'Exam|考试结果');
         return $this->fetch('');
     }
+
+    //考生选择查看已考试卷
+    public function studentSelectPaper()
+    {
+        $tool = new Tool();
+        $papers = $tool->studentNumFindPaper(session('num'));
+        $this->assign('title', '查看试卷');
+        $this->assign('papers', $papers);
+        return $this->fetch('');
+    }
 }

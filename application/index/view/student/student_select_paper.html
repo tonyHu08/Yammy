@@ -1,0 +1,57 @@
+{extend name="student/base"}
+{block name="body"}
+<h3>所有答卷</h3>
+
+<form action="{:url('Teacher/teacherCheckStudentPaper')}">
+    <div class="select-list">
+        <table class="table table-bordered"
+               style="width:600px;box-shadow: 2px 2px 5px #999999;background-color: white;">
+            <tr>
+                <th width="150px">
+                    总分
+                </th>
+                <th width="150px">
+                    分数
+                </th>
+                <th width="150px">
+                    考试时间
+                </th>
+                <th></th>
+            </tr>
+            {volist name="papers" id="sp"}
+            <tr>
+                <td>
+                    {$sp.sum_score}
+                </td>
+                <td>
+                    {$sp.score}
+                </td>
+                <td>
+                    {$sp.time|date="Y-m-d H:i:s",###}
+                </td>
+                <td>
+                    <button class="btn btn-default" value="{$sp.student_answer_paper_id}"
+                            name="student_answer_paper_id">
+                        查看
+                    </button>
+                </td>
+            </tr>
+            {/volist}
+        </table>
+    </div>
+</form>
+
+
+<style>
+    .select-list {
+        width: 100%;
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    .select-list form {
+        width: 700px;
+    }
+</style>
+
+{/block}
