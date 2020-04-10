@@ -729,6 +729,7 @@ class Teacher extends Controller
         $single_choice = $tool->singleChoiceStrToArr($answer_paper['single_choice']);
         $true_or_false = $tool->trueOrFalseStrToArr($answer_paper['true_or_false']);
         $short_answer = $tool->shortAnswerStrToArr($answer_paper['short_answer']);
+        # 如果有选择题
         if($answer_paper['single_choice_answer'] != null) {
             $single_choice_answer = explode('|', $answer_paper['single_choice_answer']);
             foreach($single_choice as $num => $i) {
@@ -743,6 +744,7 @@ class Teacher extends Controller
         } else {
             $single_choice = null;
         }
+        #如果有判断题
         if($answer_paper['true_or_false_answer'] != null) {
             $true_or_false_answer = explode('|', $answer_paper['true_or_false_answer']);
             foreach($true_or_false as $num => $i) {
@@ -757,6 +759,7 @@ class Teacher extends Controller
         } else {
             $true_or_false = null;
         }
+        #如果有简答题
         if($answer_paper['short_answer_answer'] != null) {
             $short_answer_answer = explode('|', $answer_paper['short_answer_answer']);
             foreach($short_answer_answer as $num => $i) {

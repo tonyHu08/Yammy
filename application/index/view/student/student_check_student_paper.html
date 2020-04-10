@@ -1,0 +1,91 @@
+{extend name="student/base"}
+{block name="body"}
+<div class="paper-box">
+    <button onclick="javascript:history.back();" value="<--返回" style="background-color: cornsilk;"><--返回</button>
+    <h2>{$paper.paper_name}</h2>
+    <h3>客观题总分：{$sum_score};得分：{$score}</h3>
+    <div class="single-choice-box">
+        <h3>单选题(每题{$paper.single_choice_score}分)</h3>
+        {eq name="null" value="$single_choice"}
+        没有选择题
+        {else/}
+        {volist name="single_choice" id="tq" key="k"}
+        {eq name="$tq.student_answer" value="$tq.answer"}
+        <div class="test_questions" style="height: 230px;background-color: rgba(165,220,97,0.3);">
+            <h4 class="topic">{$key+1}：{$tq.topic}</h4>
+            A:{$tq.A}<br>
+            B:{$tq.B}<br>
+            C:{$tq.C}<br>
+            D:{$tq.D}<br>
+            解题思路：{$tq.soleve_thinking}<br>
+            学生答案：<span style="color: green;">{$tq.student_answer}</span><br>
+            答案：{$tq.answer}<br>
+            题目难度：{$tq.difficulty}<br>
+        </div>
+        {else/}
+        <div class="test_questions" style="height: 230px;background-color: rgba(255,0,0,0.3);">
+            <h4 class="topic">{$key+1}：{$tq.topic}</h4>
+            A:{$tq.A}<br>
+            B:{$tq.B}<br>
+            C:{$tq.C}<br>
+            D:{$tq.D}<br>
+            解题思路：{$tq.soleve_thinking}<br>
+            学生答案：<span style="color: red;">{$tq.student_answer}</span><br>
+            答案：{$tq.answer}<br>
+            题目难度：{$tq.difficulty}<br>
+
+        </div>
+        {/eq}
+        {/volist}
+        {/eq}
+    </div>
+    <div style="width: 100%;overflow: hidden;">
+        <h3>判断题(每题{$paper.true_or_false_score}分)</h3>
+        {eq name="null" value="$true_or_false"}
+        没有判断题
+        {else/}
+        {volist name="true_or_false" id="tof" key="k"}
+        {eq name="$tof.student_answer" value="$tof.answer"}
+        <div class="test_questions" style="height: 150px;background-color: rgba(165,220,97,0.3);">
+            <h4 class="topic">{$key+1}：{$tof.topic}</h4>
+            解题思路：{$tof.soleve_thinking}<br>
+            学生答案：<span style="color: green;">{$tof.student_answer}</span><br>
+            答案：{$tof.answer}<br>
+            题目难度：{$tof.difficulty}<br>
+        </div>
+        {else/}
+        <div class="test_questions" style="height: 150px;background-color: rgba(255,0,0,0.3);">
+            <h4 class="topic">{$key+1}：{$tof.topic}</h4>
+            解题思路：{$tof.soleve_thinking}<br>
+            学生答案：<span style="color: red;">{$tof.student_answer}</span><br>
+            答案：{$tof.answer}<br>
+            题目难度：{$tof.difficulty}<br>
+        </div>
+        {/eq}
+        {/volist}
+        {/eq}
+    </div>
+    <div style="width: 100%;overflow: hidden;">
+        <h3>简答题(总分{$paper.short_answer_score}分)</h3>
+        {eq name="null" value="$short_answer"}
+        没有简答题
+        {else/}
+        {volist name="short_answer" id="sa" key="k"}
+        <div class="test_questions" style="height: 150px;background-color: rgba(0,0,200,0.3);">
+            <h4 class="topic">{$key+1}：{$sa.topic}</h4>
+            解题思路：{$sa.soleve_thinking}<br>
+            学生答案：<span>{$sa.student_answer}</span><br>
+            题目难度：{$sa.difficulty}<br>
+        </div>
+        {/volist}
+        {/eq}
+    </div>
+</div>
+
+<style>
+    .paper-box {
+        width: 800px;
+        margin: 0 auto;
+    }
+</style>
+{/block}

@@ -147,4 +147,65 @@ class Student extends Controller
         $this->assign('papers', $papers);
         return $this->fetch('');
     }
+
+    //学生查看选择的考卷
+    public function studentCheckStudentPaper()
+    {
+        $student_answer_paper_id = input('student_answer_paper_id');
+        $tool = new Tool();
+        $answer_paper = $tool->studentAnswerPaperIdFindPaper($student_answer_paper_id);
+        $paper = $tool->paperNumFindPaper($answer_paper['paper_num']);
+        $single_choice = $tool->singleChoiceStrToArr($answer_paper['single_choice']);
+        $true_or_false = $tool->trueOrFalseStrToArr($answer_paper['true_or_false']);
+        $short_answer = $tool->shortAnswerStrToArr($answer_paper['short_answer']);
+        # 如果有选择题
+        if($answer_paper['single_choice_answer'] != null) {
+            $single_choice_answer = explode('|', $answer_paper['single_choice_answer']);
+            foreach($single_choice as $num => $i) {
+                if($single_choice_answer[$num] == $i['answer']) {
+                    $single_choice[$num]['judge'] = 'true';
+                    $single_choice[$num]['student_answer'] = $single_choice_answer[$num];
+                } else {
+                    $single_choice[$num]['judge'] = 'false';
+                    $single_choice[$num]['student_answer'] = $single_choice_answer[$num];
+                }
+            }
+        } else {
+            $single_choice = null;
+        }
+        #如果有判断题
+        if($answer_paper['true_or_false_answer'] != null) {
+            $true_or_false_answer = explode('|', $answer_paper['true_or_false_answer']);
+            foreach($true_or_false as $num => $i) {
+                if($true_or_false_answer[$num] == $i['answer']) {
+                    $true_or_false[$num]['judge'] = 'true';
+                    $true_or_false[$num]['student_answer'] = $true_or_false_answer[$num];
+                } else {
+                    $true_or_false[$num]['judge'] = 'false';
+                    $true_or_false[$num]['student_answer'] = $true_or_false_answer[$num];
+                }
+            }
+        } else {
+            $true_or_false = null;
+        }
+        #如果有简答题
+        if($answer_paper['short_answer_answer'] != null) {
+            $short_answer_answer = explode('|', $answer_paper['short_answer_answer']);
+            foreach($short_answer_answer as $num => $i) {
+                $short_answer[$num]['student_answer'] = $short_answer_answer[$num];
+            }
+        } else {
+            $short_answer = null;
+        }
+
+        $this->assign('sum_score', $answer_paper['sum_score']);
+        $this->assign('score', $answer_paper['score']);
+        $this->assign('paper', $paper);
+        $this->assign('single_choice', $single_choice);
+        $this->assign('true_or_false', $true_or_false);
+        $this->assign('short_answer', $short_answer);
+        $this->assign('answer_paper', $answer_paper);
+        $this->assign('title', '查看考卷');
+        return $this->fetch('');
+    }
 }

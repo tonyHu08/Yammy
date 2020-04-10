@@ -2,15 +2,17 @@
 {block name="body"}
 <h3>所有答卷</h3>
 
-<form action="{:url('Teacher/teacherCheckStudentPaper')}">
+<form action="{:url('Student/studentCheckStudentPaper')}">
     <div class="select-list">
-        <table class="table table-bordered"
-               style="width:600px;box-shadow: 2px 2px 5px #999999;background-color: white;">
+        <table class="table table-bordered paper-list-table">
             <tr>
-                <th width="150px">
+                <th width="250px">
+                    试卷名称
+                </th>
+                <th width="100px">
                     总分
                 </th>
-                <th width="150px">
+                <th width="100px">
                     分数
                 </th>
                 <th width="150px">
@@ -20,6 +22,9 @@
             </tr>
             {volist name="papers" id="sp"}
             <tr>
+                <td>
+                    {$sp.paper_name}
+                </td>
                 <td>
                     {$sp.sum_score}
                 </td>
@@ -49,8 +54,12 @@
         margin: 0 auto;
     }
 
-    .select-list form {
-        width: 700px;
+    .paper-list-table {
+        width: 600px;
+        box-shadow: 2px 2px 5px #999999;
+        background-color: white;
+        margin: 0 auto;
+        margin-top: 20px;
     }
 </style>
 
